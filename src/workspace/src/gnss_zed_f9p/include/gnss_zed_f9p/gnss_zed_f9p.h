@@ -188,10 +188,11 @@ class ZEDF9P{
 			//TODO process , hdr
 			
 			if(validateChecksum(hdr, payload, checksum)){
-				ROS_INFO_STREAM("valid checksum, processframe zf9p");
+				//ROS_INFO_STREAM("valid checksum, processframe zf9p");
 				//UBX-NAV-PVT
 				if(hdr->msgClass == 0x01 && hdr->id ==0x07){
 					//extract ground speed and publish it
+					ROS_INFO_STREAM("ground speed packet");
 					ubx_nav_pvt* pvt = (ubx_nav_pvt*) payload;
 
 					double speedKmh = (double) pvt->groundSpeed * (3.6/1000.0);

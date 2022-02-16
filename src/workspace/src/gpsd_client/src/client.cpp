@@ -264,6 +264,7 @@ class GPSDClient {
       fix->position_covariance_type = NavSatFix::COVARIANCE_TYPE_DIAGONAL_KNOWN;
 
       navsat_fix_pub.publish(fix);
+      ROS_INFO_STREAM("gpsd_client, fix status : " << fix->status.status);
     }
 };
 
