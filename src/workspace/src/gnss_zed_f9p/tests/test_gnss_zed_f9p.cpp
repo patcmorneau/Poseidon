@@ -68,7 +68,8 @@ TEST(virtualZf9pTest, testZf9pUbxSpeed) {
 	while(zf9p.running()){
 		for(int i = 0; i<10; i++){
 			sleep(1);
-			virtualZedFf9p.write("µb00000000000000000000000000000000000000000000000000000000000000011!!1");// gspeed at bytes 60-> !! = 8481mm/s ~= 30Kmh
+									// ground speed at bytes 60-> !! = 8481mm/s ~= 30Kmh
+			virtualZedFf9p.write("µb00000000000000000000000000000000000000000000000000000000000000011!!1");
 			sleep(1);
 		}
 		virtualZedFf9p.close(zf9p);

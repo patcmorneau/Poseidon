@@ -185,7 +185,7 @@ class ZEDF9P{
 			//TODO verify checksum
 			//TODO process , hdr
 			
-			if(validateChecksum(hdr, payload, checksum)){
+			//if(validateChecksum(hdr, payload, checksum)){
 				//UBX-NAV-PVT
 				if(hdr->msgClass == 0x01 && hdr->id ==0x07){
 					//extract ground speed and publish it
@@ -209,10 +209,10 @@ class ZEDF9P{
 				file.write((char*)hdr, sizeof(ubx_header));
 				file.write((char*)payload, hdr->length);
 				file.write((char*)checksum, sizeof(ubx_checksum));
-			}
-			else{
-				ROS_ERROR("zf9p checksum error");
-			}
+			//}validateChecksum
+			//else{
+				//ROS_ERROR("zf9p checksum error");
+			//}
 			
 		}
 		
@@ -306,19 +306,23 @@ class ZEDF9P{
 													}
 												}
 												else{//read error
+													ROS_INFO("payload not read properly");
 												}
 											}
 											else{//read error
+												ROS_INFO("not enough bytes to read ubx header");
 											}
 										}
 										else{//read error
+											ROS_INFO("0x62 not read properly");
 										}
 									}
 									else{
 										//read error , discard packet
 									}
 					        	}
-					        	else{//read error
+					        	else{
+					        		ROS_INFO("0xb5 not read properly");
 					        	}
 					        }
 					        else{
