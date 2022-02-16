@@ -163,6 +163,7 @@ class ZEDF9P{
 		}
 
 		void gnssCallback(const sensor_msgs::NavSatFix& fix){
+			ROS_INFO_STREAM("zf9p gnssCallback");
 			if(!bootstrappedGnssTime && fix.status.status >= 0){
 				bootstrappedGnssTime = true;
 				ROS_INFO_STREAM("gnsscallback zf9p, bootstrappedGnssTime = true");
@@ -187,6 +188,7 @@ class ZEDF9P{
 			//TODO process , hdr
 			
 			if(validateChecksum(hdr, payload, checksum)){
+				ROS_INFO_STREAM("valid checksum, processframe zf9p");
 				//UBX-NAV-PVT
 				if(hdr->msgClass == 0x01 && hdr->id ==0x07){
 					//extract ground speed and publish it
@@ -210,7 +212,7 @@ class ZEDF9P{
 				file.write((char*)hdr, sizeof(ubx_header));
 				file.write((char*)payload, hdr->length);
 				file.write((char*)checksum, sizeof(ubx_checksum));
-			}validateChecksum
+			}
 			else{
 				ROS_ERROR("zf9p checksum error");
 			}
@@ -323,7 +325,7 @@ class ZEDF9P{
 									}
 					        	}
 					        	else{
-					        		ROS_INFO("0xb5 not read properly");
+					        		//ROS_INFO("0xb5 not read properly");
 					        	}
 					        }
 					        else{
