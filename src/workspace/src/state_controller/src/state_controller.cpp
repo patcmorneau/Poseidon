@@ -1,12 +1,14 @@
 #include "state_controller/state_controller.h"
 
 void StateController::gnssCallback(const sensor_msgs::NavSatFix& gnss){
-	if( gnss.status.service > 0) { 
+	ROS_INFO("state_controller gnssCallback");
+	if( gnss.status.service >= 0) { 
+		ROS_INFO("gnssCallback status > 0");
 		stateMtx.lock();
 		state.position = gnss;
 		state.stamp=gnss.header.stamp;
 		stateMtx.unlock();
-
+		ROS_INFO_STREAM(state);
 		StateController::stateUpdated();
 	}
 }
@@ -49,6 +51,7 @@ bool StateController::getStateService(state_controller_msg::GetStateService::Req
 void StateController::stateUpdated(){
 	//TODO: kalmanize? throttle?
 	stateMtx.lock();
+	ROS_INFO_STREAM(state);
     stateTopic.publish(state);
 	stateMtx.unlock();
 }
