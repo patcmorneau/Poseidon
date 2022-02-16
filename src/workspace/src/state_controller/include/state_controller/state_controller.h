@@ -27,7 +27,7 @@ class StateController{
 			attitudeTopic = n.subscribe("/imu/data", 1000, &StateController::imuCallback,this);
 			sonarTopic    = n.subscribe("depth", 1000, &StateController::sonarCallback,this);
 		    vitalsTopic   = n.subscribe("vitals", 1000, &StateController::vitalsCallback,this);
-            stateTopic    = n.advertise<state_controller_msg::State>("state", 1000);
+            stateTopic    = n.advertise<state_controller_msg::State>("state", &StateController::stateUpdated, this );
 			getStateServiceServer = n.advertiseService("get_state",&StateController::getStateService,this);
       		state.position.status.status = -1;
 		}

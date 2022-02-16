@@ -49,7 +49,7 @@ bool StateController::getStateService(state_controller_msg::GetStateService::Req
 void StateController::stateUpdated(){
 	//TODO: kalmanize? throttle?
 	stateMtx.lock();
-        stateTopic.publish(state);
+    stateTopic.publish(state);
 	stateMtx.unlock();
 }
 
