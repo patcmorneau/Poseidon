@@ -297,7 +297,7 @@ class ZEDF9P{
 												//read payload
 												uint8_t *payload = (uint8_t*) malloc(hdr.length);
 												n = read(serial_port, payload, hdr.length);
-												ROS_INFO_STREAM("payload length : " << hdr.length <<"read : "<<n);
+												//ROS_INFO_STREAM("payload length : " << hdr.length <<"read : "<<n); thats ok
 												if(n == hdr.length){
 													
 													//read checksum

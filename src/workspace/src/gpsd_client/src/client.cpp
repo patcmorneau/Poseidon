@@ -237,11 +237,11 @@ class GPSDClient {
           fix->status.status = 0; // NavSatStatus::STATUS_FIX;
           break;
 // STATUS_DGPS_FIX was removed in API version 6 but re-added afterward
-#if GPSD_API_MAJOR_VERSION != 6 
+//#if GPSD_API_MAJOR_VERSION != 6 
         case STATUS_DGPS_FIX:
           fix->status.status = 2; // NavSatStatus::STATUS_GBAS_FIX;
           break;
-#endif
+//#endif
       }
 
       fix->status.service = NavSatStatus::SERVICE_GPS;
