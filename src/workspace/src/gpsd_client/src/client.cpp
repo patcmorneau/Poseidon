@@ -228,6 +228,7 @@ class GPSDClient {
        * so we need to use the ROS message's integer values
        * for status.status
        */
+       std::cerr << p->status <<"\n";
       switch (p->status) {
         case STATUS_NO_FIX:
           fix->status.status = -1; // NavSatStatus::STATUS_NO_FIX;
