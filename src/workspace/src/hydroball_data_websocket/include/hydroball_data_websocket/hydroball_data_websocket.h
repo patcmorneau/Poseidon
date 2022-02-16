@@ -303,6 +303,7 @@ public:
     }
 
     void stateChanged(const state_controller_msg::State & state) {
+    	ROS_INFO_STREAM("data websocket statechanged");
         uint64_t timestamp = (state.stamp.sec * 1000000) + (state.stamp.nsec/1000);
         //TODO: maybe add our own header?
         if(timestamp - lastTimestamp > 200000){

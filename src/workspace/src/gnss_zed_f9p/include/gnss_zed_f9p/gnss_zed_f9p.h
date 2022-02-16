@@ -165,6 +165,7 @@ class ZEDF9P{
 		void gnssCallback(const sensor_msgs::NavSatFix& fix){
 			if(!bootstrappedGnssTime && fix.status.status >= 0){
 				bootstrappedGnssTime = true;
+				ROS_INFO_STREAM("gnsscallback zf9p, bootstrappedGnssTime = true");
 			}
 		}
 		bool validateChecksum(ubx_header *hdr, uint8_t *payload, ubx_checksum *checksum){
@@ -185,7 +186,7 @@ class ZEDF9P{
 			//TODO verify checksum
 			//TODO process , hdr
 			
-			//if(validateChecksum(hdr, payload, checksum)){
+			if(validateChecksum(hdr, payload, checksum)){
 				//UBX-NAV-PVT
 				if(hdr->msgClass == 0x01 && hdr->id ==0x07){
 					//extract ground speed and publish it
@@ -209,10 +210,10 @@ class ZEDF9P{
 				file.write((char*)hdr, sizeof(ubx_header));
 				file.write((char*)payload, hdr->length);
 				file.write((char*)checksum, sizeof(ubx_checksum));
-			//}validateChecksum
-			//else{
-				//ROS_ERROR("zf9p checksum error");
-			//}
+			}validateChecksum
+			else{
+				ROS_ERROR("zf9p checksum error");
+			}
 			
 		}
 		

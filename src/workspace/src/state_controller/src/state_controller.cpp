@@ -8,7 +8,7 @@ void StateController::gnssCallback(const sensor_msgs::NavSatFix& gnss){
 		state.position = gnss;
 		state.stamp=gnss.header.stamp;
 		stateMtx.unlock();
-		ROS_INFO_STREAM(state);
+		//ROS_INFO_STREAM(state);
 		StateController::stateUpdated();
 	}
 }
@@ -51,7 +51,7 @@ bool StateController::getStateService(state_controller_msg::GetStateService::Req
 void StateController::stateUpdated(){
 	//TODO: kalmanize? throttle?
 	stateMtx.lock();
-	ROS_INFO_STREAM(state);
+	//ROS_INFO_STREAM(state);
     stateTopic.publish(state);
 	stateMtx.unlock();
 }
