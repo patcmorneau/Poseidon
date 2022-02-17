@@ -312,7 +312,7 @@ public:
 			
 			bool isLogging = getRecordingStatus();
 			int loggingMode = getLoggingMode();
-			
+			/*
 			if(loggingMode == 1 && !isLogging){
 				//ROS_INFO_STREAM("data websocket statechanged");
 				logger_service::ToggleLogging toggle;
@@ -321,7 +321,7 @@ public:
 			}
 			isLogging = getRecordingStatus();
 			loggingMode = getLoggingMode();
-			//FIXME mutex seems to cause deadlock situations
+			*/
             std::lock_guard<std::mutex> lock(mtx);
             for (auto it : connections) {
                  srv.send(it,jsonString,websocketpp::frame::opcode::text);
