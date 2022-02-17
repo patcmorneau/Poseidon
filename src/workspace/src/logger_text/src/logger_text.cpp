@@ -229,8 +229,8 @@ bool Writer::getLoggingStatus(logger_service::GetLoggingStatus::Request & req,lo
 
 
 bool Writer::toggleLogging(logger_service::ToggleLogging::Request & request,logger_service::ToggleLogging::Response & response){
-	//std::thread::id thread_id = std::this_thread::get_id();
-	//ROS_WARN_STREAM("thread_id: "<<thread_id);
+	std::thread::id thread_id = std::this_thread::get_id();
+	ROS_WARN_STREAM("thread_id: "<<thread_id);
 
 	if(bootstrappedGnssTime){
 		mtx.lock();
@@ -251,6 +251,7 @@ bool Writer::toggleLogging(logger_service::ToggleLogging::Request & request,logg
 		//ROS_WARN_STREAM("unlocking thread_id: "<<thread_id);
 		return true;
 	}
+	ROS_INFO_STREAM("bootstrappedGnssTime : FALSE");
 	return false;
 }
 
