@@ -2,7 +2,7 @@
 
 void StateController::gnssCallback(const sensor_msgs::NavSatFix& gnss){
 
-	if( gnss.status.service >= 0) { 
+	if( gnss.status.status >= 0 || gnss.status.service >=0) { 
 
 		stateMtx.lock();
 		state.position = gnss;

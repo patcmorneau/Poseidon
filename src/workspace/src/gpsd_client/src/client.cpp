@@ -228,7 +228,6 @@ class GPSDClient {
        * so we need to use the ROS message's integer values
        * for status.status
        */
-       std::cerr << p->status <<"\n";
       switch (p->status) {
         case STATUS_NO_FIX:
           fix->status.status = -1; // NavSatStatus::STATUS_NO_FIX;
@@ -237,11 +236,11 @@ class GPSDClient {
           fix->status.status = 0; // NavSatStatus::STATUS_FIX;
           break;
 // STATUS_DGPS_FIX was removed in API version 6 but re-added afterward
-//#if GPSD_API_MAJOR_VERSION != 6 
+#if GPSD_API_MAJOR_VERSION != 6 
         case STATUS_DGPS_FIX:
           fix->status.status = 2; // NavSatStatus::STATUS_GBAS_FIX;
           break;
-//#endif
+#endif
       }
 
       fix->status.service = NavSatStatus::SERVICE_GPS;
@@ -265,7 +264,7 @@ class GPSDClient {
       fix->position_covariance_type = NavSatFix::COVARIANCE_TYPE_DIAGONAL_KNOWN;
 
       navsat_fix_pub.publish(fix);
-      ROS_INFO_STREAM("gpsd_client, fix status : " << fix->status.status);
+      //ROS_INFO_STREAM("gpsd_client, fix status : " << *fix);
     }
 };
 

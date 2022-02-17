@@ -314,6 +314,7 @@ public:
 			int loggingMode = getLoggingMode();
 			
 			if(loggingMode == 1 && !isLogging){
+				ROS_INFO_STREAM("data websocket statechanged");
 				logger_service::ToggleLogging toggle;
 				toggle.request.loggingEnabled = true;
 				toggleLoggingService.call(toggle);
@@ -324,7 +325,7 @@ public:
                  srv.send(it,jsonString,websocketpp::frame::opcode::text);
                  sendRecordingInfo(it,isLogging, loggingMode);
             }
-			ROS_INFO_STREAM("data websocket statechanged");
+			
             lastTimestamp = timestamp;
         }
     }

@@ -99,14 +99,15 @@ void Writer::finalize(){
 }
 
 void Writer::gnssCallback(const sensor_msgs::NavSatFix& gnss){
-	ROS_INFO_STREAM("logger text gnss callback, fix status : " << gnss.status.status);
+
 	if(!bootstrappedGnssTime && gnss.status.status >= 0){
 		bootstrappedGnssTime = true;
+		ROS_INFO_STREAM("logger text gnss callback, bootstrappedGnssTime = true ");
 		
 	}
 
 	if(bootstrappedGnssTime && loggerEnabled){
-
+		ROS_INFO_STREAM("logger text gnss callback, bootstrappedGnssTime = true && loggerEnabled ");
 		if(!gnssOutputFile){
 			init();
 		}
