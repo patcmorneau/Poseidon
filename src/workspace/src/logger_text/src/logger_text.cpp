@@ -102,12 +102,12 @@ void Writer::gnssCallback(const sensor_msgs::NavSatFix& gnss){
 
 	if(!bootstrappedGnssTime && gnss.status.status >= 0){
 		bootstrappedGnssTime = true;
-		ROS_INFO_STREAM("logger text gnss callback, bootstrappedGnssTime = true ");
+		//ROS_INFO_STREAM("logger text gnss callback, bootstrappedGnssTime = true ");
 		
 	}
 
 	if(bootstrappedGnssTime && loggerEnabled){
-		ROS_INFO_STREAM("logger text gnss callback, bootstrappedGnssTime = true && loggerEnabled ");
+		//ROS_INFO_STREAM("logger text gnss callback, bootstrappedGnssTime = true && loggerEnabled ");
 		if(!gnssOutputFile){
 			init();
 		}
@@ -251,7 +251,7 @@ bool Writer::toggleLogging(logger_service::ToggleLogging::Request & request,logg
 		//ROS_WARN_STREAM("unlocking thread_id: "<<thread_id);
 		return true;
 	}
-	ROS_INFO_STREAM("bootstrappedGnssTime : FALSE");
+	ROS_INFO_STREAM("bootstrappedGnssTime : FALSE -> cannot toggle logger");
 	return false;
 }
 

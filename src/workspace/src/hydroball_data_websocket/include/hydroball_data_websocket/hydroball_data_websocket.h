@@ -312,16 +312,18 @@ public:
 			
 			bool isLogging = getRecordingStatus();
 			int loggingMode = getLoggingMode();
-			/*
+			
 			if(loggingMode == 1 && !isLogging){
 				//ROS_INFO_STREAM("data websocket statechanged");
 				logger_service::ToggleLogging toggle;
 				toggle.request.loggingEnabled = true;
 				toggleLoggingService.call(toggle);
+				sleep(2);
+				isLogging = getRecordingStatus();
+				loggingMode = getLoggingMode();
 			}
-			isLogging = getRecordingStatus();
-			loggingMode = getLoggingMode();
-			*/
+
+			
             std::lock_guard<std::mutex> lock(mtx);
             for (auto it : connections) {
                  srv.send(it,jsonString,websocketpp::frame::opcode::text);

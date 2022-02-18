@@ -192,6 +192,7 @@ class ZEDF9P{
 				//UBX-NAV-PVT
 				if(hdr->msgClass == 0x01 && hdr->id ==0x07){
 					//extract ground speed and publish it
+					ROS_INFO("extracting UBX-NAV-PVT");
 					ubx_nav_pvt* pvt = (ubx_nav_pvt*) payload;
 
 					double speedKmh = (double) pvt->groundSpeed * (3.6/1000.0);
@@ -310,7 +311,7 @@ class ZEDF9P{
 													}
 												}
 												else{//read error
-													ROS_INFO("payload not read properly");
+													//ROS_INFO("payload not read properly");
 												}
 											}
 											else{//read error
