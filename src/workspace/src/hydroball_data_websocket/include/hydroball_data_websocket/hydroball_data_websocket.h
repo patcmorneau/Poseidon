@@ -35,6 +35,41 @@
 
 #include "../../utils/QuaternionUtils.h"
 
+#include <XmlRpcClient.h>
+#include <ros/xmlrpc_manager.h>
+
+int get_port(std::string uri)
+{
+  int port = 0;
+  bool pre_colon = false;
+  bool start_number = false;
+  for (int i = 0; i < uri.size(); i++)
+  {
+    if (uri[i] == ':')
+    {
+      pre_colon = true;
+    }
+    else
+    {
+      if (pre_colon || start_number)
+      {
+        if (uri[i] >= '0' && uri[i] <= '9')
+        {
+          start_number = true;
+          port = port * 10 + (uri[i] - '0');
+        }
+        else if (start_number)
+        {
+          break;
+        }
+      }
+      pre_colon = false;
+    }
+  }
+
+  return port;
+}
+
 
 typedef websocketpp::server<websocketpp::config::asio> server;
 using websocketpp::connection_hdl;
@@ -57,7 +92,7 @@ public:
     }
 
     void on_message(connection_hdl hdl, server::message_ptr msg) {
-	rapidjson::Document document;
+		rapidjson::Document document;
         if(document.Parse(msg->get_payload().c_str()).HasParseError()){
         	//Not valid JSON
         	ROS_ERROR("invalid json : %s",msg->get_payload().c_str() );
@@ -66,59 +101,79 @@ public:
 
         if(document.HasMember("command") && document["command"].IsString()){
         	//get command
-                std::string command = document["command"].GetString();
-								  //getLoggingStatus
-                if(command.compare("getLoggingInfo")==0){
-					bool isRecording = getRecordingStatus();
-					int loggingMode = getLoggingMode();
-                	sendRecordingInfo(hdl,isRecording, loggingMode);
-                }
-                else if(command.compare("startLogging")==0){
-					logger_service::ToggleLogging toggle;
+            std::string command = document["command"].GetString();
+							  //getLoggingStatus
+            if(command.compare("getLoggingInfo")==0){
+				bool isRecording = getRecordingStatus();
+				int loggingMode = getLoggingMode();
+            	sendRecordingInfo(hdl,isRecording, loggingMode);
+            }
+            else if(command.compare("startLogging")==0){
+				logger_service::ToggleLogging toggle;
 
-					toggle.request.loggingEnabled = true;
+				toggle.request.loggingEnabled = true;
 
-					if(toggleLoggingService.call(toggle)){
-						if(toggle.response.loggingStatus){
-                			int loggingMode = getLoggingMode();
-				        	sendRecordingInfo(hdl,true, loggingMode);
+				if(toggleLoggingService.call(toggle)){
+					if(toggle.response.loggingStatus){
+            			int loggingMode = getLoggingMode();
+			        	sendRecordingInfo(hdl,true, loggingMode);
+					}
+					else{
+						ROS_ERROR("Failed at enabling logging");
+					}
 				}
 				else{
-					ROS_ERROR("Failed at enabling logging");
+					ROS_ERROR("Error while calling ToggleLogging service");
 				}
-			}
-			else{
-				ROS_ERROR("Error while calling ToggleLogging service");
-			}
-               	}
-                else if(command.compare("stopLogging")==0){
-                        logger_service::ToggleLogging toggle;
+           	}
+            else if(command.compare("stopLogging")==0){
+                    logger_service::ToggleLogging toggle;
 
-                        toggle.request.loggingEnabled = false;
+                    toggle.request.loggingEnabled = false;
 
-                        if(toggleLoggingService.call(toggle)){
-                                if(!toggle.response.loggingStatus){
-                                        int loggingMode = getLoggingMode();
-										sendRecordingInfo(hdl,false, loggingMode);
-                                }
-                                else{
-                                        ROS_ERROR("Failed at disabling logging");
-                                }
-                        }
-                        else{
-                                ROS_ERROR("Error while calling ToggleLogging service");
-                        }
-                }
-                /*
-                else if(command.compare("setLoggingMode") == 0){
-                	std::cout<<"get wrecked ! \n";
-        		}
-        		*/
-        }	
-        else{
-        	//no command found. ignore
-                ROS_ERROR("No command found");
-        }
+                    if(toggleLoggingService.call(toggle)){
+                            if(!toggle.response.loggingStatus){
+                                    int loggingMode = getLoggingMode();
+									sendRecordingInfo(hdl,false, loggingMode);
+                            }
+                            else{
+                                    ROS_ERROR("Failed at disabling logging");
+                            }
+                    }
+                    else{
+                            ROS_ERROR("Error while calling ToggleLogging service");
+                    }
+            }
+            else if(command.compare("getNodes")==0){
+            	ros::V_string nodeVector;
+            	ros::master::getNodes(nodeVector);
+            	document.SetObject();
+				rapidjson::Value nodeList(rapidjson::kArrayType);
+				rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
+            	
+            	for(auto node: nodeVector){
+            		rapidjson::Value nodeName(rapidjson::kStringType);
+            		char buffer[node.size()];
+            		int len = sprintf(buffer, "%s", node.c_str());
+            		nodeName.SetString(buffer,len, document.GetAllocator());
+            		nodeList.PushBack(nodeName, allocator);
+            		
+            	}
+            	document.AddMember("nodeList", nodeList, document.GetAllocator());
+            	rapidjson::StringBuffer sb;
+				rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
+				document.Accept(writer);
+				std::string json = sb.GetString();
+				std::lock_guard<std::mutex> lock(mtx);
+				for (auto it : connections) {
+		        	srv.send(it,json.c_str(),websocketpp::frame::opcode::text);             
+		    	}
+    		}
+    	}	
+		else{
+			//no command found. ignore
+		        ROS_ERROR("No command found");
+		}
     }
 
     void on_open(connection_hdl hdl) {

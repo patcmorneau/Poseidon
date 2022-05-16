@@ -8,7 +8,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="Hydroball Control Panel">
-  <meta name="author" content="CIDCO">
+  <meta name="author" content="ubuntu" >
 
   <title>Hydroball - Dashboard</title>
 
@@ -301,7 +301,6 @@
             <!-- Depth Card --> 
             <div class="col-lg-8 mb-4">
               <div class="card shadow mb-4">
-
                 <div class="card-header py-3" >
                   <h6 class="m-0 font-weight-bold text-primary">Depth</h6>
                 </div>
@@ -310,7 +309,7 @@
                   <div class="chart-area">
                     <div id="depthChartContainer">
                       <canvas id="depthChart"></canvas>
-			<br style="clear:both"/>
+					  <br style="clear:both"/>
                     </div>
                   </div>
                 </div>
@@ -343,20 +342,37 @@
 
                 </div>
               </div>
-            </div>            
+            </div>          
 
           
+
+            <!-- nodes Card --> 
+            <div class="col-lg-8 mb-4">
+              <div class="card shadow mb-4">
+
+                <div class="card-header py-3" >
+                  <h6 class="m-0 font-weight-bold text-primary">Ros nodes</h6>
+                </div>
+
+                <div class="card-body">                 
+                <div id="nodeContainer">
+				<br style="clear:both"/>
+                </div>
+                </div>
+			  </div>
+            </div>
+		 </div>
+         
+		
  
 
-          </div>
+          </div><!-- /.container-fluid -->
 
-        </div>
-        </div>
-        </div>
-        <!-- /.container-fluid -->
-
-      </div>
-      <!-- End of Main Content -->
+        
+        
+		
+      </div><!-- End of Main Content -->
+      
 
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
@@ -368,8 +384,8 @@
       </footer>
       <!-- End of Footer -->
 
-    </div>
-    <!-- End of Content Wrapper -->
+    </div><!-- End of Content Wrapper -->
+    
 
   </div>
   <!-- End of Page Wrapper -->
@@ -509,6 +525,9 @@ $( document ).ready(function() {
         		var mode = msg.loggingMode.the_mode_is;
         		processRecordingInfo(isLogging, mode);
         	}
+        	else if(msg.nodeList){
+        		processNodeStatus(msg.nodeList);
+        	}
         	
   	};
 
@@ -516,6 +535,8 @@ $( document ).ready(function() {
 		hideOverlay();
 		//init display
         getLoggingInfo();
+        //list running nodes
+        getRunningNodes();
 	};
 
 	socket.onerror = function(){
@@ -536,7 +557,19 @@ $( document ).ready(function() {
     function hideOverlay(){
         document.getElementById("overlay").style.display = "none";
     }
-
+	
+	function processNodeStatus(nodeList){
+		var list = document.getElementById('nodeContainer');
+		list.innerHTML='';
+		var newHTML='';
+		for( x in nodeList){
+			newHTML += nodeList[x] + "<br>";
+			//console.log(nodeList[x])
+		}
+		//console.log(list);
+		list.innerHTML = newHTML;
+	}
+	
     function processTelemetry(state){
        
 	// Update dashboard top marquees  
@@ -608,16 +641,7 @@ $( document ).ready(function() {
 	headingGauge.value = (state.attitude[0]);
 			
   }
-  /*
-  function setLoggingMode(){
-  	//var cmd = {command : "setLoggingMode"};
-	//socket.send(JSON.stringify(cmd));
-  }
-  function getLoggingMode(){
-  	var cmd = {command : "getLoggingMode"};
-	socket.send(JSON.stringify(cmd));
-  }
-  */
+
   function getLoggingInfo(){
   	var cmd = {command : "getLoggingInfo"};
 	socket.send(JSON.stringify(cmd));
@@ -629,8 +653,8 @@ $( document ).ready(function() {
   }
   */
   function processRecordingInfo(isLogging, mode){
-	console.log(isLogging);
-	console.log(mode);
+	//console.log(isLogging);
+	//console.log(mode);
   	if(mode == "1"){
   		hideLoggingButton();
   		$("#modeWidget").text("always ON");
@@ -677,7 +701,12 @@ $( document ).ready(function() {
 
   function stopRecording(){
 	var cmd = { command : "stopLogging"};
-        socket.send(JSON.stringify(cmd));
+	socket.send(JSON.stringify(cmd));
+  }
+  
+  function getRunningNodes(){
+  	var cmd = {command : "getNodes"};
+  	socket.send(JSON.stringify(cmd));
   }
 
   function showRecording(){ 

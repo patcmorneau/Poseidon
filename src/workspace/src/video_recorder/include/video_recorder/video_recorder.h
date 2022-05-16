@@ -128,7 +128,7 @@ class VideoProcessor{
     		
     		
     	};
-		
+		/*
 		void speedCallback(const nav_msgs::Odometry& speed){
 			ROS_ERROR_STREAM("video_recorder speed callBack");
 			double current_speed = speed.twist.twist.linear.y; // kmh
@@ -142,14 +142,14 @@ class VideoProcessor{
 			}
 			
 		}
-	
+		*/
 	private:
 		std::string outputFolder;
 		const std::string tempFolder = "/home/ubuntu/temp/";
 		unsigned int count = 0;
 		cv::VideoCapture cap;
 		std::list<std::vector<double>> coord2Interpolate;
-		std::list<double> speedList; //kmh
+		//std::list<double> speedList; //kmh
 	
 };
 
