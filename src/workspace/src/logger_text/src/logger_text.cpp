@@ -253,7 +253,7 @@ void Writer::imuCallback(const sensor_msgs::Imu& imu){
 }
 
 void Writer::speedCallback(const nav_msgs::Odometry& speed){
-	ROS_DEBUG_STREAM("logger speedCallback");
+
 	logger_service::GetLoggingMode::Request modeReq;
 	logger_service::GetLoggingMode::Response modeRes;
 	getLoggingMode(modeReq,modeRes);
@@ -267,11 +267,10 @@ void Writer::speedCallback(const nav_msgs::Odometry& speed){
 		ROS_ERROR_STREAM("invalid speed threshold, defaulting to "<<speed<<" Kmh");
 	}
 
-	double current_speed = speed.twist.twist.linear.y;
-	ROS_DEBUG_STREAM("current speed : " << current_speed);
+	double current_speed = speed.twist.twist.linear.y; // kmh
 
 	// wait two mins before calculating the average speed
-	// TODO: this assumes 1 speed measrement per second (VTG, binary, etc). this may be false with some GNSS devices
+	// XXX: this assumes 1 speed measurement per second (VTG, binary, etc). this may be false with some GNSS devices
 	if (kmh_Speed_list.size() < 120){
 		kmh_Speed_list.push_back(current_speed);
 	}
