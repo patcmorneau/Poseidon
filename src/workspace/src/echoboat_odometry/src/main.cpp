@@ -3,9 +3,14 @@
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/NavSatFix.h>
 #include <sensor_msgs/Imu.h>
-#include <sensor_msgs/PointCloud2.h>
+#include "sensor_msgs/PointCloud2.h"
+#include "sensor_msgs/point_cloud_conversion.h"
+#include "sensor_msgs/PointCloud.h"
 #include <geometry_msgs/PointStamped.h>
 #include <Eigen/Dense>
+#include "tf/tf.h"
+#include "tf/transform_datatypes.h"
+#include <costmap_2d/costmap_2d_ros.h> // sudo apt install ros-noetic-costmap-2d
 
 //TODO: this might be better off in a util class / module
 
@@ -39,11 +44,11 @@ public:
 
 	depthRepublisher = n.advertise<geometry_msgs::PointStamped>("depth_ned",50);
 
-	gpsSubscriber = n.subscribe("fix", 50, &GeoreferenceProvider::processGpsCallback,this);
+	gpsSubscriber = n.subscribe("fix", 100, &GeoreferenceProvider::processGpsCallback,this);
 	//attitudeSubscriber = n.subscribe("/imu/pos_ecef", 50, &GeoreferenceProvider::processPositionCallback,this);
-	attitudeSubscriber = n.subscribe("/imu/data", 50, &GeoreferenceProvider::processAttitudeCallback,this);
-	lidarSubscriber = n.subscribe("/velodyne_points",100,&GeoreferenceProvider::processLidarCallback,this);
-	depthSubscriber = n.subscribe("/depth",100,&GeoreferenceProvider::processDepthCallback,this);
+	attitudeSubscriber = n.subscribe("/imu/data", 1000, &GeoreferenceProvider::processAttitudeCallback,this);
+	lidarSubscriber = n.subscribe("/velodyne_points",1000,&GeoreferenceProvider::processLidarCallback,this);
+	depthSubscriber = n.subscribe("/depth",1000,&GeoreferenceProvider::processDepthCallback,this);
 
 	}
 
@@ -84,7 +89,35 @@ public:
 	}
 
 	void processLidarCallback(const sensor_msgs::PointCloud2 & msg){
-		//std::cout << "Got lidar data" << std::endl;
+		if(!lidarOutputFile){
+			lidarOutputFile = fopen(lidarFileName.c_str(),"a");
+		}
+		
+		sensor_msgs::PointCloud lidarXYZ;
+		sensor_msgs::convertPointCloud2ToPointCloud(msg, lidarXYZ);
+		std::vector<geometry_msgs::Point32> points = lidarXYZ.points;
+		
+		ros::Time target_time;
+		tf::Stamped<tf::Point> pointLidarFrame;
+		tf::Stamped<tf::Point> pointMapFrame;
+		const std::string target_frame = "map";
+		const std::string fixed_frame = "velodyne";
+		tf::Transformer transformer;
+		
+		
+		for(auto const& point32 : points){
+			geometry_msgs::Point point = costmap_2d::toPoint(point32); // convert geometry_msgs::Point32 to geometry_msgs::Point
+			pointMsgToTF(point, pointLidarFrame); // convert geometry_msgs::Point to tf::Point
+			try{
+				transformer.transformPoint(target_frame, target_time, pointLidarFrame, fixed_frame, pointMapFrame);
+			}
+			catch(tf::TransformException e){
+				ROS_ERROR("%s",e.what());
+			}
+    		fprintf(lidarOutputFile,"%f %f %f%s", pointMapFrame[0], pointMapFrame[1], pointMapFrame[2], ";");
+    	}
+    	fprintf(lidarOutputFile,"\n");
+		
 	}
 
 	void processDepthCallback(const geometry_msgs::PointStamped & msg){
@@ -159,6 +192,9 @@ public:
 			ros::spinOnce();
 			r.sleep();
 		}
+		if(lidarOutputFile){
+			fclose(lidarOutputFile);
+		}
 	}
 
 private:
@@ -194,6 +230,10 @@ private:
 	double latitudeLocalOrigin;
 	double longitudeLocalOrigin;
 	double altitudeLocalOrigin;
+	
+	std::string lidarFileName = "/home/ubuntu/Poseidon/www/webroot/record/lidarTransformed.txt";
+	FILE * lidarOutputFile = NULL;
+	
 };
 
 int main(int argc, char** argv){

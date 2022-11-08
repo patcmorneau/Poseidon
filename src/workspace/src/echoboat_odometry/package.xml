@@ -66,6 +66,7 @@
   <exec_depend>tf2</exec_depend>
   <exec_depend>nav_msgs</exec_depend>
   <exec_depend>sbg_driver</exec_depend>
+  <build_depend>tf</build_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

@@ -15,6 +15,8 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   sbg_driver
+  tf
+  costmap_2d
 )
 
 find_package(Eigen3 REQUIRED)
