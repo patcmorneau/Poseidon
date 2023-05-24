@@ -1,8 +1,8 @@
 apiKey SECRET
-apiUrlPath /
 apiServer localhost
+apiUrlPath /
 headingOffset 0
-logRotationIntervalSeconds 3600
+logRotationIntervalSeconds 30
 loggingMode 1
 pitchOffset 0
 rollOffset 0

@@ -7,8 +7,48 @@
 #include <unistd.h>
 #include <SbetProcessor.hpp>
 #include <filesystem>
+#include <vector>
+
+bool multi_angle_filtering(double &x, double &y, double &z, std::vector<std::pair<double,double>> *angles, double &minDistance, double &maxDistance){
+	// returns true to exclude point
+	
+	bool isExcludedPoint = false;
+	
+	for(auto &pair: *angles){
+
+		isExcludedPoint = Filters::horizontalAngleFilter(x, y, pair.first, pair.second);
+		if(isExcludedPoint){
+			return isExcludedPoint;
+		}
+	}
+
+	if(Filters::distanceFilter(x, y, z, minDistance, maxDistance))
+	{
+		return isExcludedPoint;
+	}
+	else{
+		return isExcludedPoint;
+	}
+}
 
 class PoseidonBinaryLidarGeoref : public PoseidonBinaryReader, public SbetProcessor{
+	private:
+		
+		std::vector<std::pair<PacketHeader, PositionPacket>> positions;
+		std::vector<std::pair<PacketHeader, AttitudePacket>> attitudes;
+		std::vector<std::pair<PacketHeader, LidarPacket>>  laserPoints;
+		Eigen::Vector3d leverArm;
+		Eigen::Matrix3d boresight;
+		//double minAngle = 0.0;
+		//double maxAngle = 0.0;
+		std::vector<std::pair<double, double>> *angles;
+		
+		double minDistance = 0.0;
+		double maxDistance = 0.0;
+		bool activatedFilter = false;
+		std::string sbetFilePath="";
+
+
 	public:
 		PoseidonBinaryLidarGeoref(std::string & filePath, Eigen::Vector3d &leverArm, Eigen::Matrix3d &boresight, std::string sbetFilePath) : PoseidonBinaryReader(filePath), 
 																													leverArm(leverArm), boresight(boresight), sbetFilePath(sbetFilePath){}
@@ -78,10 +118,9 @@ class PoseidonBinaryLidarGeoref : public PoseidonBinaryReader, public SbetProces
 			return laserPoints;
 		}
 		
-		void setFilter(double &minAngle, double &maxAngle, double &minDistance, double &maxDistance){
+		void setFilter(std::vector<std::pair<double, double>> &angles, double &minDistance, double &maxDistance){
 			this->activatedFilter = true;
-			this->minAngle = minAngle;
-			this->maxAngle = maxAngle;
+			this->angles = &angles;
 			this->minDistance = minDistance;
 			this->maxDistance = maxDistance;
 		}
@@ -139,11 +178,7 @@ class PoseidonBinaryLidarGeoref : public PoseidonBinaryReader, public SbetProces
 					
 					uint64_t nbMicroSecondsPerWeek = 604800000000; // microseconds per week
 					
-					//std::cerr<<"micro sec per week : " << nbMicroSecondsPerWeek <<"\n";
-					
 					uint64_t nbWeek = laserPointTimestamp / nbMicroSecondsPerWeek; //nb week unix time
-					
-					//std::cerr<<"nb week : " << nbWeek << "\n";
 					
 					uint64_t startOfWeek = (nbMicroSecondsPerWeek * nbWeek) + (nbMicroSecondsPerWeek - offset); // micro sec from unix time to start of week
 					
@@ -189,14 +224,12 @@ class PoseidonBinaryLidarGeoref : public PoseidonBinaryReader, public SbetProces
         		if(this->activatedFilter){
         		
         			LidarPacket point = std::get<LidarPacket>(*i);
-        			
-		    		if(Filters::distanceFilter(point.laser_x, point.laser_y, point.laser_z, this->minDistance, this->maxDistance) ||
-					   Filters::horizontalAngleFilter(point.laser_x, point.laser_y, this->minAngle, this->maxAngle))
-					{
-		    			continue;
-		    		}
+					
+					if(Filters::exclude_point(point.laser_x, point.laser_y, point.laser_z, this->angles,this->minDistance, this->maxDistance, multi_angle_filtering)){
+						//std::cerr<<"exculded \n";
+						continue;
+					}	
         		}
-        		
         		
         		while (attitudeIndex + 1 < attitudes.size() && 
 						std::get<PacketHeader>(attitudes[attitudeIndex + 1]).packetTimestamp < std::get<PacketHeader>(*i).packetTimestamp) 
@@ -271,23 +304,9 @@ class PoseidonBinaryLidarGeoref : public PoseidonBinaryReader, public SbetProces
 	
 			return header1.packetTimestamp < header2.packetTimestamp;
 		}
-		
-		
-	private:
-		
-		std::vector<std::pair<PacketHeader, PositionPacket>> positions;
-		std::vector<std::pair<PacketHeader, AttitudePacket>> attitudes;
-		std::vector<std::pair<PacketHeader, LidarPacket>>  laserPoints;
-		Eigen::Vector3d leverArm;
-		Eigen::Matrix3d boresight;
-		double minAngle = 0.0;
-		double maxAngle = 0.0;
-		double minDistance = 0.0;
-		double maxDistance = 0.0;
-		bool activatedFilter = false;
-		std::string sbetFilePath="";
-
 };
+
+
 
 void printUsage(){
 	std::cerr << "\n\
@@ -297,8 +316,7 @@ SYNOPSIS\n \
 	georeference [-x lever_arm_x] [-y lever_arm_y] [-z lever_arm_z] [-r roll_angle] [-p pitch_angle] [-h heading_angle] [-s sbet_file] file\n\n\
 DESCRIPTION\n \
 	-f Activate lidar filtering\n \
-	-a Minimum angle\n \
-	-b Maximum angle\n \
+	-a Minimum_angle Maximum_angle\n \
 	-d Minimum distance\n \
 	-e Maximum distance\n \
 Copyright 2017-2023 © Centre Interdisciplinaire de développement en Cartographie des Océans (CIDCO), Tous droits réservés" << std::endl;
@@ -325,8 +343,7 @@ int main(int argc,char** argv){
 		double heading  = 0.0;
 		
 		bool activateFilter = false;
-		double minAngle = 0.0;
-		double maxAngle = 0.0;
+		std::vector<std::pair<double, double>> angles;
 		double minDistance = 0.0;
 		double maxDistance = 0.0;
 		
@@ -383,17 +400,24 @@ int main(int argc,char** argv){
 				break;
 				
 				case 'a':
-				if (sscanf(optarg,"%lf", &minAngle) != 1){
-					std::cerr << "Invalid minimum angle (-a)" << std::endl;
+				try{
+					double minAngle = std::stod(optarg);
+					double maxAngle = std::stod(argv[optind]);
+					
+					if(minAngle >= maxAngle){
+						std::cerr<<"Angles are equal or inversed" << std::endl;
+						printUsage();
+					}
+					
+					std::pair anglePair = std::make_pair(minAngle, maxAngle);
+					angles.push_back(anglePair);
+					
+				}
+				catch(std::exception &err){
+					std::cerr<< err.what() << std::endl;
 					printUsage();
 				}
-				break;
-				
-				case 'b':
-				if (sscanf(optarg,"%lf", &maxAngle) != 1){
-					std::cerr << "Invalid maximum angle (-b)" << std::endl;
-					printUsage();
-				}
+				optind+=1;
 				break;
 				
 				case 'd':
@@ -443,7 +467,7 @@ int main(int argc,char** argv){
 	PoseidonBinaryLidarGeoref georeferencer(fileName, leverArm, boresightMatrix, sbetFilePath);
 	
 	if(activateFilter){
-		georeferencer.setFilter(minAngle, maxAngle, minDistance, maxDistance);
+		georeferencer.setFilter(angles, minDistance, maxDistance);
 	}
 	
 	georeferencer.read();

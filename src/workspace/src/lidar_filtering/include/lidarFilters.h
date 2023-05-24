@@ -6,8 +6,6 @@
 #include "sensor_msgs/point_cloud_conversion.h"
 #include "sensor_msgs/PointCloud.h"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.h"
-
-
 #define LPI 3.14159265; //local PI
 
 class Filters{
@@ -42,22 +40,14 @@ class Filters{
 			}
 			
 		}
-		/*
-		// elevation angle in degrees
-		static bool azimutFilter(double x, double z, double minAngle, double maxAngle){
 		
-			double azimut = atan2(z, x) * 180 / LPI;
-			
-			//std::cerr<< azimut << " " << point.laser_z << " " << point.laser_x << std::endl;
-			
-			if(azimut < minAngle || azimut > maxAngle){
-				return true;
-			}
-			else{
-				return false;
-			}
-		}
-		*/
+		
+		template <typename Filtering_function>
+       static bool exclude_point(double &x, double &y, double &z, std::vector<std::pair<double,double>> *angles, double &minDistance, double &maxDistance, Filtering_function customFunction){
+            return customFunction(x, y, z, angles, minDistance, maxDistance);
+        }
+
+
 };
 
 

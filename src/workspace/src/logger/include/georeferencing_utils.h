@@ -1,7 +1,6 @@
 #include "types.h"
 #include <cmath>
 #include <Eigen/Dense>
-
 #include "lidarFilters.h"
 
 #define PI M_PI
@@ -42,9 +41,9 @@ namespace Interpolator{
 		}
 
 		if (std::abs(a2 - a1)==180){
-			std::stringstream ss;        
-			ss << "The angles " << a1 << " and " << a2
-			<< " have a difference of 180 degrees which means there are two possible answers at timestamp " << targetTimestamp;
+			//std::stringstream ss;        
+			//ss << "The angles " << a1 << " and " << a2
+			//<< " have a difference of 180 degrees which means there are two possible answers at timestamp " << targetTimestamp;
 			//throw new Exception(ss.str());
 			
 		}
