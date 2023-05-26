@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(logger)
 
 add_definitions(-std=c++17 -Wall -g)
@@ -14,6 +14,7 @@ tf2_geometry_msgs
 binary_stream_msg)
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 find_package( Threads )
+find_package(PCL 1.3 REQUIRED)
 
 catkin_package(
   INCLUDE_DIRS include
@@ -32,26 +33,32 @@ include_directories(
  include
  ${catkin_INCLUDE_DIRS}
  ../lidar_filtering/include
+ ${PCL_INCLUDE_DIRS}
 )
 
-## Declare a C++ library 
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
+
+## Compile C++ libraries
 add_library(${PROJECT_NAME} src/loggerBase.cpp 
 							src/loggerText.cpp 
 							src/loggerBinary.cpp)
 
 add_library(sbet_decoder src/SbetProcessor.cpp)
 
-# executables
+# Executables
 add_executable(logger_text_node nodes/logger_text_node.cpp)
 add_executable(logger_binary_node nodes/logger_binary_node.cpp)
 add_executable(poseidonReader src/poseidon_reader.cpp)
 add_executable(lidarGeoreferencer src/georefLog.cpp)
+add_executable(pointCloud_analysis src/pointCloud_analysis.cpp)
 
-## Specify libraries to link a library or executable target against
+## Link libraries to tarets
 target_link_libraries(logger_text_node ${catkin_LIBRARIES} ${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(logger_binary_node ${catkin_LIBRARIES} ${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(lidarGeoreferencer Eigen3::Eigen sbet_decoder)
+target_link_libraries(pointCloud_analysis sbet_decoder ${PCL_LIBRARIES})
 
 
 #############
