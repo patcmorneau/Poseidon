@@ -234,7 +234,7 @@ socket.onopen = function( event ){
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">System Settings</h1>
+            <h1 class="h3 mb-0 text-gray-800">System Settings <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendcfg">Save Configuration</button></h1>
           </div>
 
 
@@ -267,134 +267,136 @@ socket.onopen = function( event ){
 
           </div>
 
-          <!-- DataTable -->
-  <div class="card shadow mb-4">
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Api</h6>
-    </div>
-    <div class="card-body">
-      <form>
-        <div id="">
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="apiKey">apiKey</label> 
-            <div class="col-lg-10"> <input id="apiKey" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="apiServer">apiServer</label> 
-            <div class="col-lg-10"> <input id="apiServer" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="apiUrlPath">apiUrlPath</label> 
-            <div class="col-lg-10"> <input id="apiUrlPath" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
+  <!-- DataTable -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="card shadow m-4">
+        <div class="card-header">
+          <h6 class="m-0 font-weight-bold text-primary">Api</h6>
         </div>
-      </form> 
-    </div>
-  </div>
-  <div class="card shadow mb-4">
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Offset</h6>
-    </div>
-    <div class="card-body">
-      <form>
-        <div id="">
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="headingOffset">headingOffset</label> 
-            <div class="col-lg-10"> <input id="headingOffset" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="pitchOffset">pitchOffset</label> 
-            <div class="col-lg-10"> <input id="pitchOffset" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="rollOffset">rollOffset</label> 
-            <div class="col-lg-10"> <input id="rollOffset" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
-        </div>
-      </form> 
-    </div>
-  </div>
-  <div class="card shadow mb-4">
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Sonar</h6>
-    </div>
-    <div class="card-body">
-      <form>
-        <div id="">
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="sonarAbsorbtion">sonarAbsorbtion</label> 
-            <div class="col-lg-10"> <input id="sonarAbsorbtion" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="sonarPulseLength">sonarPulseLength</label> 
-            <div class="col-lg-10"> <input id="sonarPulseLength" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="sonarRange">sonarRange</label> 
-            <div class="col-lg-10"> <input id="sonarRange" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="sonarStartGain">sonarStartGain</label> 
-            <div class="col-lg-10"> <input id="sonarStartGain" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
-        </div>
-      </form> 
-    </div>
-  </div>
-  <div class="card shadow mb-4">
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Wifi</h6>
-    </div>
-    <div class="card-body">
-      <form>
-        <div id="">
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="wifiPassword">wifiPassword</label> 
-            <div class="col-lg-10"> <input id="wifiPassword" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="wifiSSID">wifiSSID</label> 
-            <div class="col-lg-10"> <input id="wifiSSID" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="wifiTransferEnabled">wifiTransferEnabled</label> 
-            <div class="col-lg-10"> <input id="wifiTransferEnabled" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
-        </div>
-      </form> 
-    </div>
-  </div>
-  <div class="card shadow mb-4">
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Random</h6>
-    </div>
-    <div class="card-body">
-      <form>
-        <div id="">
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="logRotationIntervalSeconds">logRotationIntervalSeconds</label> 
-            <div class="col-lg-10"> <input id="logRotationIntervalSeconds" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="speedThresholdKmh">speedThresholdKmh</label> 
-            <div class="col-lg-10"> <input id="speedThresholdKmh" class="form-control text-right configurationField" type="text" value=""/> </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-lg-2 col-form-label" for="loggingMode">loggingMode</label>
-            <div class="col-lg-10">
-              <select id="loggingMode" name="logginModeSelector" class="dropdownright configurationField">
-                <option value="1">always</option>
-                <option value="2">manual</option>
-                <option value="3">speed based</option>
-              </select>
+        <div class="card-body">
+          <form>
+            <div id="">
+              <div class="form-group row"> 
+                <label class="" for="apiKey">Key</label> 
+                <input id="apiKey" class="form-control text-right configurationField" type="text" value=""/>
+              </div>
+              <div class="form-group row"> 
+                <label class="form-label" for="apiServer">Server</label> 
+                <input id="apiServer" class="form-control text-right configurationField" type="text" value=""/>
+              </div>
+              <div class="form-group row"> 
+                <label class="form-label" for="apiUrlPath">Url Path</label> 
+                <input id="apiUrlPath" class="form-control text-right configurationField" type="text" value=""/>
+              </div>
             </div>
-          </div>
+          </form> 
         </div>
-      </form> 
-      <br/>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendcfg">Save Configuration</button>
+      </div>
+      <div class="card shadow m-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Offset</h6>
+        </div>
+        <div class="card-body">
+          <form>
+            <div id="">
+              <div class="form-group row"> 
+                <label class="form-label" for="headingOffset">Heading</label> 
+                <input id="headingOffset" class="form-control text-right configurationField" type="text" value=""/>
+              </div>
+              <div class="form-group row"> 
+                <label class="form-label" for="pitchOffset">Pitch</label> 
+                <input id="pitchOffset" class="form-control text-right configurationField" type="text" value=""/>
+              </div>
+              <div class="form-group row"> 
+                <label class="form-label" for="rollOffset">Roll</label> 
+                <input id="rollOffset" class="form-control text-right configurationField" type="text" value=""/>
+              </div>
+            </div>
+          </form> 
+        </div>
+      </div>
+      <div class="card shadow m-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Sonar</h6>
+        </div>
+        <div class="card-body">
+          <form>
+            <div id="">
+              <div class="form-group row"> 
+                <label class="form-label" for="sonarAbsorbtion">Absorbtion</label> 
+                <input id="sonarAbsorbtion" class="form-control text-right configurationField" type="text" value=""/>
+              </div>
+              <div class="form-group row"> 
+                <label class="form-label" for="sonarPulseLength">Pulse Length</label> 
+                <input id="sonarPulseLength" class="form-control text-right configurationField" type="text" value=""/>
+              </div>
+              <div class="form-group row"> 
+                <label class="form-label" for="sonarRange">Range</label> 
+                <input id="sonarRange" class="form-control text-right configurationField" type="text" value=""/>
+              </div><div class="container"></div>
+              <div class="form-group row"> 
+                <label class="form-label" for="sonarStartGain">Start Gain</label> 
+                <input id="sonarStartGain" class="form-control text-right configurationField" type="text" value=""/>
+              </div>
+            </div>
+          </form> 
+        </div>
+      </div>
+      <div class="card shadow m-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Wifi</h6>
+        </div>
+        <div class="card-body">
+          <form>
+            <div id="">
+              <div class="form-group row"> 
+                <label class="form-label" for="wifiPassword">Password</label> 
+                <input id="wifiPassword" class="form-control text-right configurationField" type="text" value=""/> 
+              </div>
+              <div class="form-group row"> 
+                <label class="form-label" for="wifiSSID">SSID</label> 
+                <input id="wifiSSID" class="form-control text-right configurationField" type="text" value=""/>
+              </div>
+              <div class="form-group row"> 
+                <label class="form-label" for="wifiTransferEnabled">Enabled</label> 
+                <input id="wifiTransferEnabled" class="form-control text-right configurationField" type="text" value=""/> 
+              </div>
+            </div>
+          </form> 
+        </div>
+      </div>
+      <div class="card shadow m-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Random</h6>
+        </div>
+        <div class="card-body">
+          <form>
+            <div id="">
+              <div class="form-group row"> 
+                <label class="form-label" for="logRotationIntervalSeconds">Log Rotation Interval (s)</label> 
+                <input id="logRotationIntervalSeconds" class="form-control text-right configurationField" type="text" value=""/> 
+              </div>
+              <div class="form-group row"> 
+                <label class="form-label" for="speedThresholdKmh">Speed Threshold (Kmh)</label> 
+                <input id="speedThresholdKmh" class="form-control text-right configurationField" type="text" value=""/> 
+              </div>
+              <div class="form-group row">
+                <label class="form-label" for="loggingMode">Logging Mode</label>
+                <select id="loggingMode" name="logginModeSelector" class="form-control dropdownright configurationField">
+                  <option value="1">always</option>
+                  <option value="2">manual</option>
+                  <option value="3">speed based</option>
+                </select>
+              </div>
+            </div>
+          </form> 
+          <br/>
+        </div>
+      </div>
     </div>
   </div>
+  
 
         </div>
         <!-- /.container-fluid -->
