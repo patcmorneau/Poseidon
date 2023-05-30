@@ -20,7 +20,7 @@
 
 var socket;
 
-function processConfig(config){
+/* function processConfig(config){
 	var form = document.getElementById('formContent');
 
 	form.innerHTML='';
@@ -55,6 +55,41 @@ function processConfig(config){
 	});
 	newHTML += endNewHTML;
 	form.innerHTML = newHTML;
+} */
+
+function processConfig(config){
+	/* var form = document.getElementById('formContent');
+
+	form.innerHTML='';
+	var newHTML='';
+	var endNewHTML=''; */
+
+	config.forEach(function (item, index) {
+  if (item.key == "loggingMode") {
+    const selected = document.getElementById('loggingMode');
+    var mode = Number(item.value);
+    switch (mode) {
+      case 1:
+        selected.value = selected.querySelector('option[value="1"]').value;
+        break;
+      case 2:
+        selected.value = selected.querySelector('option[value="2"]').value;
+        break;
+      case 3:
+        selected.value = selected.querySelector('option[value="3"]').value;
+        break;
+      default:
+        alert("Erreur! Logging mode read from the configuration file is: " + mode);
+        selected.value = selected.querySelector('option[value="1"]').value;
+        break;
+    }
+  } else {
+    var element = document.getElementById(item.key);
+    element.value = item.value;
+  }
+});
+	/* newHTML += endNewHTML;
+	form.innerHTML = newHTML; */
 }
 
 function processMessage(msg){
@@ -93,7 +128,6 @@ function getConfig(){
 //******************************
 // Main
 //******************************
-      
 socket = new WebSocket("ws://" + window.location.hostname +":9004");
 
 socket.onmessage = function (event) {
@@ -243,15 +277,15 @@ socket.onopen = function( event ){
         <div id="">
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="apiKey">apiKey</label> 
-            <div class="col-lg-10"> <input id="apiKey" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="apiKey" class="form-control text-right configurationField" type="text" value=""/> </div>
           </div>
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="apiServer">apiServer</label> 
-            <div class="col-lg-10"> <input id="apiServer" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="apiServer" class="form-control text-right configurationField" type="text" value=""/> </div>
           </div>
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="apiUrlPath">apiUrlPath</label> 
-            <div class="col-lg-10"> <input id="apiUrlPath" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="apiUrlPath" class="form-control text-right configurationField" type="text" value=""/> </div>
           </div>
         </div>
       </form> 
@@ -266,15 +300,15 @@ socket.onopen = function( event ){
         <div id="">
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="headingOffset">headingOffset</label> 
-            <div class="col-lg-10"> <input id="headingOffset" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="headingOffset" class="form-control text-right configurationField" type="text" value=""/> </div>
           </div>
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="pitchOffset">pitchOffset</label> 
-            <div class="col-lg-10"> <input id="pitchOffset" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="pitchOffset" class="form-control text-right configurationField" type="text" value=""/> </div>
           </div>
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="rollOffset">rollOffset</label> 
-            <div class="col-lg-10"> <input id="rollOffset" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="rollOffset" class="form-control text-right configurationField" type="text" value=""/> </div>
           </div>
         </div>
       </form> 
@@ -289,19 +323,19 @@ socket.onopen = function( event ){
         <div id="">
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="sonarAbsorbtion">sonarAbsorbtion</label> 
-            <div class="col-lg-10"> <input id="sonarAbsorbtion" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="sonarAbsorbtion" class="form-control text-right configurationField" type="text" value=""/> </div>
           </div>
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="sonarPulseLength">sonarPulseLength</label> 
-            <div class="col-lg-10"> <input id="sonarPulseLength" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="sonarPulseLength" class="form-control text-right configurationField" type="text" value=""/> </div>
           </div>
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="sonarRange">sonarRange</label> 
-            <div class="col-lg-10"> <input id="sonarRange" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="sonarRange" class="form-control text-right configurationField" type="text" value=""/> </div>
           </div>
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="sonarStartGain">sonarStartGain</label> 
-            <div class="col-lg-10"> <input id="sonarStartGain" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="sonarStartGain" class="form-control text-right configurationField" type="text" value=""/> </div>
           </div>
         </div>
       </form> 
@@ -316,15 +350,15 @@ socket.onopen = function( event ){
         <div id="">
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="wifiPassword">wifiPassword</label> 
-            <div class="col-lg-10"> <input id="wifiPassword" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="wifiPassword" class="form-control text-right configurationField" type="text" value=""/> </div>
           </div>
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="wifiSSID">wifiSSID</label> 
-            <div class="col-lg-10"> <input id="wifiSSID" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="wifiSSID" class="form-control text-right configurationField" type="text" value=""/> </div>
           </div>
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="wifiTransferEnabled">wifiTransferEnabled</label> 
-            <div class="col-lg-10"> <input id="wifiTransferEnabled" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="wifiTransferEnabled" class="form-control text-right configurationField" type="text" value=""/> </div>
           </div>
         </div>
       </form> 
@@ -339,15 +373,21 @@ socket.onopen = function( event ){
         <div id="">
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="logRotationIntervalSeconds">logRotationIntervalSeconds</label> 
-            <div class="col-lg-10"> <input id="logRotationIntervalSeconds" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
-          </div>
-          <div class="form-group row"> 
-            <label class="col-lg-2 col-form-label" for="loggingMode">loggingMode</label> 
-            <div class="col-lg-10"> <input id="loggingMode" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="logRotationIntervalSeconds" class="form-control text-right configurationField" type="text" value=""/> </div>
           </div>
           <div class="form-group row"> 
             <label class="col-lg-2 col-form-label" for="speedThresholdKmh">speedThresholdKmh</label> 
-            <div class="col-lg-10"> <input id="speedThresholdKmh" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div>
+            <div class="col-lg-10"> <input id="speedThresholdKmh" class="form-control text-right configurationField" type="text" value=""/> </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-2 col-form-label" for="loggingMode">loggingMode</label>
+            <div class="col-lg-10">
+              <select id="loggingMode" name="logginModeSelector" class="dropdownright configurationField">
+                <option value="1">always</option>
+                <option value="2">manual</option>
+                <option value="3">speed based</option>
+              </select>
+            </div>
           </div>
         </div>
       </form> 
