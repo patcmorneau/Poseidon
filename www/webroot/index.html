@@ -60,9 +60,8 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
     <div id="overlay" class="bg-white">
-	<div id="overlay-text"></div>
+	    <div id="overlay-text"></div>
     </div>
-
 
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -73,6 +72,8 @@
           <i class="fas fa-laugh-wink"></i>
         </div>-->
         <div class="sidebar-brand-text mx-3">Hydroball <sup>2<sup></div>
+        <i id="homeIcon" class="fa lg fa-home fa-3x" aria-hidden="true"></i>
+  
       </a>
 
       <!-- Divider -->
@@ -99,8 +100,7 @@
           <i class="fas fa-fw fa-database"></i>
           <span>Download Data</span></a>
       </li>
-
-    <li class="nav-item inactive">
+      <li class="nav-item inactive">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
           <i class="fas fa-fw fa-wrench"></i>
           <span>System Configuration</span>
@@ -112,7 +112,7 @@
             <a class="collapse-item" href="settings.html">Settings</a>
           </div>
         </div>
-    </li>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -139,38 +139,28 @@
             <i class="fa fa-bars"></i>
           </button>
 
-	  <ul class="navbar-nav ml-auto">
-	  <li>
-	  <div class="float-right d-inline">
-		<div id="btnStartRecording" class="d-inline">
-		<a href="#" onclick="startRecording()" class="btn btn-success">
-			<span class="icon-text-white-50"><i class="fas fa-circle"></i></span>
-			<span class="text">Start Recording</span>
-		</a>
-		</div>
+          <div id="btnStartRecording" class="d-inline nav-item ">
+            <a href="#" onclick="startRecording()" class="btn btn-success">
+              <span class="icon-text-white-50"><i class="fas fa-circle"></i></span>
+              <span class="text">Start Recording</span>
+            </a>
+          </div>
 
-		<div id="btnStopRecording" class="d-inline">
-		<a href="#" onclick="stopRecording()" class="btn btn-danger">
-                        <i class="fa fa-stop"></i>
-                        Stop Recording
-                </a>
-		</div>
-		&nbsp;&nbsp;&nbsp;&nbsp;
-        <div class="border-right-warning float-right d-inline">
-		        <div class="row align-items-center">
-		            <div class="col mr-2">
-		                <div class="text-lg font-weight-bold text-warning text-uppercase mb-1"> logging mode</div>
-		                	<div id="modeWidget" class="h5 mb-0 font-weight-bold text-info"> mode </div>
-		            </div>
-		            <div class="col-auto">
-		                <i class="fas fa-comments fa-2x text-gray-300"></i>
-		            </div>
-		        </div>
-    	</div>
-	  </div>
-          </li>
-          </ul>
+          <div id="btnStopRecording" class="d-inline nav-item ">
+            <a href="#" onclick="stopRecording()" class="btn btn-danger">
+              <span class="icon-text-white-50"><i class="fa fa-stop"></i></span>
+              <span class="text">Start Recording</span>
+            </a>
+          </div>
           
+	        <div class="border-right-warning float-right d-inline ml-auto">
+            <div class="text-lg font-weight-bold text-warning text-uppercase"> logging mode <div id="modeWidget" class="h5 mb-0 font-weight-bold text-info"></div></div>
+          </div>
+          <div class="col-auto d-none d-lg-block d-md-block d-inline">
+            <i class="fas fa-comments fa-2x text-g        
+
+            ray-300"></i>
+          </div>      
         </nav>
         <!-- End of Topbar -->
 
@@ -195,111 +185,110 @@
           </div>   
 
           <!-- Status Row -->
-          <div class="row">            
+          <div class="row">
+            <!-- GNSS top marquee //-->
+            <div class="col-lg-4 mb-4">
+              <div id="gnssStatus" class="card bg-gradient-warning text-white shadow">
 
-		<!-- GNSS top marquee //-->
-                 <div class="col-lg-4 mb-4">
-                  <div id="gnssStatus" class="card bg-gradient-warning text-white shadow">
-
-                    <div class="card-body">
-                      <p>GNSS</p>
-                      <div class="row">
-                          <div class="col mr-2">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div>Longitude</div>
-                                    <div id="gnssLongitudeValue" class="text-gray-200 h6 font-weight-bold"></div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div>Latitude</div>
-                                    <div id="gnssLatitudeValue" class="text-gray-200 h6 font-weight-bold"></div>
-                                </div>
+                <div class="card-body">
+                  <p>GNSS</p>
+                  <div class="row">
+                      <div class="col mr-2">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div>Longitude</div>
+                                <div id="gnssLongitudeValue" class="text-gray-200 h6 font-weight-bold"></div>
                             </div>
-                            <div class="row">
-                               <div class="col-lg-12">
-                                <div id="gnssStatusText">Waiting for data...</div>
-                               </div>
+                            <div class="col-lg-6">
+                                <div>Latitude</div>
+                                <div id="gnssLatitudeValue" class="text-gray-200 h6 font-weight-bold"></div>
                             </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-lg-12">
+                            <div id="gnssStatusText">Waiting for data...</div>
+                           </div>
+                        </div>
 
-                          </div>
-                        <div class="col-auto">
-                          <i class="fas fa-map-marked-alt fa-2x text-gray-300"></i>
-                        </div>                          
                       </div>
-                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-map-marked-alt fa-2x text-gray-300"></i>
+                    </div>                          
                   </div>
                 </div>
+              </div>
+            </div>
 
 
-		<!-- IMU top marquee //-->
-                 <div class="col-lg-4 mb-4">
-                  <div id="imuStatus" class="card bg-gradient-warning text-white shadow">
-
-                    <div class="card-body">
-		
-                      <p>IMU</p>
-                      <div class="row">
-                          <div class="col mr-2">
-			    <div class="row">
-				<div class="col-lg-4">
-				    <div>Heading</div>
-	                            <div id="imuHeadingValue" class="text-gray-200 h6 font-weight-bold"></div>
-				</div>
-				<div class="col-lg-4">
-				    <div>Pitch</div>
-        	                    <div id="imuPitchValue" class="text-gray-200 h6 font-weight-bold"></div>
-				</div>
-				<div class="col-lg-4">
-				    <div>Roll</div>
-                	            <div id="imuRollValue" class="text-gray-200 h6 font-weight-bold"></div>
-				</div>
-			    </div>
-			    <div class="row">
-			       <div class="col-lg-12">
-				<div id="imuStatusText">Waiting for data...</div>
-			       </div>
-			    </div>
+              <!-- IMU top marquee //-->
+            <div class="col-lg-4 mb-4">
+              <div id="imuStatus" class="card bg-gradient-warning text-white shadow">
+                <div class="card-body">
+                  <p>IMU</p>
+                  <div class="row">
+                      <div class="col mr-2">
+                        <div class="row">
+                          <div class="col-lg-4">
+                              <div>Heading</div>
+                              <div id="imuHeadingValue" class="text-gray-200 h6 font-weight-bold"></div>
                           </div>
-                        <div class="col-auto">
-                          <i class="fas fa-ship fa-2x text-gray-300"></i>
-                        </div>                          
+                          <div class="col-lg-4">
+                              <div>Pitch</div>	        <div class="navbar-nav ml-auto nav-item ">
+                                <li>
+                                  <div class="d-inline">
+                                    
+                                  </div>
+                                </li>
+                              </div>      
+                              <div id="imuPitchValue" class="text-gray-200 h6 font-weight-bold"></div>
+                          </div>
+                          <div class="col-lg-4">
+                              <div>Roll</div>
+                              <div id="imuRollValue" class="text-gray-200 h6 font-weight-bold"></div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div id="imuStatusText">Waiting for data...</div>
+                          </div>
+                       </div>
                       </div>
-                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-ship fa-2x text-gray-300"></i>
+                    </div>                          
                   </div>
                 </div>
-
-
-		<!-- Sonar top marquee //-->
-                 <div class="col-lg-4 mb-4">
-                  <div id="sonarStatus" class="card bg-gradient-warning text-white shadow">
-
-                    <div class="card-body">
-                      <p>Sonar</p>
+              </div>
+            </div>
+              <!-- Sonar top marquee //-->
+            <div class="col-lg-4 mb-4">
+              <div id="sonarStatus" class="card bg-gradient-warning text-white shadow">
+                <div class="card-body">
+                  <p>Sonar</p>
+                  <div class="row">
+                    <div class="col mr-2">
                       <div class="row">
-                          <div class="col mr-2">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div>Meters</div>
-                                    <div id="sonarDepthValue" class="text-gray-200 h6 font-weight-bold"></div>
-                                </div>
-                            </div>
-                            <div class="row">
-                               <div class="col-lg-12">
-                                <div id="sonarStatusText">Waiting for data...</div>
-                               </div>
-                            </div>
-                          </div>
-
-                        <div class="col-auto">
-                          <i class="fas fa-rss fa-rotate-180 fa-2x text-gray-300"></i>
-                        </div>                          
+                        <div class="col-lg-12">
+                          <div>Meters</div>
+                          <div id="sonarDepthValue" class="text-gray-200 h6 font-weight-bold"></div>
+                        </div>
                       </div>
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <div id="sonarStatusText">Waiting for data...</div>
+                        </div>
+                     </div>
                     </div>
-                  </div>
+                    <div class="col-auto">
+                      <i class="fas fa-rss fa-rotate-180 fa-2x text-gray-300"></i>
+                    </div>  
+                  </div>                        
                 </div>
+              </div>
+            </div>         
           </div>
 
-	  <!-- Gauges row -->
+	        <!-- Gauges row -->
           <div class="row">
 
             <!-- Depth Card --> 
@@ -314,11 +303,10 @@
                   <div class="chart-area">
                     <div id="depthChartContainer">
                       <canvas id="depthChart"></canvas>
-			<br style="clear:both"/>
+			                <br style="clear:both"/>
                     </div>
                   </div>
                 </div>
-
               </div>
            </div>
 
@@ -336,24 +324,17 @@
 		       <canvas id="imuz"></canvas>
          	    </div>  
                   </div>
-
-		  <hr/>
+                  <hr/>
 
                   <div class="chart-area">
                     <div id="chartContainer">
                       <canvas id="attitudeChart"></canvas>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>            
-
-          
- 
-
           </div>
-
         </div>
         </div>
         </div>
@@ -699,6 +680,21 @@ $( document ).ready(function() {
   	$("#btnStartRecording").removeClass("d-inline").addClass("d-none");
   	$("#btnStopRecording").removeClass("d-inline").addClass("d-none");
   }
+
+  $( window ).on( "resize", function() {
+    if ($(window).width() > 766) {
+    $("#homeIcon").css("display", "none");
+    } else {
+    $("#homeIcon").css("display", "block");
+    }
+  } );
+  
+  if ($(window).width() > 766) {
+    $("#homeIcon").css("display", "none");
+    } else {
+    $("#homeIcon").css("display", "block");
+    }
+  
   
   </script>
 </html>
