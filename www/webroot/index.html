@@ -139,27 +139,13 @@
             <i class="fa fa-bars"></i>
           </button>
 
-          <div id="btnStartRecording" class="d-inline nav-item ">
-            <a href="#" onclick="startRecording()" class="btn btn-success">
-              <span class="icon-text-white-50"><i class="fas fa-circle"></i></span>
-              <span class="text">Start Recording</span>
-            </a>
-          </div>
-
-          <div id="btnStopRecording" class="d-inline nav-item ">
-            <a href="#" onclick="stopRecording()" class="btn btn-danger">
-              <span class="icon-text-white-50"><i class="fa fa-stop"></i></span>
-              <span class="text">Start Recording</span>
-            </a>
-          </div>
+          
           
 	        <div class="border-right-warning float-right d-inline ml-auto">
-            <div class="text-lg font-weight-bold text-warning text-uppercase"> logging mode <div id="modeWidget" class="h5 mb-0 font-weight-bold text-info"></div></div>
+            <div class="text-lg font-weight-bold text-dark text-uppercase"> logging mode <div id="modeWidget" class="h5 mb-0 font-weight-bold"></div></div>
           </div>
           <div class="col-auto d-none d-lg-block d-md-block d-inline">
-            <i class="fas fa-comments fa-2x text-g        
-
-            ray-300"></i>
+            <i class="fas fa-comments fa-2x text-gray-300"></i>
           </div>      
         </nav>
         <!-- End of Topbar -->
@@ -170,6 +156,19 @@
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            <div id="btnStartRecording" class="d-inline">
+              <a href="#" onclick="startRecording()" class="btn btn-success">
+                <span class="icon-text-white-50"><i class="fas fa-circle"></i></span>
+                <span class="text">Start Recording</span>
+              </a>
+            </div>
+  
+            <div id="btnStopRecording" class="d-inline">
+              <a href="#" onclick="stopRecording()" class="btn btn-danger">
+                <span class="icon-text-white-50"><i class="fa fa-stop"></i></span>
+                <span class="text">Stop Recording</span>
+              </a>
+            </div>
           </div>
 
           <div id="systemStatus" class="alert alert-danger animated--grow-in d-none">
@@ -318,14 +317,13 @@
                 </div>
                 <div class="card-body">
                   <div class="">
-		    <h6 class="text-center">Heading</h6>
-		    <br/>
-		    <div id="gaugeContainer">
-		       <canvas id="imuz"></canvas>
-         	    </div>  
+                    <h6 class="text-center">Heading</h6>
+		                <br/>
+		                <div id="gaugeContainer">
+		                  <canvas id="imuz"></canvas>
+         	          </div>  
                   </div>
                   <hr/>
-
                   <div class="chart-area">
                     <div id="chartContainer">
                       <canvas id="attitudeChart"></canvas>
@@ -688,7 +686,7 @@ $( document ).ready(function() {
     $("#homeIcon").css("display", "block");
     }
   } );
-  
+
   if ($(window).width() > 766) {
     $("#homeIcon").css("display", "none");
     } else {
