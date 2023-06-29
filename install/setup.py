@@ -33,7 +33,7 @@ architecture = platform.architecture()
 
 print("architecture:", architecture)
 
-version = int(distro.version())
+version = int(float(distro.version()))
 
 print("version:", version)
 
@@ -75,4 +75,4 @@ def check_install():
 
 
 check_install()
-# install()
+install()
