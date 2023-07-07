@@ -70,14 +70,17 @@
       <i class="fa fa-2x fa-bars"></i>
     </div>
 
-    <div class="border-right-warning float-right d-inline ml-auto">
+    <!-- <div class="border-right-warning float-right d-inline ml-auto">
       <div class="text-lg font-weight-bold text-dark"> Logging mode <div id="modeWidget"
           class="h5 mb-0 font-weight-bold"></div>
       </div>
-    </div>
-    <div class="col-auto d-none d-lg-block d-md-block d-inline">
-      <i class="gg-record"></i>
-    </div>
+    </div> -->
+    <div id="startRecIcon" class="border-right-warning d-inline float-right ml-auto text-success">
+      <i class="gg-record" href="#" onclick="startRecording()"></i>
+    </div> 
+    <div id="stopRecIcon" class="border-right-warning d-inline float-right ml-auto text-danger">
+      <i class="gg-record" href="#" onclick="stopRecording()"></i>
+    </div> 
   </nav>
   <!-- End of Topbar -->
 
@@ -156,9 +159,9 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+          <div class="d-sm-flex align-items-center justify-content-between mb-2">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-            <div id="btnStartRecording" class="d-inline">
+            <!-- <div id="btnStartRecording" class="d-inline">
               <a href="#" onclick="startRecording()" class="btn btn-success">
                 <span class="icon-text-white-50"><i class="fas fa-circle"></i></span>
                 <span class="text">Start Recording</span>
@@ -170,24 +173,63 @@
                 <span class="icon-text-white-50"><i class="fa fa-stop"></i></span>
                 <span class="text">Stop Recording</span>
               </a>
-            </div>
+            </div> -->
           </div>
+          <hr class="hr hr-blurry mt-0" />
 
           <div id="systemStatus" class="alert alert-danger animated--grow-in d-none">
             <strong> Warning: </strong>
             <div id="systemStatusText"></div>
           </div>
 
-          <div id="recordingStatus" class="alert alert-success animated--grow-in d-none">
+         <!--  <div id="recordingStatus" class="alert alert-success animated--grow-in d-none">
             <div id="recordingStatusText">The system is currently recording data</div>
-          </div>
+          </div> -->
 
           <div id="hddFreeSpaceOK" class="d-none">
             <div>The system has stopped recording data because hdd is full</div>
+          </div> 
+
+          <!-- logging data card -->
+          <div class="col-lg-4 mb-4">
+            <div class="card" id="logCard">
+              <div class="card-header font-weight-bold text-dark">Data recording</div>
+              <div class="card-body">
+                <div class="border-right-warning d-inline ml-auto">
+                  <div class="text-lg font-weight-bold text-dark"> Logging mode : <span id="modeWidget"
+                      class="h5 mb-0 font-weight-bold d-inline"></span>
+                  </div>
+                </div>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div id="recordingStatus" class="alert alert-success animated--grow-in d-none float-center my-auto"> <!-- ***** Enlevez ca et mettre dans le header (active/inactive, yes/no) ******** -->
+                    <div id="recordingStatusText">The system is currently recording data</div>
+                  </div>
+                </li>
+              </ul>
+              <div class="card-body text-center">
+                <div id="btnStartRecording" class="d-inline float-center my-auto mx-auto">
+                  <a href="#" onclick="startRecording()" class="btn btn-success">
+                    <span class="icon-text-white-50"><i class="fas fa-circle"></i></span>
+                    <span class="text">Start Recording</span>
+                  </a>
+                </div>
+    
+                <div id="btnStopRecording" class="d-inline float-center my-auto mx-auto">
+                  <a href="#" onclick="stopRecording()" class="btn btn-danger">
+                    <span class="icon-text-white-50"><i class="fa fa-stop"></i></span>
+                    <span class="text">Stop Recording</span>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Status Row -->
           <div class="row">
+            
+
             <!-- GNSS top marquee //-->
             <div class="col-lg-4 mb-4">
               <div id="gnssStatus" class="card bg-gradient-warning text-white shadow">
@@ -296,15 +338,15 @@
 
             <!-- Depth Card -->
             <div class="col-lg-8 mb-4">
-              <div class="card shadow mb-4">
+              <div class="card shadow mb-4 text-center">
 
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary">Depth</h6>
                 </div>
 
-                <div class="card-body">
-                  <div class="chart-area">
-                    <div id="depthChartContainer">
+                <div class="card-body d-inline-block">
+                  <div class="chart-area d-inline-block">
+                    <div id="depthChartContainer d-inline-block">
                       <canvas id="depthChart"></canvas>
                       <br style="clear:both" />
                     </div>
@@ -315,20 +357,20 @@
 
             <!-- Attitude Card -->
             <div class="col-lg-4 mb-4">
-              <div class="card shadow mb-4">
+              <div class="card shadow mb-4 text-center">
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary">Attitude</h6>
                 </div>
-                <div class="card-body">
+                <div class="card-body d-inline-block">
                   <div class="">
-                    <h6 class="text-center">Heading</h6>
+                    <h6 class="text-primary d-inline">Heading</h6>
                     <br />
-                    <div id="gaugeContainer">
+                    <div class="" id="gaugeContainer">
                       <canvas id="imuz"></canvas>
                     </div>
                   </div>
                   <hr />
-                  <div class="chart-area">
+                  <div class="chart-area d-inline-block">
                     <div id="chartContainer">
                       <canvas id="attitudeChart"></canvas>
                     </div>
@@ -660,29 +702,31 @@
     $("#recordingStatus").removeClass("d-none alert-danger").addClass("d-block alert-success");
     $("#recordingStatus").text("The system is currently recording data");
     $("#modeWidget").removeClass("text-danger text-success").addClass("text-danger");
-    $(".gg-record").removeClass("text-danger text-success").addClass("text-danger");
   }
 
   function showNotRecording() {
     $("#recordingStatus").removeClass("d-none alert-success").addClass("d-block alert-danger");
     $("#recordingStatus").text("The system is not recording data")
     $("#modeWidget").removeClass("text-danger text-success").addClass("text-success");
-    $(".gg-record").removeClass("text-danger text-success").addClass("text-success");
   }
   function showRecordingButton() {
     $("#btnStartRecording").removeClass("d-inline").addClass("d-none");
     $("#btnStopRecording").removeClass("d-none").addClass("d-inline");
+    $("#startRecIcon").removeClass("d-inline").addClass("d-none");
+    $("#stopRecIcon").removeClass("d-none").addClass("d-inline");
   }
   function showNotRecordingButton() {
     $("#btnStartRecording").removeClass("d-none").addClass("d-inline");
     $("#btnStopRecording").removeClass("d-inline").addClass("d-none");
+    $("#startRecIcon").removeClass("d-none").addClass("d-inline");
+    $("#stopRecIcon").removeClass("d-inline").addClass("d-none");
   }
   function hideLoggingButton() {
     $("#btnStartRecording").removeClass("d-inline").addClass("d-none");
     $("#btnStopRecording").removeClass("d-inline").addClass("d-none");
+    $("#startRecIcon").removeClass("d-inline").addClass("d-none");
+    $("#stopRecIcon").removeClass("d-inline").addClass("d-none");
   }
-
-
 </script>
 
 </html>

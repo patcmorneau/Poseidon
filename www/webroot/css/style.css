@@ -10,6 +10,10 @@
     border-radius: 100px
 }
 
+.gg-record:hover {
+    cursor: pointer;
+}
+
 #sidebarToggleTop:hover {
     cursor: pointer;
 }
