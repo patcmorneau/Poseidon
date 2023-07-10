@@ -191,38 +191,51 @@
           </div> 
 
           <!-- logging data card -->
-          <div class="col-lg-4 mb-4">
+          <div class="mb-4">
             <div class="card" id="logCard">
-              <div class="card-header font-weight-bold text-dark">Data recording</div>
-              <div class="card-body">
-                <div class="border-right-warning d-inline ml-auto">
-                  <div class="text-lg font-weight-bold text-dark"> Logging mode : <span id="modeWidget"
-                      class="h5 mb-0 font-weight-bold d-inline"></span>
-                  </div>
-                </div>
+              <div class="card-header text-lg font-weight-bold text-dark">
+                Data recording : 
+                <span id="recordingStatus2" class="text-success">
+                  Active
+                </span>
               </div>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                    <div id="recordingStatus" class="alert alert-success animated--grow-in d-none float-center my-auto"> <!-- ***** Enlevez ca et mettre dans le header (active/inactive, yes/no) ******** -->
-                    <div id="recordingStatusText">The system is currently recording data</div>
+                  <div class="">
+                  <div class="border-right-warning d-inline ml-auto">
+                    <div class="text-lg font-weight-bold text-dark"> Logging mode : <span id="modeWidget"
+                          class="h5 mb-0 font-weight-bold d-inline text-primary"></span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="text-center">
+                    <div id="btnStartRecording" class="d-inline float-center my-auto mx-auto">
+                      <a href="#" onclick="startRecording()" class="btn btn-success">
+                        <span class="icon-text-white-50"><i class="fas fa-circle"></i></span>
+                        <span class="text">Start Recording</span>
+                      </a>
+                    </div>
+        
+                    <div id="btnStopRecording" class="d-inline float-center my-auto mx-auto">
+                      <a href="#" onclick="stopRecording()" class="btn btn-danger">
+                        <span class="icon-text-white-50"><i class="fa fa-stop"></i></span>
+                        <span class="text">Stop Recording</span>
+                      </a>
+                    </div>
                   </div>
                 </li>
               </ul>
-              <div class="card-body text-center">
-                <div id="btnStartRecording" class="d-inline float-center my-auto mx-auto">
-                  <a href="#" onclick="startRecording()" class="btn btn-success">
-                    <span class="icon-text-white-50"><i class="fas fa-circle"></i></span>
-                    <span class="text">Start Recording</span>
-                  </a>
-                </div>
-    
-                <div id="btnStopRecording" class="d-inline float-center my-auto mx-auto">
-                  <a href="#" onclick="stopRecording()" class="btn btn-danger">
-                    <span class="icon-text-white-50"><i class="fa fa-stop"></i></span>
-                    <span class="text">Stop Recording</span>
-                  </a>
-                </div>
-              </div>
+             
+              <!-- <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div id="recordingStatus" class="alert alert-success animated--grow-in d-none float-center my-auto">
+                    <div id="recordingStatusText">The system is currently recording data</div>
+                  </div>"
+                </li>
+              </ul> -->
+              
             </div>
           </div>
 
@@ -701,13 +714,17 @@
   function showRecording() {
     $("#recordingStatus").removeClass("d-none alert-danger").addClass("d-block alert-success");
     $("#recordingStatus").text("The system is currently recording data");
-    $("#modeWidget").removeClass("text-danger text-success").addClass("text-danger");
+    $("#recordingStatus2").removeClass("d-none text-success").addClass("text-danger");
+    $("#recordingStatus2").text("Active");
+    // $("#modeWidget").removeClass("text-danger text-success").addClass("text-danger");
   }
 
   function showNotRecording() {
     $("#recordingStatus").removeClass("d-none alert-success").addClass("d-block alert-danger");
-    $("#recordingStatus").text("The system is not recording data")
-    $("#modeWidget").removeClass("text-danger text-success").addClass("text-success");
+    $("#recordingStatus").text("The system is not recording data");
+    $("#recordingStatus2").removeClass("d-none text-danger").addClass("text-success");
+    $("#recordingStatus2").text("Inactive");
+    // $("#modeWidget").removeClass("text-danger text-success").addClass("text-success");
   }
   function showRecordingButton() {
     $("#btnStartRecording").removeClass("d-inline").addClass("d-none");
