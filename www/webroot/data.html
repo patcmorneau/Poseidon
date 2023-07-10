@@ -1,397 +1,337 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <meta name="description" content="Hydroball Control Panel" />
-    <meta name="author" content="CIDCO" />
 
-    <title>Hydroball - Data</title>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="Hydroball Control Panel" />
+  <meta name="author" content="CIDCO" />
 
-    <link
-      href="vendor/fontawesome-free/css/all.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link href="vendor/googleapi/fonts.css" rel="stylesheet" />
+  <title>Hydroball - Data</title>
 
-    <link href="css/sb-admin-2.min.css" rel="stylesheet" />
-  </head>
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+  <link href="vendor/googleapi/fonts.css" rel="stylesheet" />
 
-  <body id="page-top">
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-      <!-- Sidebar -->
-      <ul
-        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
-        id="accordionSidebar"
-      >
-        <!-- Sidebar - Brand -->
-        <a
-          class="sidebar-brand d-flex align-items-center justify-content-center"
-          href="index.html"
-        >
-          <!--<div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
-        </div>-->
-          <div class="sidebar-brand-text mx-3">Hydroball <sup>2</sup></div>
+  <link href="css/sb-admin-2.min.css" rel="stylesheet" />
+  <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+
+  <!-- Topbar -->
+  <nav id="topNav" class="navbar sticky-top navbar-expand navbar-light bg-white topbar static-top shadow">
+
+    <!-- Sidebar Toggle (Topbar) -->
+    <div id="sidebarToggleTop" class="ml-2 btn text-primary">
+      <i class="fa fa-2x fa-bars"></i>
+    </div>
+  </nav>
+  <!-- End of Topbar -->
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div class="sidebar-brand-text mx-3">Hydroball <sup>2<sup></div>
+        <i id="homeIcon" class="ml-3 fa fa-2x fa-heading" aria-hidden="true" style="display: none;"><sup>2</sup></i>
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0" />
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item inactive">
+        <a class="nav-link" href="index.html">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+      </li>
+      <li class="nav-item inactive">
+        <a class="nav-link" href="map.html">
+          <i class="fas fa-fw fa-globe-americas"></i>
+          <span>Map</span></a>
+      </li>
+      <li class="nav-item inactive">
+        <a class="nav-link" href="status.html">
+          <i class="fas fa-fw fa-globe-americas"></i>
+          <span>System Status</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="data.html">
+          <i class="fas fa-fw fa-database"></i>
+          <span>Download Data</span></a>
+      </li>
+      <li class="nav-item inactive">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+          aria-expanded="true" aria-controls="collapseUtilities">
+          <i class="fas fa-fw fa-wrench"></i>
+          <span>System Configuration</span>
         </a>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
-
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item inactive">
-          <a class="nav-link" href="index.html">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a
-          >
-        </li>
-        <li class="nav-item inactive">
-          <a class="nav-link" href="map.html">
-            <i class="fas fa-fw fa-globe-americas"></i>
-            <span>Map</span></a
-          >
-        </li>
-        <li class="nav-item inactive">
-          <a class="nav-link" href="status.html">
-            <i class="fas fa-fw fa-globe-americas"></i>
-            <span>System Status</span></a
-          >
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="data.html">
-            <i class="fas fa-fw fa-database"></i>
-            <span>Download Data</span></a
-          >
-        </li>
-        <li class="nav-item inactive">
-          <a
-            class="nav-link collapsed"
-            href="#"
-            data-toggle="collapse"
-            data-target="#collapseUtilities"
-            aria-expanded="true"
-            aria-controls="collapseUtilities"
-          >
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>System Configuration</span>
-          </a>
-          <div
-            id="collapseUtilities"
-            class="collapse"
-            aria-labelledby="headingUtilities"
-            data-parent="#accordionSidebar"
-          >
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Configuration Utilities:</h6>
-              <a class="collapse-item" href="calibration.html">Calibration</a>
-              <a class="collapse-item" href="settings.html">Settings</a>
-            </div>
+        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Configuration Utilities:</h6>
+            <a class="collapse-item" href="calibration.html">Calibration</a>
+            <a class="collapse-item" href="settings.html">Settings</a>
           </div>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block" />
-
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-          <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
-      </ul>
-      <!-- End of Sidebar -->
+      </li>
 
-      <!-- Content Wrapper -->
-      <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
-        <div id="content">
-          <!-- Topbar -->
-          <nav
-            class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
-          >
-            <!-- Sidebar Toggle (Topbar) -->
-            <button
-              id="sidebarToggleTop"
-              class="btn btn-link d-md-none rounded-circle mr-3"
-            >
-              <i class="fa fa-bars"></i>
-            </button>
-          </nav>
-          <!-- End of Topbar -->
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block" />
 
-          <!-- Begin Page Content -->
-          <div class="container-fluid">
-            <!-- Page Heading -->
-            <div
-              class="d-sm-flex align-items-center justify-content-between mb-4"
-            >
-              <h1 class="h3 mb-0 text-gray-800">Download Data</h1>
-            </div>
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+    </ul>
+    <!-- End of Sidebar -->
 
-            <!-- Status Row -->
-            <div class="row">
-              <!-- Modal for file delete -->
-              <div
-                class="modal fade"
-                id="filedel"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog text-center" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header text-center">
-                      <h1
-                        class="modal-title text-danger w-100 font-weight-bold"
-                        id="exampleModalLabel"
-                      >
-                        Delete Files
-                      </h1>
-                      <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body text-center">
-                      <h2>This cannot be undone</h2>
-                    </div>
-                    <div class="data-file"></div>
-                    <p class="text-center">Are you sure you want to proceed?</p>
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-dismiss="modal"
-                      >
-                        No
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-primary"
-                        onclick="sendDelete()"
-                        data-dismiss="modal"
-                      >
-                        Yes
-                      </button>
-                    </div>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content" class="pt-3">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-2">
+            <h1 class="h3 mb-0 text-gray-800">Download Data</h1>
+          </div>
+          <hr class="hr hr-blurry mt-0" />
+
+          <!-- Status Row -->
+          <div class="row">
+            <!-- Modal for file delete -->
+            <div class="modal fade" id="filedel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog text-center" role="document">
+                <div class="modal-content">
+                  <div class="modal-header text-center">
+                    <h1 class="modal-title text-danger w-100 font-weight-bold" id="exampleModalLabel">
+                      Delete Files
+                    </h1>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body text-center">
+                    <h2>This cannot be undone</h2>
+                  </div>
+                  <div class="data-file"></div>
+                  <p class="text-center">Are you sure you want to proceed?</p>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                      No
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="sendDelete()" data-dismiss="modal">
+                      Yes
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- DataTable -->
-            <div class="card shadow mb-4">
-              <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Files</h6>
+          <!-- DataTable -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Files</h6>
+            </div>
+            <div class="card-body row pt-1">
+              <button type="button" class="btn btn-primary col-xs-2 m-1 mb-2" onclick="selectall()"
+                data-dismiss="modal">
+                Select All
+              </button>
+              <button type="button" class="btn btn-primary col-xs-2 m-1 mb-2" data-toggle="modal"
+                data-target="#filedel">
+                Delete
+              </button>
+              <div id="searchbarDiv" class="ml-auto col-xs-2 m-1 mb-2">
+                <input class="searchbar form-control-plaintext border border-primary rounded" type="text"
+                  name="searchbar" placeholder="Search..." onkeyup="Search()" />
               </div>
-              <div class="card-body row">
-                <button
-                  type="button"
-                  class="btn btn-primary col-xs-2 m-1" 
-                  onclick="selectall()"
-                  data-dismiss="modal"
-                >
-                  Select All
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-primary col-xs-2 m-1"
-                  data-toggle="modal"
-                  data-target="#filedel"
-                >
-                  Delete
-                </button>
-                <div id="searchbarDiv" class="ml-auto col-xs-2 m-1 ">
-                  <input
-                    class="searchbar form-control-plaintext border border-primary rounded"
-                    type="text"
-                    name="searchbar"
-                    placeholder="Search..."
-                    onkeyup="Search()"
-                  />
-                </div>
-                <br /><br />
-                <div class="table-responsive">
-                  <table
-                    class="table table-bordered"
-                    id="dataTable"
-                    width="100%"
-                    cellspacing="0"
-                  >
-                    <thead>
-                      <tr>
-                        <th width="100px"></th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody id="tableContents"></tbody>
-                  </table>
-                </div>
+              <br /><br />
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th width="100px"></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="tableContents"></tbody>
+                </table>
               </div>
             </div>
           </div>
-          <!-- /.container-fluid -->
         </div>
-        <!-- End of Main Content -->
+        <!-- /.container-fluid -->
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white footer">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright &copy; CIDCO</span>
+            </div>
+          </div>
+        </footer>
+        <!-- End of Footer -->
       </div>
-      <!-- End of Content Wrapper -->
+      <!-- End of Main Content -->
     </div>
-    <!-- End of Page Wrapper -->
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fas fa-angle-up"></i>
-    </a>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+  <!-- Custom script -->
+  <script src="js/script.js"></script>
 
-    <script>
-      var i;
-      var dataln;
-      var fileslist = Array();
-      var linklist = Array();
-      var olddataln = 0;
+  <script>
+    var i;
+    var dataln;
+    var fileslist = Array();
+    var linklist = Array();
+    var olddataln = 0;
 
-      function processState(state) {
-        //******************************
-        //populating data model
-        //******************************
-        dataln = state.fileslist.length;
-        fileslist = state.fileslist;
-        //******************************
-        //Creating links to files
-        //******************************
-        for (i = 0; i < dataln; i++) {
-          linklist[i] =
-            '<a href="' +
-            fileslist[i][1] +
-            '" target="_blank" download>' +
-            fileslist[i][0] +
-            "</a>";
-        }
-        //******************************
-        //populating display
-        //******************************
-        if (dataln !== olddataln) {
-          olddataln = dataln;
-          var table = document.getElementById("tableContents");
-          var tabledata = " ";
-          for (i = 0; i < dataln; i++) {
-            if (tabledata.length < 2) {
-              tabledata =
-                '<tr class="remove"><td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="' +
-                fileslist[i][0] +
-                '"><label class="custom-control-label" for="' +
-                fileslist[i][0] +
-                '"></label></div></td><td class="search">' +
-                linklist[i] +
-                "</td></tr>";
-            } else {
-              tabledata =
-                tabledata +
-                '<tr class="remove"><td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="' +
-                fileslist[i][0] +
-                '"><label class="custom-control-label" for="' +
-                fileslist[i][0] +
-                '"></label></div></td><td class="search">' +
-                linklist[i] +
-                "</td></tr>";
-            }
-          }
-
-          table.innerHTML = tabledata;
-        }
+    function processState(state) {
+      //******************************
+      //populating data model
+      //******************************
+      dataln = state.fileslist.length;
+      fileslist = state.fileslist;
+      //******************************
+      //Creating links to files
+      //******************************
+      for (i = 0; i < dataln; i++) {
+        linklist[i] =
+          '<a href="' +
+          fileslist[i][1] +
+          '" target="_blank" download>' +
+          fileslist[i][0] +
+          "</a>";
       }
       //******************************
-      //Sends a delete command for selected file
+      //populating display
       //******************************
-      function sendDelete() {
+      if (dataln !== olddataln) {
+        olddataln = dataln;
+        var table = document.getElementById("tableContents");
+        var tabledata = " ";
         for (i = 0; i < dataln; i++) {
-          var checkBox = document.getElementById(fileslist[i][0]);
-          if (checkBox.checked == true) {
-            var cmd = { delete: fileslist[i][0] };
-            socket.send(JSON.stringify(cmd));
-            //socket.send("{\"delete\":[\""+ fileslist[i][0]+"\"]}");
-          }
-        }
-      }
-      //******************************
-      //Select all files
-      //******************************
-      function selectall() {
-        for (i = 0; i < dataln; i++) {
-          document.getElementById(fileslist[i][0]).checked =
-            !document.getElementById(fileslist[i][0]).checked;
-        }
-      }
-
-      //******************************
-      //Periodically poll for new files
-      //******************************
-      time = setInterval(function (list) {
-        socket.send('{"f-list":"fileslist"}');
-        setTimeout(list, 500);
-      }, 500);
-
-      //******************************
-      //Open websocket
-      //******************************
-
-      var socket = new WebSocket("ws://" + window.location.hostname + ":9003");
-      socket.onmessage = function (event) {
-        // console.log(event.data);
-        var state = JSON.parse(event.data);
-        processState(state);
-      };
-
-      //******************************
-      //Open websocket
-      //******************************
-      function Search() {
-        var value = $(".searchbar").val();
-        value = value.toLowerCase();
-        var files = $(".search");
-        var el = $(".remove");
-        for (i = 0; i < files.length; i++) {
-          if (!files[i].innerHTML.toLowerCase().includes(value)) {
-            el[i].style.display = "none";
+          if (tabledata.length < 2) {
+            tabledata =
+              '<tr class="remove"><td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="' +
+              fileslist[i][0] +
+              '"><label class="custom-control-label" for="' +
+              fileslist[i][0] +
+              '"></label></div></td><td class="search">' +
+              linklist[i] +
+              "</td></tr>";
           } else {
-            el[i].style.display = "table-row";
+            tabledata =
+              tabledata +
+              '<tr class="remove"><td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="' +
+              fileslist[i][0] +
+              '"><label class="custom-control-label" for="' +
+              fileslist[i][0] +
+              '"></label></div></td><td class="search">' +
+              linklist[i] +
+              "</td></tr>";
           }
         }
-      }
 
-      $( window ).on( "resize", function() {
-        if ($(window).width() < 766) {
-        $("#searchbarDiv").removeClass("ml-auto");
-        } else {$("#searchbarDiv").addClass("ml-auto")}
-      } );
+        table.innerHTML = tabledata;
+      }
+    }
+    //******************************
+    //Sends a delete command for selected file
+    //******************************
+    function sendDelete() {
+      for (i = 0; i < dataln; i++) {
+        var checkBox = document.getElementById(fileslist[i][0]);
+        if (checkBox.checked == true) {
+          var cmd = { delete: fileslist[i][0] };
+          socket.send(JSON.stringify(cmd));
+          //socket.send("{\"delete\":[\""+ fileslist[i][0]+"\"]}");
+        }
+      }
+    }
+    //******************************
+    //Select all files
+    //******************************
+    function selectall() {
+      for (i = 0; i < dataln; i++) {
+        document.getElementById(fileslist[i][0]).checked =
+          !document.getElementById(fileslist[i][0]).checked;
+      }
+    }
+
+    //******************************
+    //Periodically poll for new files
+    //******************************
+    time = setInterval(function (list) {
+      socket.send('{"f-list":"fileslist"}');
+      setTimeout(list, 500);
+    }, 500);
+
+    //******************************
+    //Open websocket
+    //******************************
+
+    var socket = new WebSocket("ws://" + window.location.hostname + ":9003");
+    socket.onmessage = function (event) {
+      // console.log(event.data);
+      var state = JSON.parse(event.data);
+      processState(state);
+    };
+
+    //******************************
+    //Open websocket
+    //******************************
+    function Search() {
+      var value = $(".searchbar").val();
+      value = value.toLowerCase();
+      var files = $(".search");
+      var el = $(".remove");
+      for (i = 0; i < files.length; i++) {
+        if (!files[i].innerHTML.toLowerCase().includes(value)) {
+          el[i].style.display = "none";
+        } else {
+          el[i].style.display = "table-row";
+        }
+      }
+    }
+
+    $(window).on("resize", function () {
       if ($(window).width() < 766) {
         $("#searchbarDiv").removeClass("ml-auto");
-      } else {$("#searchbarDiv").addClass("ml-auto")}
-    </script>
+      } else { $("#searchbarDiv").addClass("ml-auto") }
+    });
+    if ($(window).width() < 766) {
+      $("#searchbarDiv").removeClass("ml-auto");
+    } else { $("#searchbarDiv").addClass("ml-auto") }
+  </script>
 
-    <!-- Page level plugins -->
-    <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
+  <!-- Page level plugins -->
+  <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
 
-    <!-- Page level custom scripts -->
-    <!-- <script src="js/demo/chart-area-demo.js"></script> -->
-    <!-- <script src="js/demo/chart-pie-demo.js"></script> -->
-  </body>
+  <!-- Page level custom scripts -->
+  <!-- <script src="js/demo/chart-area-demo.js"></script> -->
+  <!-- <script src="js/demo/chart-pie-demo.js"></script> -->
+</body>
+
 </html>
