@@ -93,6 +93,10 @@ $(document).ready(function () {
   //display overlay...
   displayOverlay();
 
+
+
+  ///////////////////////////// Socket && Ping Pong ////////////////////////////////////
+
   socket = new WebSocket("ws://" + window.location.hostname + ":9002");
 
   socket.onmessage = function (event) {
@@ -120,9 +124,45 @@ $(document).ready(function () {
     console.log("Error: Cannot connect to websocket")
     displayOverlay();
   }
+
+  socket.addEventListener('close', () => {
+    // Connection closed, notify the frontend interface
+    console.log('WebSocket connection closed');
+    alert("Websocket closed!");
+  });
+
+  socket.addEventListener('error', (error) => {
+    // WebSocket error occurred, notify the frontend interface
+    console.error('WebSocket error:', error);
+    
+    alert("Websocket error!");
+  });
+  var i = 0;
+  setInterval(() => {
+    
+    if (socket.readyState !== WebSocket.OPEN) {
+      // WebSocket connection lost, notify the frontend interface
+      console.log('WebSocket connection lost');
+      alert("Connection lost!")
+    } else {
+      console.log("all is good!", i);
+      i++
+    }
+  }, 5000); // Check every 5 seconds (adjust the interval as needed)
+  
+
+  //////////////////////////////////////////////////////////////////////////////////////
+
 });
 
+///////////////////////////// Ping Pong Functions ////////////////////////////////////
 
+function Ping() {
+  const ping = "__ping__"
+  socket.send(ping);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
 
 function displayOverlay() {
   document.getElementById("overlay-text").innerHTML = "<p class='text-dark text-center'>Loading...</p><img src='./img/loading.gif'/>";//"<p class='text-light'>Loading...</p>"; //"<img href='./img/loading.gif'/>";
