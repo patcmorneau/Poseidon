@@ -107,7 +107,6 @@ $(document).ready(function () {
       var mode = msg.loggingMode.the_mode_is;
       processRecordingInfo(isLogging, mode);
     }
-
   };
 
   socket.onopen = function (event) {
@@ -124,8 +123,9 @@ $(document).ready(function () {
 });
 
 
+
 function displayOverlay() {
-  document.getElementById("overlay-text").innerHTML = "<p class='text-dark text-center'>Loading...</p><img src='/img/loading.gif'/>";//"<p class='text-light'>Loading...</p>"; //"<img href='/img/loading.gif'/>";
+  document.getElementById("overlay-text").innerHTML = "<p class='text-dark text-center'>Loading...</p><img src='./img/loading.gif'/>";//"<p class='text-light'>Loading...</p>"; //"<img href='./img/loading.gif'/>";
   document.getElementById("overlay").style.display = "block";
 }
 
@@ -267,6 +267,20 @@ function stopRecording() {
   var cmd = { command: "stopLogging" };
   socket.send(JSON.stringify(cmd));
 }
+
+// function toggleRecording(record) {
+//   if (record == 0) {
+//     var cmd = { command: "startLogging" };
+//     socket.send(JSON.stringify(cmd));
+//     record = 1;
+//   } else {
+//     var cmd = { command: "stopLogging" };
+//     socket.send(JSON.stringify(cmd));
+//     record = 0;
+//   }
+// }
+
+// Functions that changes the color and display status of recording buttons
 
 function showRecording() {
   $("#recordingStatus").removeClass("d-none alert-danger").addClass("d-block alert-success");
