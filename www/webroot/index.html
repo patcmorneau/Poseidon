@@ -320,18 +320,17 @@
           <div class="row">
 
             <!-- Depth Card -->
-            <div class="col-lg-8 mb-4">
+            <div class="col-lg-8 mb-4 d-">
               <div class="card shadow mb-4 text-center">
 
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary">Depth</h6>
                 </div>
 
-                <div class="card-body d-inline-block">
-                  <div class="chart-area d-inline-block">
-                    <div id="depthChartContainer d-inline-block">
+                <div class="card-body">
+                  <div class="chart-area" style="height: fit-content;">
+                    <div id="depthChartContainer" style="height: 20em;">
                       <canvas id="depthChart"></canvas>
-                      <br style="clear:both" />
                     </div>
                   </div>
                 </div>
@@ -344,7 +343,7 @@
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary">Attitude</h6>
                 </div>
-                <div class="card-body d-inline-block">
+                <div class="card-body">
                   <div class="">
                     <h6 class="text-primary d-inline">Heading</h6>
                     <br />
@@ -353,7 +352,7 @@
                     </div>
                   </div>
                   <hr />
-                  <div class="chart-area d-inline-block">
+                  <div class="chart-area" style="height: fit-content;">
                     <div id="chartContainer">
                       <canvas id="attitudeChart"></canvas>
                     </div>
