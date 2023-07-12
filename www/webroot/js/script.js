@@ -1,7 +1,7 @@
 (function ($) {
     "use strict"; // Start of use strict
 
-    // Toggle the side navigation
+    // Toggle the side navigation (3 horizontal bars)
     $("#sidebarToggle, #sidebarToggleTop").on('click', function (e) {
         if ($(".sidebar").hasClass("toggled") && $(window).width() > 768) {
             $('#homeIcon').css("display", "block");

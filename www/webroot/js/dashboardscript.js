@@ -1,5 +1,5 @@
 var socket;
-
+var messageTimer;
 var depthChart;
 var depth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -12,6 +12,100 @@ var headingGauge;
 
 $(document).ready(function () {
 
+  chartMetrics();
+
+  //display overlay...
+  displayOverlay();
+
+  connectWebSocket();
+
+  startTimer();
+
+});
+
+
+// Function to close the WebSocket and notify the user
+function closeWebSocket() {
+  socket.close();
+  console.log("Attempting to reestablish connection.")
+  //alert("Connection lost! Attempting to reestablish.")
+
+  chartMetrics();
+
+  //display overlay...
+  displayOverlay();
+
+  // Try to reconnect after a 3 sec delay
+  setTimeout(function () {
+    connectWebSocket();
+  }, 3000); 
+}
+
+// Function to start the timer adn reconnect if it goes 2 seconds without data from server
+function startTimer() {
+  messageTimer = setTimeout(function () {
+    closeWebSocket();
+  }, 2000); 
+}
+
+// Function to reset the timer
+function resetTimer() {
+  clearTimeout(messageTimer);
+  startTimer();
+}
+
+// Establishes all the rules for socket connection and error handling
+function connectWebSocket() {
+
+  socket = new WebSocket("ws://" + window.location.hostname + ":9002");
+
+  socket.onopen = function (event) {
+    //init display
+    getLoggingInfo();
+    console.log("socket connected.")
+    hideOverlay()
+  };
+
+  socket.onmessage = function (event) {
+    //console.log(event.data);
+    resetTimer(); // keep alive
+
+    var msg = JSON.parse(event.data);
+
+    if (msg.telemetry) {
+      processTelemetry(msg.telemetry);
+    }
+    else if (msg.recordingInfo) {
+      var isLogging = msg.recordingInfo.status;
+      var mode = msg.loggingMode.the_mode_is;
+      processRecordingInfo(isLogging, mode);
+    }
+  };
+
+  // Displays error info, reconnection is handled by the timer
+  socket.onerror = function (event) {
+    console.error("Websocket error: ", event)
+  }
+
+  // Displays closing info, reconnection is handled by the timer
+  socket.onclose = function (event) {
+    console.log('WebSocket connection closed.');
+    console.log('Close code:', event.code);
+    console.log('Close reason:', event.reason);
+  }
+}
+
+// Loading screen
+function displayOverlay() {
+  document.getElementById("overlay-text").innerHTML = "<p class='text-dark text-center'>Loading...</p><img src='./img/loading.gif'/>";//"<p class='text-light'>Loading...</p>"; //"<img href='./img/loading.gif'/>";
+  document.getElementById("overlay").style.display = "block";
+}
+
+function hideOverlay() {
+  document.getElementById("overlay").style.display = "none";
+}
+
+function chartMetrics() {
   //Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
   //Chart.defaults.global.defaultFontColor = '#858796'
 
@@ -86,51 +180,6 @@ $(document).ready(function () {
     animateOnInit: true,
     animation: false
   }).draw();
-
-
-  // Init websocket
-
-  //display overlay...
-  displayOverlay();
-
-  socket = new WebSocket("ws://" + window.location.hostname + ":9002");
-
-  socket.onmessage = function (event) {
-    //console.log(event.data);
-    var msg = JSON.parse(event.data);
-
-    if (msg.telemetry) {
-      processTelemetry(msg.telemetry);
-    }
-    else if (msg.recordingInfo) {
-      var isLogging = msg.recordingInfo.status;
-      var mode = msg.loggingMode.the_mode_is;
-      processRecordingInfo(isLogging, mode);
-    }
-  };
-
-  socket.onopen = function (event) {
-    hideOverlay();
-    //init display
-    getLoggingInfo();
-  };
-
-  socket.onerror = function () {
-    //display error div
-    console.log("Error: Cannot connect to websocket")
-    displayOverlay();
-  }
-});
-
-
-
-function displayOverlay() {
-  document.getElementById("overlay-text").innerHTML = "<p class='text-dark text-center'>Loading...</p><img src='./img/loading.gif'/>";//"<p class='text-light'>Loading...</p>"; //"<img href='./img/loading.gif'/>";
-  document.getElementById("overlay").style.display = "block";
-}
-
-function hideOverlay() {
-  document.getElementById("overlay").style.display = "none";
 }
 
 function processTelemetry(state) {
