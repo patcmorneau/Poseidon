@@ -58,22 +58,22 @@ function processRecordingInfo(isLogging, mode) {
 function startRecording() {
     var cmd = { command: "startLogging" };
     socket.send(JSON.stringify(cmd));
-  }
-  
-  function stopRecording() {
+}
+
+function stopRecording() {
     var cmd = { command: "stopLogging" };
     socket.send(JSON.stringify(cmd));
-  }
-  
-  function showRecordingButton() {
+}
+
+function showRecordingButton() {
     $("#startRecIcon").removeClass("d-inline").addClass("d-none");
     $("#stopRecIcon").removeClass("d-none").addClass("d-inline");
-  }
-  function showNotRecordingButton() {
+}
+function showNotRecordingButton() {
     $("#startRecIcon").removeClass("d-none").addClass("d-inline");
     $("#stopRecIcon").removeClass("d-inline").addClass("d-none");
-  }
-  function hideLoggingButton() {
+}
+function hideLoggingButton() {
     $("#startRecIcon").removeClass("d-inline").addClass("d-none");
     $("#stopRecIcon").removeClass("d-inline").addClass("d-none");
-  }
+}

@@ -317,6 +317,8 @@ function stopRecording() {
   socket.send(JSON.stringify(cmd));
 }
 
+// var record = 0;
+
 // function toggleRecording(record) {
 //   if (record == 0) {
 //     var cmd = { command: "startLogging" };
@@ -330,7 +332,6 @@ function stopRecording() {
 // }
 
 // Functions that changes the color and display status of recording buttons
-
 function showRecording() {
   $("#recordingStatus").removeClass("d-none alert-danger").addClass("d-block alert-success");
   $("#recordingStatus").text("The system is currently recording data");
@@ -346,18 +347,21 @@ function showNotRecording() {
   $("#recordingStatus2").text("Inactive");
   // $("#modeWidget").removeClass("text-danger text-success").addClass("text-success");
 }
+
 function showRecordingButton() {
   $("#btnStartRecording").removeClass("d-inline").addClass("d-none");
   $("#btnStopRecording").removeClass("d-none").addClass("d-inline");
   $("#startRecIcon").removeClass("d-inline").addClass("d-none");
   $("#stopRecIcon").removeClass("d-none").addClass("d-inline");
 }
+
 function showNotRecordingButton() {
   $("#btnStartRecording").removeClass("d-none").addClass("d-inline");
   $("#btnStopRecording").removeClass("d-inline").addClass("d-none");
   $("#startRecIcon").removeClass("d-none").addClass("d-inline");
   $("#stopRecIcon").removeClass("d-inline").addClass("d-none");
 }
+
 function hideLoggingButton() {
   $("#btnStartRecording").removeClass("d-inline").addClass("d-none");
   $("#btnStopRecording").removeClass("d-inline").addClass("d-none");
