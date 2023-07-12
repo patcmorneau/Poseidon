@@ -62,7 +62,6 @@ function connectWebSocket() {
     //init display
     getLoggingInfo();
     console.log("socket connected.")
-    hideOverlay()
   };
 
   socket.onmessage = function (event) {
@@ -73,6 +72,7 @@ function connectWebSocket() {
 
     if (msg.telemetry) {
       processTelemetry(msg.telemetry);
+      hideOverlay()
     }
     else if (msg.recordingInfo) {
       var isLogging = msg.recordingInfo.status;
@@ -84,6 +84,7 @@ function connectWebSocket() {
   // Displays error info, reconnection is handled by the timer
   socket.onerror = function (event) {
     console.error("Websocket error: ", event)
+    closeWebSocket()
   }
 
   // Displays closing info, reconnection is handled by the timer
@@ -232,6 +233,8 @@ function processTelemetry(state) {
     $("#sonarStatus").removeClass("bg-gradient-warning").removeClass("bg-gradient-success").addClass("bg-gradient-danger");
     $("#sonarDepthValue").text("");
     $("#sonarStatusText").text("No Sonar Data");
+    // Hide sonar card if no sonar data
+    //$('#sonarCard').addClass("d-none"); 
   }
 
   // Update attitude/depth plot
@@ -269,7 +272,7 @@ function processRecordingInfo(isLogging, mode) {
   //console.log(mode);
   if (mode == "1") {
     hideLoggingButton();
-    $("#modeWidget").text("always ON"); text - success
+    $("#modeWidget").text("always ON"); 
     if (isLogging) {
       //console.log("logging mode 1 : always ON");
       showRecording();
@@ -342,11 +345,13 @@ function showNotRecording() {
 
 function showRecordingButton() {
   $("#btnRecording").removeClass("btn-success").addClass("btn-danger");
+  $("#btnRecordingText").text("Stop Recording");
   $("#RecIcon").removeClass("text-success").addClass("text-danger");
 }
 
 function showNotRecordingButton() {
   $("#btnRecording").removeClass("btn-danger").addClass("btn-success");
+  $("#btnRecordingText").text("Start Recording");
   $("#RecIcon").removeClass("text-danger").addClass("text-success");
 }
 

@@ -19,9 +19,16 @@ $(document).ready(function () {
         getLoggingInfo();
     };
 
-    socket.onerror = function () {
-        //display error divsuccess
-        console.log("Error: Cannot connect to websocket")
+    // Displays error info, reconnection is handled by the timer
+    socket.onerror = function (event) {
+        console.error("Websocket error: ", event)
+    }
+
+    // Displays closing info, reconnection is handled by the timer
+    socket.onclose = function (event) {
+        console.log('WebSocket connection closed.');
+        console.log('Close code:', event.code);
+        console.log('Close reason:', event.reason);
     }
 });
 
