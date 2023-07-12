@@ -1,5 +1,4 @@
 var socket;
-
 $(document).ready(function () {
     socket = new WebSocket("ws://" + window.location.hostname + ":9002");
 
@@ -21,7 +20,7 @@ $(document).ready(function () {
     };
 
     socket.onerror = function () {
-        //display error div
+        //display error divsuccess
         console.log("Error: Cannot connect to websocket")
     }
 });
@@ -55,25 +54,23 @@ function processRecordingInfo(isLogging, mode) {
     }
 }
 
-function startRecording() {
-    var cmd = { command: "startLogging" };
-    socket.send(JSON.stringify(cmd));
-}
-
-function stopRecording() {
-    var cmd = { command: "stopLogging" };
-    socket.send(JSON.stringify(cmd));
+function toggleRecording() {
+    if ($("#RecIcon").hasClass("text-success")) {
+        var cmd = { command: "startLogging" };
+        socket.send(JSON.stringify(cmd));
+    } else if ($("#RecIcon").hasClass("text-danger")) {
+        var cmd = { command: "stopLogging" };
+        socket.send(JSON.stringify(cmd));
+    }
 }
 
 function showRecordingButton() {
-    $("#startRecIcon").removeClass("d-inline").addClass("d-none");
-    $("#stopRecIcon").removeClass("d-none").addClass("d-inline");
+    $("#RecIcon").removeClass("text-success").addClass("text-danger");
 }
 function showNotRecordingButton() {
-    $("#startRecIcon").removeClass("d-none").addClass("d-inline");
-    $("#stopRecIcon").removeClass("d-inline").addClass("d-none");
+    $("#RecIcon").removeClass("text-danger").addClass("text-success");
 }
 function hideLoggingButton() {
-    $("#startRecIcon").removeClass("d-inline").addClass("d-none");
-    $("#stopRecIcon").removeClass("d-inline").addClass("d-none");
+    $("#RecIcon").removeClass("d-inline").addClass("d-none");
+    $("#RecIcon").removeClass("d-inline").addClass("d-none");
 }

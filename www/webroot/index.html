@@ -39,11 +39,8 @@
     <div id="sidebarToggleTop" class="ml-2 btn text-primary">
       <i class="fa fa-2x fa-bars"></i>
     </div>
-    <div id="startRecIcon" class="border-right-warning d-inline float-right ml-auto text-success">
-      <i class="gg-record" href="#" onclick="startRecording()"></i>
-    </div> 
-    <div id="stopRecIcon" class="border-right-warning d-inline float-right ml-auto text-danger">
-      <i class="gg-record" href="#" onclick="stopRecording()"></i>
+    <div id="RecIcon" class="border-right-warning d-inline float-right ml-auto text-success">
+      <i class="gg-record" href="#" onclick="toggleRecording()"></i>
     </div> 
   </nav>
   <!-- End of Topbar -->
@@ -162,18 +159,9 @@
                 </li>
                 <li class="list-group-item">
                   <div class="text-center">
-                    <div id="btnStartRecording" class="d-inline float-center my-auto mx-auto">
-                      <a href="#" onclick="startRecording()" class="btn btn-success">
+                    <div id="btnRecording" href="#" onclick="toggleRecording()" class="d-inline float-center my-auto mx-auto btn btn-success">
                         <span class="icon-text-white-50"><i class="fas fa-circle"></i></span>
                         <span class="text">Start Recording</span>
-                      </a>
-                    </div>
-        
-                    <div id="btnStopRecording" class="d-inline float-center my-auto mx-auto">
-                      <a href="#" onclick="stopRecording()" class="btn btn-danger">
-                        <span class="icon-text-white-50"><i class="fa fa-stop"></i></span>
-                        <span class="text">Stop Recording</span>
-                      </a>
                     </div>
                   </div>
                 </li>

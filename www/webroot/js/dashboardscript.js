@@ -2,7 +2,6 @@ var socket;
 var messageTimer;
 var depthChart;
 var depth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
 var attitudeChart;
 var imu_x = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var imu_y = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -317,54 +316,41 @@ function stopRecording() {
   socket.send(JSON.stringify(cmd));
 }
 
-// var record = 0;
 
-// function toggleRecording(record) {
-//   if (record == 0) {
-//     var cmd = { command: "startLogging" };
-//     socket.send(JSON.stringify(cmd));
-//     record = 1;
-//   } else {
-//     var cmd = { command: "stopLogging" };
-//     socket.send(JSON.stringify(cmd));
-//     record = 0;
-//   }
-// }
+function toggleRecording() {
+  if ($("#btnRecording").hasClass("btn-success")) {
+    var cmd = { command: "startLogging" };
+    socket.send(JSON.stringify(cmd));
+  } else if ($("#btnRecording").hasClass("btn-danger")) {
+    var cmd = { command: "stopLogging" };
+    socket.send(JSON.stringify(cmd));
+  }
+}
 
 // Functions that changes the color and display status of recording buttons
 function showRecording() {
-  $("#recordingStatus").removeClass("d-none alert-danger").addClass("d-block alert-success");
-  $("#recordingStatus").text("The system is currently recording data");
   $("#recordingStatus2").removeClass("d-none text-success").addClass("text-danger");
   $("#recordingStatus2").text("Active");
   // $("#modeWidget").removeClass("text-danger text-success").addClass("text-danger");
 }
 
 function showNotRecording() {
-  $("#recordingStatus").removeClass("d-none alert-success").addClass("d-block alert-danger");
-  $("#recordingStatus").text("The system is not recording data");
   $("#recordingStatus2").removeClass("d-none text-danger").addClass("text-success");
   $("#recordingStatus2").text("Inactive");
   // $("#modeWidget").removeClass("text-danger text-success").addClass("text-success");
 }
 
 function showRecordingButton() {
-  $("#btnStartRecording").removeClass("d-inline").addClass("d-none");
-  $("#btnStopRecording").removeClass("d-none").addClass("d-inline");
-  $("#startRecIcon").removeClass("d-inline").addClass("d-none");
-  $("#stopRecIcon").removeClass("d-none").addClass("d-inline");
+  $("#btnRecording").removeClass("btn-success").addClass("btn-danger");
+  $("#RecIcon").removeClass("text-success").addClass("text-danger");
 }
 
 function showNotRecordingButton() {
-  $("#btnStartRecording").removeClass("d-none").addClass("d-inline");
-  $("#btnStopRecording").removeClass("d-inline").addClass("d-none");
-  $("#startRecIcon").removeClass("d-none").addClass("d-inline");
-  $("#stopRecIcon").removeClass("d-inline").addClass("d-none");
+  $("#btnRecording").removeClass("btn-danger").addClass("btn-success");
+  $("#RecIcon").removeClass("text-danger").addClass("text-success");
 }
 
 function hideLoggingButton() {
-  $("#btnStartRecording").removeClass("d-inline").addClass("d-none");
-  $("#btnStopRecording").removeClass("d-inline").addClass("d-none");
-  $("#startRecIcon").removeClass("d-inline").addClass("d-none");
-  $("#stopRecIcon").removeClass("d-inline").addClass("d-none");
+  $("#btnRecording").removeClass("d-inline").addClass("d-none");
+  $("#RecIcon").removeClass("d-inline").addClass("d-none");
 }
