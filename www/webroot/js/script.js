@@ -20,7 +20,17 @@
         };
     });
 
+    $(".navbar-nav li").each(function() {
+		var href = $(this).find('a').attr('href');
+		if (window.location.pathname.includes(href)) {
+			$(this).addClass('active');
+		} else if (window.location.pathname.includes("calibration") || window.location.pathname.includes("settings")) {
+            $("#utils").addClass('active');
+        }
+	});
+
     if ($(window).width() < 768) {
         $('#homeIcon').css("display", "block");
     }
+    
 })(jQuery); // End of use strict
