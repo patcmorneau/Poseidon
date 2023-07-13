@@ -184,8 +184,8 @@ class PoseidonBinaryLidarGeoref : public PoseidonBinaryReader, public SbetProces
         	double firstLat = firstPosition.latitude;
         	double firstLon = firstPosition.longitude;
         	
-        	Eigen::Matrix3d ecefToNed;
-        	Georeference::generateEcefToNed(ecefToNed, firstLat, firstLon);
+        	Eigen::Matrix3d ecefToEnu;
+        	Georeference::generateEcefToEnu(ecefToEnu, firstLat, firstLon);
         	
         	//filter laser points
         	for (auto i = laserPoints.begin(); i != laserPoints.end(); i++) {
@@ -260,7 +260,7 @@ class PoseidonBinaryLidarGeoref : public PoseidonBinaryReader, public SbetProces
 		        Eigen::Vector3d georeferencedLaserPoint;
 				
 		        
-		        Georeference::georeferenceLGF(georeferencedLaserPoint, ecefToNed, firstPosition, *interpolatedAttitude, *interpolatedPosition, std::get<LidarPacket>(*i), leverArm, boresight);
+		        Georeference::georeferenceLGF(georeferencedLaserPoint, ecefToEnu, firstPosition, *interpolatedAttitude, *interpolatedPosition, std::get<LidarPacket>(*i), leverArm, boresight);
 				
 				
 		        delete interpolatedAttitude;

@@ -145,6 +145,13 @@ namespace Georeference{
 					-cos(firstLat*D2R)*cos(firstLon*D2R), -cos(firstLat*D2R)*sin(firstLon*D2R), -sin(firstLat*D2R);
 	}
 	
+	void generateEcefToEnu(Eigen::Matrix3d & outputMatrix, double & firstLat, double & firstLon){
+		// ecef to enu matrix
+		outputMatrix << -sin(firstLon*D2R), cos(firstLon*D2R), 0,
+					-sin(firstLat*D2R)*cos(firstLon*D2R), -sin(firstLat*D2R)*sin(firstLon*D2R), cos(firstLat*D2R),
+					cos(firstLat*D2R)*cos(firstLon*D2R), cos(firstLat*D2R)*sin(firstLon*D2R), sin(firstLat*D2R);
+	}
+	
 	
 	void getPositionECEF(Eigen::Vector3d & positionECEF, PositionPacket & position){
 		double N = a_wgs84  / (sqrt(1 - e2_wgs84 * sin(position.latitude * D2R) *  sin(position.latitude * D2R)));
@@ -154,11 +161,16 @@ namespace Georeference{
 		positionECEF << xTRF, yTRF, zTRF;
 	}
 	
-	void georeferenceLGF(Eigen::Vector3d & georeferencedLaserPoint, Eigen::Matrix3d & ecefToNed, PositionPacket & firstPosition, AttitudePacket & attitude, PositionPacket & position, LidarPacket & point, Eigen::Vector3d & leverArm, Eigen::Matrix3d & boresight) {
+	void georeferenceLGF(Eigen::Vector3d & georeferencedLaserPoint, Eigen::Matrix3d & ecefToEnu, PositionPacket & firstPosition, AttitudePacket & attitude, PositionPacket & position, LidarPacket & point, Eigen::Vector3d & leverArm, Eigen::Matrix3d & boresight) {
 		
     	
-    	Eigen::Matrix3d imu2ned;
-    	generateDcmMatrix(imu2ned, attitude);
+    	AttitudePacket attitudeENU;
+    	attitudeENU.roll = attitude.pitch;
+    	attitudeENU.pitch = attitude.roll;
+    	attitudeENU.heading = -attitude.heading;
+    	
+    	Eigen::Matrix3d imu2enu;
+    	generateDcmMatrix(imu2enu, attitudeENU);
     	
     	Eigen::Vector3d positionECEF;
     	getPositionECEF(positionECEF, position);
@@ -166,15 +178,15 @@ namespace Georeference{
     	Eigen::Vector3d firstPositionECEF;
     	getPositionECEF(firstPositionECEF, firstPosition);
     	
-    	Eigen::Vector3d positionNed = ecefToNed * (positionECEF -  firstPositionECEF);
+    	Eigen::Vector3d positionEnu = ecefToEnu * (positionECEF -  firstPositionECEF);
     	
-    	Eigen::Vector3d lidarPoint(point.laser_y, point.laser_x, -point.laser_z);
-		Eigen::Vector3d laserPointNed = imu2ned * (boresight * lidarPoint); //
+    	Eigen::Vector3d lidarPoint(point.laser_x, point.laser_y, point.laser_z);
+		Eigen::Vector3d laserPointEnu = imu2enu * (boresight * lidarPoint);
 		
-		//Convert lever arm to NED
-		Eigen::Vector3d leverArmNed = imu2ned * leverArm;
+		//Convert lever arm to ENU
+		Eigen::Vector3d leverArmEnu = imu2enu * leverArm;
 		
-		georeferencedLaserPoint = positionNed + laserPointNed + leverArmNed;
+		georeferencedLaserPoint = positionEnu + laserPointEnu + leverArmEnu;
 		
 		
 		std::cout<<georeferencedLaserPoint(0)<<" "<<georeferencedLaserPoint(1)<<" "<< georeferencedLaserPoint(2) << std::endl;
