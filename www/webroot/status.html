@@ -40,67 +40,67 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <div class="wrapper sidebar mr-4" id="navWrap">
+      <!-- Sidebar -->
+      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion position-fixed" id="accordionSidebar">
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-        <div class="sidebar-brand-text mx-3">Hydroball <sup>2<sup></div>
-        <i id="homeIcon" class="ml-3 fa fa-2x fa-heading" aria-hidden="true" style="display: none;"><sup>2</sup></i>
-      </a>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item inactive">
-        <a class="nav-link" href="index.html">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-      </li>
-      <li class="nav-item inactive">
-        <a class="nav-link" href="map.html">
-          <i class="fas fa-fw fa-globe-americas"></i>
-          <span>Map</span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="status.html">
-          <i class="fas fa-fw fa-globe-americas"></i>
-          <span>System Status</span></a>
-      </li>
-      <li class="nav-item inactive">
-        <a class="nav-link" href="data.html">
-          <i class="fas fa-fw fa-database"></i>
-          <span>Download Data</span></a>
-      </li>
-
-      <li class="nav-item inactive">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-          aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-wrench"></i>
-          <span>System Configuration</span>
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+          <div class="sidebar-brand-text mx-3">Hydroball <sup>2<sup></div>
+          <i id="homeIcon" class="ml-3 fa fa-2x fa-heading" aria-hidden="true" style="display: none;"><sup>2</sup></i>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Configuration Utilities:</h6>
-            <a class="collapse-item" href="calibration.html">Calibration</a>
-            <a class="collapse-item" href="settings.html">Settings</a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+          <a class="nav-link" href="index.html">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+        </li>
+        <li class="nav-item inactive">
+          <a class="nav-link" href="map.html">
+            <i class="fas fa-fw fa-globe-americas"></i>
+            <span>Map</span></a>
+        </li>
+        <li class="nav-item inactive">
+          <a class="nav-link" href="status.html">
+            <i class="fas fa-fw fa-globe-americas"></i>
+            <span>System Status</span></a>
+        </li>
+        <li class="nav-item inactive">
+          <a class="nav-link" href="data.html">
+            <i class="fas fa-fw fa-database"></i>
+            <span>Download Data</span></a>
+        </li>
+        <li class="nav-item inactive">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+            aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>System Configuration</span>
+          </a>
+          <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Configuration Utilities:</h6>
+              <a class="collapse-item" href="calibration.html">Calibration</a>
+              <a class="collapse-item" href="settings.html">Settings</a>
+            </div>
           </div>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+          <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
-      </li>
 
-
-
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
-
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
-
-    </ul>
-    <!-- End of Sidebar -->
+      </ul>
+      <!-- End of Sidebar -->
+    </div>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -164,7 +164,7 @@
 
       </div>
       <!-- Footer -->
-      <footer class="sticky-footer bg-white footer"> 
+      <footer class="sticky-footer bg-white footer">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <span>Copyright &copy; CIDCO</span>
@@ -207,62 +207,9 @@
   <!-- Custom script -->
   <script src="js/script.js"></script>
 
+  <!-- page scipt -->
+  <script src="js/statusScript.js"></script>
+
 </body>
-<script>
-  function processState(state) {
-
-    // Vitals bars
-
-    // Uptime
-    var timeup = state.telemetry.vitals[4];
-    var jourup = Math.floor(timeup / 86400);
-    var heureup = Math.floor((timeup - (jourup * 86400)) / 3600);
-    var minuteup = Math.floor((timeup - (jourup * 86400 + heureup * 3600)) / 60);
-    var secondeup = Math.floor(timeup - ((jourup * 86400) + (heureup * 3600) + (minuteup * 60)));
-    var uptime = jourup + " ";
-    if (heureup < 10) { uptime = uptime + "0" }
-    uptime = uptime + heureup + ":";
-    if (minuteup < 10) { uptime = uptime + "0" }
-    uptime = uptime + minuteup + ":";
-    if (secondeup < 10) { uptime = uptime + "0" }
-    uptime = uptime + secondeup;
-    $("#uptimeText").text(uptime);
-
-
-    // CPU load
-    $("#cpuload").removeClass("bg-gradient-warning").removeClass((state.telemetry.vitals[1] < 90 ? "bg-gradient-danger" : "bg-gradient-success")).addClass((state.telemetry.vitals[1] < 90 ? "bg-gradient-success" : "bg-gradient-danger"));
-
-    $("#cpuloadText").text(state.telemetry.vitals[1] + "%");
-    $("#cpuload").width(state.telemetry.vitals[1] + "%");
-
-
-    // CPU temperature
-    $("#cputemp").removeClass("bg-gradient-warning").removeClass((state.telemetry.vitals[0] > 60 ? "bg-gradient-success" : "bg-gradient-danger")).addClass((state.telemetry.vitals[0] > 75 ? "bg-gradient-danger" : "bg-gradient-success"));
-
-    $("#cputempText").text(state.telemetry.vitals[0] + "\u00B0" + "C");
-    $("#cputemp").width(20 + state.telemetry.vitals[0] + "%");
-
-
-    // Memory
-    $("#freeram").removeClass("bg-gradient-warning").removeClass((state.telemetry.vitals[2] > 10 ? "bg-gradient-danger" : "bg-gradient-success")).addClass((state.telemetry.vitals[2] > 10 ? "bg-gradient-success" : "bg-gradient-danger"));
-
-    $("#freeramText").text(100 - state.telemetry.vitals[2] + "%");
-    $("#freeram").width(100 - state.telemetry.vitals[2] + "%");
-
-    // HDD free space
-    $("#freehdd").removeClass("bg-gradient-warning").removeClass((state.telemetry.vitals[3] > 20 ? "bg-gradient-danger" : "bg-gradient-success")).addClass((state.telemetry.vitals[3] > 20 ? "bg-gradient-success" : "bg-gradient-danger"));
-
-    $("#freehddText").text(100 - state.telemetry.vitals[3] + "%");
-    $("#freehdd").width(100 - state.telemetry.vitals[3] + "%");
-  }
-
-  var socket = new WebSocket("ws://" + window.location.hostname + ":9002");
-
-  socket.onmessage = function (event) {
-    var state = JSON.parse(event.data);
-    processState(state);
-  }
-
-</script>
 
 </html>
