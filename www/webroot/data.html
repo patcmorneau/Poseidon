@@ -160,6 +160,15 @@
               </div>
               <br /><br />
               <div class="table-responsive">
+                <div class="form-group">
+                  <label for="perPageSelect">Elements per Page:</label>
+                  <select id="perPageSelect" onchange="tableFilter(dataArray)" class="form-control">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="-1" selected>All</option>
+                  </select>
+                </div>
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
@@ -169,6 +178,23 @@
                   </thead>
                   <tbody id="tableContents"></tbody>
                 </table>
+                <span class="dataTables_info" id="dataTable_info" role="status" aria-live="polite"></span>
+                <nav aria-label="Page navigation" class="float-right">
+                  <ul id="pagination" class="pagination">
+                    <li class="page-item">
+                      <a id="prevBtn" class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                    </li>
+                    <li class="page-item">
+                      <a id="nextBtn" class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
               </div>
             </div>
           </div>
@@ -207,7 +233,7 @@
   <script src="js/script.js"></script>
 
   <!-- page scipt -->
-  <script src="js/dataScript.js"></script>
+  <script src="js/datatableScript(temp).js"></script>
 
   <!-- Page level plugins -->
   <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
