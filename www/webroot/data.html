@@ -160,8 +160,7 @@
               </div>
               <br /><br />
               <div class="table-responsive">
-                <div class="form-group">
-                  <label for="perPageSelect">Elements per Page:</label>
+                <div class="form-group mb-2">
                   <select id="perPageSelect" onchange="tableFilter(dataArray)" class="form-control">
                     <option value="5">5</option>
                     <option value="10">10</option>
@@ -172,8 +171,8 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                      <th width="100px"></th>
-                      <th></th>
+                      <th width="45px"></th>
+                      <th>Files</th>
                     </tr>
                   </thead>
                   <tbody id="tableContents"></tbody>
@@ -182,17 +181,26 @@
                 <nav aria-label="Page navigation" class="float-right">
                   <ul id="pagination" class="pagination">
                     <li class="page-item">
+                      <a id="firstBtn" class="page-link" href="#" aria-label="First">
+                        <span aria-hidden="true">First</span>
+                      </a>
+                    </li>
+                    <li class="page-item">
                       <a id="prevBtn" class="page-link" href="#" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
                       </a>
                     </li>
                     <li class="page-item">
                       <a id="nextBtn" class="page-link" href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
                       </a>
                     </li>
+                    <li class="page-item">
+                      <a id="lastBtn" class="page-link" href="#" aria-label="Last">
+                        <span aria-hidden="true">Last</span>
+                      </a>
+                    </li>
+                    
                   </ul>
                 </nav>
               </div>
@@ -200,16 +208,17 @@
           </div>
         </div>
         <!-- /.container-fluid -->
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white footer">
-          <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-              <span>Copyright &copy; CIDCO</span>
-            </div>
-          </div>
-        </footer>
-        <!-- End of Footer -->
+        
       </div>
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white footer">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; CIDCO</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
       <!-- End of Main Content -->
     </div>
     <!-- End of Content Wrapper -->
@@ -233,7 +242,7 @@
   <script src="js/script.js"></script>
 
   <!-- page scipt -->
-  <script src="js/datatableScript(temp).js"></script>
+  <script src="js/dataScript.js"></script>
 
   <!-- Page level plugins -->
   <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->

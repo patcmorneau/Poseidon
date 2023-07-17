@@ -2,6 +2,7 @@ var i;
 var dataln;
 var fileslist = Array();
 var linklist = Array();
+var dataArray = [];
 var olddataln = 0;
 
 function processState(state) {
@@ -38,6 +39,13 @@ function processState(state) {
           '"></label></div></td><td class="search">' +
           linklist[i] +
           "</td></tr>";
+        dataArray.push('<tr class="remove"><td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="' +
+          fileslist[i][0] +
+          '"><label class="custom-control-label" for="' +
+          fileslist[i][0] +
+          '"></label></div></td><td class="search">' +
+          linklist[i] +
+          "</td></tr>");
       } else {
         tabledata =
           tabledata +
@@ -48,10 +56,18 @@ function processState(state) {
           '"></label></div></td><td class="search">' +
           linklist[i] +
           "</td></tr>";
+        dataArray.push('<tr class="remove"><td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="' +
+          fileslist[i][0] +
+          '"><label class="custom-control-label" for="' +
+          fileslist[i][0] +
+          '"></label></div></td><td class="search">' +
+          linklist[i] +
+          "</td></tr>");
+
       }
     }
-
     table.innerHTML = tabledata;
+    tableFilter(dataArray);
   }
 }
 //******************************
@@ -96,19 +112,6 @@ socket.onmessage = function (event) {
   processState(state);
 };
 
-$(document).ready(function () {
-
-  chartMetrics();
-
-  //display overlay...
-  displayOverlay();
-
-  connectWebSocket();
-
-  startTimer();
-
-});
-
 //******************************
 //Open websocket
 //******************************
@@ -134,3 +137,135 @@ $(window).on("resize", function () {
 if ($(window).width() < 766) {
   $("#searchbarDiv").removeClass("ml-auto");
 } else { $("#searchbarDiv").addClass("ml-auto") }
+
+//******************************
+//Datatable filtering
+//******************************
+
+function tableFilter(dataArray) {
+  var currentPage = 1;
+  var rowsPerPage = parseInt($('#perPageSelect').val());
+  var totalPages = Math.ceil(dataArray.length / rowsPerPage);
+  if (rowsPerPage == -1) {
+    totalPages = 1;
+  }
+
+  function displayTable() {
+    var startIndex = (currentPage - 1) * rowsPerPage;
+    var endIndex = startIndex + rowsPerPage;
+    var displayedRows = dataArray.slice(startIndex, endIndex);
+
+    // Clear existing rows
+    $('#tableContents').empty();
+
+    // Add rows to the table
+    $.each(displayedRows, function (index, row) {
+      $('#tableContents').append(row);
+    });
+
+    // Update pagination
+    updatePagination();
+  }
+
+  function updatePagination() {
+    var prevBtn = $('#prevBtn');
+    var nextBtn = $('#nextBtn');
+    var firstBtn = $('#firstBtn');
+    var lastBtn = $('#lastBtn');
+  
+    // Disable/enable previous and next buttons based on current page
+    prevBtn.toggleClass('disabled', currentPage === 1);
+    firstBtn.toggleClass('disabled', currentPage === 1);
+    nextBtn.toggleClass('disabled', currentPage === totalPages);
+    lastBtn.toggleClass('disabled', currentPage === totalPages);
+  
+    // Clear existing pagination except for the previous and next buttons
+    $('#pagination').find('.page-item:gt(1):lt(-2)').remove();
+
+    // Calculate the maximum number of pages to display
+    var maxPages = Math.min(totalPages, 5);
+
+    if ($(window).width() < 766) {
+      maxPages = Math.min(totalPages, 3); // Adjust the number of pages to display as desired for smaller screens
+      firstBtn.text("<<");
+      lastBtn.text(">>");
+    }
+  
+    // Calculate the starting page based on the current page and maximum pages
+    var startPage = Math.max(currentPage - Math.floor(maxPages / 2), 1);
+    var endPage = Math.min(startPage + maxPages - 1, totalPages);
+  
+    // Generate pagination
+    for (var i = startPage; i <= endPage; i++) {
+      var pageItem = $('<li class="page-item"><a class="page-link pager" href="#"><span>' + i + '</span></a></li>');
+      if (i === currentPage) {
+        pageItem.addClass('active');
+      }
+      pageItem.insertBefore(nextBtn.parent());
+    }
+  
+    // Update page information
+    var firstEntry = (currentPage - 1) * rowsPerPage + 1;
+    var lastEntry = Math.min(currentPage * rowsPerPage, dataArray.length);
+    var infoText = 'Showing ' + firstEntry + ' to ' + lastEntry + ' of ' + dataArray.length + ' entries';
+  
+    if (rowsPerPage === -1) {
+      infoText = 'Showing ' + firstEntry + ' to ' + dataArray.length + ' of ' + dataArray.length + ' entries';
+    }
+  
+    $('#dataTable_info').text(infoText);
+  }
+  
+  // Handle perPageSelect change event
+  $('#perPageSelect').change(function () {
+    rowsPerPage = parseInt($(this).val());
+    totalPages = Math.ceil(dataArray.length / rowsPerPage);
+    currentPage = 1;
+    displayTable();
+
+  });
+  
+  // Handle pager click event
+  $(document).on('click', '.pager', function (e) {
+    e.preventDefault();
+    currentPage = parseInt($(this).find('span').text(), 10);
+    displayTable();
+  });
+  
+  // Handle previous button click
+  $('#prevBtn').click(function (e) {
+    e.preventDefault();
+    if (currentPage > 1) {
+      currentPage--;
+      displayTable();
+    }
+  });
+  
+  // Handle next button click
+  $('#nextBtn').click(function (e) {
+    e.preventDefault();
+    if (currentPage < totalPages) {
+      currentPage++;
+      displayTable();
+    }
+  });
+
+  // Handle first button click
+  $('#firstBtn').click(function (e) {
+    e.preventDefault();
+    currentPage = 1;
+    displayTable();
+  });
+
+  // Handle last button click
+  $('#lastBtn').click(function (e) {
+    e.preventDefault();
+    currentPage = totalPages;
+    displayTable();
+  });
+
+  // Initial table display
+  displayTable();
+};
+
+
