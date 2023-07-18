@@ -13,7 +13,6 @@ $(document).ready(function () {
 
   chartMetrics();
 
-  //display overlay...
   displayOverlay();
 
   connectWebSocket();

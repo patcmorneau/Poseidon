@@ -20,6 +20,7 @@
         };
     });
 
+    // Highlight active page in the sidebar
     $(".navbar-nav li").each(function() {
 		var href = $(this).find('a').attr('href');
 		if (window.location.pathname.includes(href)) {
