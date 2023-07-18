@@ -115,6 +115,8 @@ socket.onmessage = function (event) {
 //******************************
 //Open websocket
 //******************************
+
+// Searchbar 
 function Search() {
   var value = $(".searchbar").val();
   value = value.toLowerCase();
@@ -129,6 +131,7 @@ function Search() {
   }
 }
 
+// Ajustement de barre de recherche pour petit écrans
 $(window).on("resize", function () {
   if ($(window).width() < 766) {
     $("#searchbarDiv").removeClass("ml-auto");
