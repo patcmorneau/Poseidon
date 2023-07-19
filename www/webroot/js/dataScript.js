@@ -192,6 +192,7 @@ function tableFilter(dataArray) {
       maxPages = Math.min(totalPages, 3); // Adjust the number of pages to display as desired for smaller screens
       firstBtn.text("<<");
       lastBtn.text(">>");
+
     }
   
     // Calculate the starting page based on the current page and maximum pages

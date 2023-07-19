@@ -160,14 +160,6 @@
               </div>
               <br /><br />
               <div class="table-responsive">
-                <div class="form-group mb-2">
-                  <select id="perPageSelect" onchange="tableFilter(dataArray)" class="form-control">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="-1" selected>All</option>
-                  </select>
-                </div>
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
@@ -177,7 +169,7 @@
                   </thead>
                   <tbody id="tableContents"></tbody>
                 </table>
-                <span class="dataTables_info" id="dataTable_info" role="status" aria-live="polite"></span>
+                <div class="dataTables_info float-left mt-2" id="dataTable_info" role="status" aria-live="polite"></div>
                 <nav aria-label="Page navigation" class="float-right">
                   <ul id="pagination" class="pagination">
                     <li class="page-item">
@@ -200,9 +192,21 @@
                         <span aria-hidden="true">Last</span>
                       </a>
                     </li>
-                    
                   </ul>
                 </nav>
+                <div class="form-row align-items-center float-right mr-2">
+                  <div class="col-auto">
+                    <label for="perPageSelect" class="mb-0 text-dark">Results per page :</label>
+                  </div>
+                  <div class="col-auto">
+                    <select id="perPageSelect" onchange="tableFilter(dataArray)" class="form-control">
+                      <option value="5">5</option>
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="-1">All</option>
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

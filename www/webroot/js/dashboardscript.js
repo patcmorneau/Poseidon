@@ -358,3 +358,14 @@ function hideLoggingButton() {
   $("#btnRecording").removeClass("d-inline").addClass("d-none");
   $("#RecIcon").removeClass("d-inline").addClass("d-none");
 }
+
+// Resize recording button 
+if ($(window).width() < 766) {
+  $("#btnRecording").toggleClass("d-inline btn-lg");
+  $("#btnRecording").parent().toggleClass("m-0 p-0");
+  $("#btnRecording").parent().parent().toggleClass("m-0 p-0");
+  $("#btnRecording").css('width', '100%');
+  $("#btnRecording").css('height', '100%');
+  $("#btnRecording").parent().css('width', '100%');
+  $("#btnRecording").parent().css('height', '100%');
+}

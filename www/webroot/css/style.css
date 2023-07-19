@@ -3,11 +3,11 @@
     position: relative;
     display: block;
     transform: scale(var(--ggs, 1));
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border: 6px solid transparent;
     box-shadow: 0 0 0 2px, inset 0 0 0 10px;
-    border-radius: 100px
+    border-radius: 100px;
 }
 
 .gg-record:hover {

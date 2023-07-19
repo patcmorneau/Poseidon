@@ -10,7 +10,7 @@ function processConfig(config) {
 
   config.forEach(function (item, index) {
     if (item.key == "loggingMode") {
-      endNewHTML += '<div class="form-group row"><label class="col-lg-2 col-form-label" for="' + item.key + '">' + item.key + '</label><div class="col-lg-10"><select id="' + item.key + '" name="logginModeSelector" class="dropdownright configurationField"></div>';
+      endNewHTML += '<div class="form-group row align-items-center"><label class="col-auto col-form-label" for="' + item.key + '">' + item.key + " : " + '</label><div class="col"><select id="' + item.key + '" name="logginModeSelector" class="dropdownright configurationField"></div>';
 
       var mode = Number(item.value);
       switch (mode) {
@@ -30,7 +30,7 @@ function processConfig(config) {
       }
     }
     else {
-      newHTML += '<div class="form-group row"> <label class="col-lg-2 col-form-label" for="' + item.key + '">' + item.key + '</label> <div class="col-lg-10"> <input id="' + item.key + '" class="form-control text-right configurationField" type="text" value="' + item.value + '"/> </div></div>';
+      newHTML += '<div class="form-group row align-items-center"> <label class="col-auto col-form-label" for="' + item.key + '">' + item.key + " : " + '</label> <div class="col"> <input id="' + item.key + '" class="form-control configurationField" type="text" value="' + item.value + '"/> </div></div>';
     }
 
   });
