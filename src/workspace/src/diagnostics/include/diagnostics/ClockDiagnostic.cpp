@@ -36,9 +36,12 @@ int main(void){
 	for (;;) {
 		struct gps_data_t* newdata;
 		if (gps_rec.waiting(50000000)){
-			if (gps_rec.data()) {
-				if (gps_rec.data()->fix.mode >= 2) { // Check if the GPS fix is valid
-					time_t gpsTime = gps_rec.data()->fix.time;
+			struct gps_data_t* gpsData = gps_rec.read();
+			if (gpsData != nullptr) {
+				if (gpsData->status >= 2) { // Check if the GPS fix is valid
+					struct timespec * ts;
+					ts = &gpsData->fix.time;
+					std::cout << "GPS Time: " << ts << std::endl;
 				}
 			}
 		}
