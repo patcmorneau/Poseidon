@@ -25,8 +25,7 @@ static void libgps_dump_state(struct gps_data_t *data){
 
 
 
-int main(void)
-{
+int main(void){
 	gpsmm gps_rec("localhost", "2947");
 
 	if (gps_rec.stream(WATCH_ENABLE | WATCH_NEWSTYLE) == NULL) {
@@ -37,9 +36,11 @@ int main(void)
 	for (;;) {
 		struct gps_data_t* newdata;
 		if (gps_rec.waiting(50000000)){
-			if (gps.data()) {
-				if (gps.data()->fix.mode >= 2) { // Check if the GPS fix is valid
-					time_t gpsTime = gps.data()->fix.time;
+			if (gps_rec.data()) {
+				if (gps_rec.data()->fix.mode >= 2) { // Check if the GPS fix is valid
+					time_t gpsTime = gps_rec.data()->fix.time;
+				}
+			}
 		}
 	}
 	return 0;
