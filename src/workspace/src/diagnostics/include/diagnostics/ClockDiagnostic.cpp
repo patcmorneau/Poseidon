@@ -30,16 +30,16 @@ int main(void)
 {
     gpsmm gps_rec("localhost", "2947");
 
-    if (gps_rec.stream(WATCH_ENABLE|WATCH_JSON) == NULL) {
+    if (gps_rec.stream(WATCH_ENABLE | WATCH_NEWSTYLE) == NULL) {
         cerr << "No GPSD running.\n";
         return 1;
     }
 
     for (;;) {
 		struct gps_data_t* newdata;
-		std::cout<<"ok1\n";
+		//std::cout<<"ok1\n";
 		if (!gps_rec.waiting(50000000)){
-			std::cout<<"ok2\n";
+			//std::cout<<"ok2\n";
 			continue;
 		}
 
