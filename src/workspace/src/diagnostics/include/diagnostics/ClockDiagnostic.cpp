@@ -41,8 +41,11 @@ int main(void){
 				//if (gpsData->status >= 2) { // Check if the GPS fix is valid
 					struct timespec * ts;
 					ts = &gpsData->fix.time;
-					std::cout << "GPS Time: " << ts << std::endl;
+					cout << "GPS Time: " << ts << std::endl;
 				//}
+			}
+			else{
+				cerr<<"Read error \n";
 			}
 		}
 	}
