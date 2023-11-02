@@ -17,6 +17,7 @@ int main(void){
 		struct gps_data_t* gpsData = gps_rec.read();
 		if (gpsData != nullptr) {
 			if (gpsData->set & TIME_SET){
+				cout<<"gps status :" << gpsData->status <<"\n"
 				struct timespec ts = gpsData->fix.time;
 				
 				auto systemTime = std::chrono::system_clock::now();
