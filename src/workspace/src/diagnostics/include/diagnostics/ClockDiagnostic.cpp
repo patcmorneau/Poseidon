@@ -35,7 +35,7 @@ int main(void){
 
 	for (;;) {
 		struct gps_data_t* newdata;
-		if (gps_rec.waiting(50000000)){
+		//if (gps_rec.waiting(50000000)){
 			struct gps_data_t* gpsData = gps_rec.read();
 			if (gpsData != nullptr) {
 				//if (gpsData->status >= 2) { // Check if the GPS fix is valid
@@ -47,7 +47,7 @@ int main(void){
 			else{
 				cerr<<"Read error \n";
 			}
-		}
+		//}
 	}
 	return 0;
 }
