@@ -20,7 +20,7 @@ int main(void){
 			//cout << "GPS Time: " << ts << std::endl;
 			char buff[100];
 			strftime(buff, sizeof buff, "%D %T", gmtime(&ts.tv_sec));
-			printf("Current time: %s.%09ld UTC\n", buff, ts.tv_nsec);
+			printf("Raw timespec.time_t: %jd\n", (intmax_t)ts.tv_sec);
 		}
 
 
