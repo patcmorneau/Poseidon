@@ -38,11 +38,11 @@ int main(void){
 		if (gps_rec.waiting(50000000)){
 			struct gps_data_t* gpsData = gps_rec.read();
 			if (gpsData != nullptr) {
-				if (gpsData->status >= 2) { // Check if the GPS fix is valid
+				//if (gpsData->status >= 2) { // Check if the GPS fix is valid
 					struct timespec * ts;
 					ts = &gpsData->fix.time;
 					std::cout << "GPS Time: " << ts << std::endl;
-				}
+				//}
 			}
 		}
 	}
