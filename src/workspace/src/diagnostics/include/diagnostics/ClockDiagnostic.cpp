@@ -5,7 +5,7 @@ using namespace std;
 
 
 static void libgps_dump_state(struct gps_data_t *data){
-	std::cout<<"ok2 \n";
+	std::cout<<"ok4 \n";
 	/*
     char ts_str[TIMESPEC_LEN];
 
@@ -22,8 +22,6 @@ static void libgps_dump_state(struct gps_data_t *data){
     printf("Current time: %s.%09ld UTC\n", buff, ts->tv_nsec);
 //    printf("Raw timespec.time_t: %jd\n", (intmax_t)ts.tv_sec);
 //    printf("Raw timespec.tv_nsec: %09ld\n", ts.tv_nsec);
-	
-	
 }
 
 
@@ -39,15 +37,17 @@ int main(void)
 
     for (;;) {
 		struct gps_data_t* newdata;
-
-		if (!gps_rec.waiting(50000000))
-		  continue;
+		std::cout<<"ok1\n";
+		if (!gps_rec.waiting(50000000)){
+			std::cout<<"ok2\n";
+			continue;
+		}
 
 		if ((newdata = gps_rec.read()) == NULL) {
 			cerr << "Read error.\n";
 			return 1;
 		} else {
-			std::cout<<"ok\n";
+			std::cout<<"ok3\n";
 			libgps_dump_state(newdata);
 		}
     }
