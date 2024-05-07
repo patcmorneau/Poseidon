@@ -41,6 +41,7 @@
 
 #include "../../utils/QuaternionUtils.h"
 #include "../../utils/Constants.hpp"
+#include "../../utils/string_utils.hpp"
 
 
 typedef websocketpp::server<websocketpp::config::asio> server;
@@ -356,8 +357,9 @@ public:
 				ssid += buffer.data();
 			}
 		}
-		std::cout<< ssid <<"\n";
-		if(ssid == configuration["hotspotSSID"]){
+		ssid.erase(0,20);
+		std::cout<<"ssid: " << ssid <<"\n";
+		if(trimSpaces(ssid) == configuration["hotspotSSID"]){
 			return true;
 		}
 		else{
