@@ -335,11 +335,11 @@ public:
 			std::string cmd = "sudo nmcli con modify Hotspot 802-11-wireless.ssid ";
 			cmd += configuration["hotspotSSID"];
 			std::system(cmd.c_str());
+			std::system("sudo nmcli con down Hotspot");
+			std::system("sudo nmcli con up Hotspot");
 			if(!isSameSSID()){
 				ROS_ERROR("Error in updating hotspotSSID");
 			}
-			std::system("sudo nmcli con down Hotspot");
-			std::system("sudo nmcli con down Hotspot");
 		}
 		
 	}
