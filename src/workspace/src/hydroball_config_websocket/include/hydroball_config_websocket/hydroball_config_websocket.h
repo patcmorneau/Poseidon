@@ -15,6 +15,9 @@
 #include <boost/lexical_cast.hpp>
 #include <mutex>
 #include <string>
+#include <cstdio>
+#include <memory>
+#include <stdexcept>
 
 #include "ros/ros.h"
 #include <ros/console.h>
@@ -328,6 +331,38 @@ public:
 
 	void updateHotspotSSID(){
 		
+		if(!isSameSSID()){
+			std::string cmd = "sudo nmcli con modify Hotspot 802-11-wireless.ssid ";
+			cmd += configuration["hotspotSSID"];
+			std::system(cmd.c_str());
+			if(!isSameSSID()){
+				ROS_ERROR("Error in updating hotspotSSID");
+			}
+			std::system("sudo nmcli con down Hotspot");
+			std::system("sudo nmcli con down Hotspot");
+		}
+		
+	}
+	
+	bool isSameSSID(){
+		std::array<char, 128> buffer;
+		std::string ssid;
+		std::shared_ptr<FILE> pipe(popen("nmcli con show Hotspot | grep wireless.ssid", "r"), pclose);
+		if (!pipe) {
+			throw std::runtime_error("popen() failed!");
+		}
+		while (!feof(pipe.get())) {
+			if (fgets(buffer.data(), 128, pipe.get()) != nullptr) {
+				ssid += buffer.data();
+			}
+		}
+		std::cout<< ssid <<"\n";
+		if(ssid == configuration["hotspotSSID"]){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 private:
