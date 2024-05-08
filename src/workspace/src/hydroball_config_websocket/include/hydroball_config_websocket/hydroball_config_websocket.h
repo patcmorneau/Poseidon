@@ -347,19 +347,28 @@ public:
 	
 	bool isSameSSID(){
 		std::array<char, 128> buffer;
-		std::string ssid;
+		std::string result;
 		std::shared_ptr<FILE> pipe(popen("nmcli con show Hotspot | grep wireless.ssid", "r"), pclose);
 		if (!pipe) {
 			throw std::runtime_error("popen() failed!");
 		}
 		while (!feof(pipe.get())) {
 			if (fgets(buffer.data(), 128, pipe.get()) != nullptr) {
-				ssid += buffer.data();
+				result += buffer.data();
 			}
 		}
-		ssid.erase(0,20);
+		result.erase(0,20);
+		std::string ssid;
+		
+		for (char c : result) {
+			if (isalnum(c)) {// Check if character is alphanumeric
+				ssid += c;	
+			}
+		}
+		
 		std::cout<<"ssid: " << ssid <<"\n";
-		if(trimSpaces(ssid) == configuration["hotspotSSID"]){
+		
+		if(ssid == configuration["hotspotSSID"]){
 			return true;
 		}
 		else{
