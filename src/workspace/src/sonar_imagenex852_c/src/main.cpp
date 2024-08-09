@@ -103,30 +103,22 @@ class Imagenex852{
 		void setConfigValue(const std::string & valStr,uint8_t * val){
 			mtx.lock();
 				sscanf(valStr.c_str(),"%hhu",val);
+				configChanged = true;
 			mtx.unlock();
 		}
 
 		void configurationChange(const setting_msg::Setting & setting){
 			if(setting.key.compare("sonarStartGain")==0){
 				setConfigValue(setting.value,&sonarStartGain);
-				this->paramFlag++;
 			}
 			else if(setting.key.compare("sonarRange")==0){
 				setConfigValue(setting.value,&sonarRange);
-				this->paramFlag++;
 			}
 			else if(setting.key.compare("sonarAbsorbtion")==0){
 				setConfigValue(setting.value,&sonarAbsorbtion);
-				this->paramFlag++;
 			}
 			else if(setting.key.compare("sonarPulseLength")==0){
 				setConfigValue(setting.value,&sonarPulseLength);
-				this->paramFlag++;
-			}
-			
-			if(paramFlag >= 4){
-				paramFlag = 0;
-				send_command();
 			}
 		}
 
@@ -251,16 +243,16 @@ class Imagenex852{
 			Imagenex852SwitchDataCommand cmd;
 			memset(&cmd,0,sizeof(Imagenex852SwitchDataCommand));
 
-			//mtx.lock();
-			cmd.range	   = sonarRange;
-			cmd.startGain   = sonarStartGain;
-			cmd.absorption  = sonarAbsorbtion; //20 = 0.2db	675kHz
-			cmd.pulseLength = sonarPulseLength; //1-255 -> 1us to 255us in 1us increments
-			//mtx.unlock();
+			mtx.lock();
+				cmd.range	   = sonarRange;
+				cmd.startGain   = sonarStartGain;
+				cmd.absorption  = sonarAbsorbtion; //20 = 0.2db	675kHz
+				cmd.pulseLength = sonarPulseLength; //1-255 -> 1us to 255us in 1us increments
+			mtx.unlock();
 
 			cmd.magic[0]	= 0xFE	;
 			cmd.magic[1]	= 0x44	;
-			cmd.headId	  = 0x11	;
+			cmd.headId      = 0x11  ;
 			cmd.masterSlave = 0x43	;
 
 			cmd.profileMinimumRange =  0; //Min range in meters / 10
@@ -346,6 +338,13 @@ class Imagenex852{
 				serialRead(&terminationCharacter,sizeof(uint8_t));
 			}
 			while(terminationCharacter != 0xFC);
+
+			if(configChanged){
+				send_command();
+				mtx.lock();
+					configChanged = false;
+				mtx.lock();
+			}
 			
 			uint16_t profileHigh = (hdr.profileRange[1] & 0x7E) >> 1;
 			uint16_t profileLow  = ((hdr.profileRange[1] & 0x01) << 7) | (hdr.profileRange[0] & 0x7F);
@@ -374,8 +373,8 @@ class Imagenex852{
 		uint8_t sonarRange = 32;
 		uint8_t sonarAbsorbtion = 0x14; //20 = 0.2db	675kHz
 		uint8_t sonarPulseLength= 150;
-		int paramFlag = 0;
 		uint8_t dataPoints = 0;
+		bool configChanged = false;
 
 		ros::NodeHandle		node;
 		ros::Publisher		sonarTopic;
