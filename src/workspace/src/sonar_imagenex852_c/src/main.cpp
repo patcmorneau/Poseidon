@@ -171,9 +171,11 @@ class Imagenex852{
 					
 					send_command();
 					ros::Rate error_rate( 1 );
-
+					ros::Rate loop_rate( 1 );
 					while(ros::ok()){
-						
+						ROS_ERROR("ros spin once");
+						ros::spinOnce();
+						loop_rate.sleep();
 						try{
 							uint8_t read_buf [1];
 							uint8_t packetType=0;
@@ -198,13 +200,13 @@ class Imagenex852{
 												}
 											}
 											else{
-												//ROS_ERROR("3rd Serial read error: %d", read_buf[0]);
+												ROS_ERROR("3rd Serial read error: %d", read_buf[0]);
 											}
 										}
 									}
 								}
 								else{
-									//ROS_ERROR("1st Serial read error: %d", read_buf[0]);
+									ROS_ERROR("1st Serial read error: %d", read_buf[0]);
 								}
 							}
 						}
@@ -416,7 +418,7 @@ int main(int argc,char ** argv){
 		
 		std::thread t(std::bind(&Imagenex852::run,&sonar));
 	
-		ros::Rate loop_rate( 10 ); // 10 Hz
+		ros::Rate loop_rate( 10 ); // 1 Hz
 		while(ros::ok()){
 			ros::spinOnce();
 			loop_rate.sleep();
