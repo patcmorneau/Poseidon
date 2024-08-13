@@ -169,8 +169,9 @@ class Imagenex852{
 				else{
 					ROS_INFO("Sonar file opened on %s",devicePath.c_str());
 					
-					
+					ros::Duration(0.003).sleep();
 					send_command();
+					ros::Duration(0.0023).sleep();
 					ros::Rate error_rate( 1 );
 					ros::Rate loop_rate( 1 );
 					while(ros::ok()){
