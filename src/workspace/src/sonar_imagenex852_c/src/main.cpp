@@ -175,6 +175,7 @@ class Imagenex852{
 					send_command();
 					uint8_t crap_buf [1];
 					if(serialRead((uint8_t*)&crap_buf, sizeof(crap_buf)) == 1){
+						ros::Duration(0.003).sleep();
 						send_command();
 					}
 					
