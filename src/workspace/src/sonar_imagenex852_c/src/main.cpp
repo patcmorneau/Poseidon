@@ -174,7 +174,7 @@ class Imagenex852{
 					ros::Rate error_rate( 1 );
 					ros::Rate loop_rate( 1 );
 					while(ros::ok()){
-						//ROS_ERROR("ros spin once");
+						ROS_ERROR("ros spin once");
 						ros::spinOnce();
 						loop_rate.sleep();
 						try{
@@ -190,7 +190,7 @@ class Imagenex852{
 											if(read_buf[0] == 0x58){
 												Imagenex852ReturnDataHeader hdr;
 												if(serialRead((uint8_t*)&hdr+3, sizeof(Imagenex852ReturnDataHeader)-3) == 9){
-													//ROS_ERROR("ok");
+													ROS_ERROR("ok");
 													hdr.magic[0] = 'I';
 													hdr.magic[1] = packetType;
 													hdr.magic[2] = 'X';
@@ -201,15 +201,18 @@ class Imagenex852{
 												}
 											}
 											else{
-												//ROS_ERROR("3rd Serial read error: %d", read_buf[0]);
+												ROS_ERROR("3rd Serial read error: %d", read_buf[0]);
 											}
 										}
+										
 									}
+									ROS_ERROR("serial read 2 = 0");
 								}
 								else{
-									//ROS_ERROR("1st Serial read error: %d", read_buf[0]);
+									ROS_ERROR("1st Serial read error: %d", read_buf[0]);
 								}
 							}
+							ROS_ERROR("serial read 1 = 0");
 						}
 						catch(std::exception & e){
 							//ROS_ERROR already has been called. Lets sleep on this
