@@ -187,6 +187,7 @@ class Imagenex852{
 											if(read_buf[0] == 0x58){
 												Imagenex852ReturnDataHeader hdr;
 												if(serialRead((uint8_t*)&hdr+3, sizeof(Imagenex852ReturnDataHeader)-3) == 9){
+													ROS_ERROR("ok");
 													hdr.magic[0] = 'I';
 													hdr.magic[1] = packetType;
 													hdr.magic[2] = 'X';
@@ -211,6 +212,7 @@ class Imagenex852{
 							//ROS_ERROR already has been called. Lets sleep on this
 							error_rate.sleep();
 						}
+						send_command();
 					}
 				}
 			}
@@ -239,6 +241,7 @@ class Imagenex852{
 		
 		void send_command(){
 			//sonar needs a power cycle to change its configuration
+			ROS_ERROR("send_command()");
 			
 			Imagenex852SwitchDataCommand cmd;
 			memset(&cmd,0,sizeof(Imagenex852SwitchDataCommand));
@@ -252,8 +255,8 @@ class Imagenex852{
 
 			cmd.magic[0]	= 0xFE	;
 			cmd.magic[1]	= 0x44	;
-			cmd.headId      = 0x11  ;
-			cmd.masterSlave = 0x43	;
+			cmd.headId      = 0x11;
+			cmd.masterSlave = 0x43;
 
 			cmd.profileMinimumRange =  0; //Min range in meters / 10
 			cmd.triggerControl = 0x07; //Trigger enabled on positive edge
