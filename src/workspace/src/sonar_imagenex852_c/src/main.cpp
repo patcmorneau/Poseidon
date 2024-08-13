@@ -156,7 +156,7 @@ class Imagenex852{
 				tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL); // Disable any special handling of received bytes
 				tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
 				tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
-				tty.c_cc[VTIME] = 250;	// Wait for up to 25s (250 deciseconds), returning as soon as any data is received.
+				tty.c_cc[VTIME] = 10;	// Wait for up to 25s (250 deciseconds), returning as soon as any data is received.
 				tty.c_cc[VMIN] = 0;
 
 				cfsetispeed(&tty, B115200);
@@ -169,9 +169,9 @@ class Imagenex852{
 				else{
 					ROS_INFO("Sonar file opened on %s",devicePath.c_str());
 					
-					ros::Duration(0.0035).sleep();
-					send_command();
 					ros::Duration(0.003).sleep();
+					send_command();
+					ros::Duration(0.0023).sleep();
 					ros::Rate error_rate( 1 );
 					ros::Rate loop_rate( 1 );
 					while(ros::ok()){
@@ -214,7 +214,14 @@ class Imagenex852{
 							}
 							else{
 								ROS_ERROR("serial read 1 = 0");
-								send_command();
+								while(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 0){
+									send_command();
+								}
+								uint8_t terminationCharacter;
+								do{
+									serialRead(&terminationCharacter,sizeof(uint8_t));
+								}
+								while(terminationCharacter != 0xFC);
 							}
 						}
 						catch(std::exception & e){
@@ -222,9 +229,9 @@ class Imagenex852{
 							error_rate.sleep();
 						}
 						
-						ROS_ERROR("ros spin once");
-						ros::spinOnce();
-						loop_rate.sleep();
+						//ROS_ERROR("ros spin once");
+						//ros::spinOnce();
+						//loop_rate.sleep();
 						//send_command();
 					}
 				}
@@ -254,7 +261,7 @@ class Imagenex852{
 		
 		void send_command(){
 			//sonar needs a power cycle to change its configuration
-			//ROS_ERROR("send_command()");
+			ROS_ERROR("send_command()");
 			
 			Imagenex852SwitchDataCommand cmd;
 			memset(&cmd,0,sizeof(Imagenex852SwitchDataCommand));
@@ -273,7 +280,7 @@ class Imagenex852{
 			cmd.masterSlave = 0x43;
 
 			cmd.profileMinimumRange =  0; //Min range in meters / 10
-			cmd.triggerControl = 0x00; //Trigger enabled on positive edge
+			cmd.triggerControl = 0x07; //Trigger enabled on positive edge
 			cmd.dataPoints  = (this->dataPoints > 0)? this->dataPoints:0; //XXX
 			cmd.profile	 = (this->dataPoints > 0)? 0:1; //XXX
 			cmd.switchDelay = 0;
