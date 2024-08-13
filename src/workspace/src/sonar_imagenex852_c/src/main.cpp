@@ -156,7 +156,7 @@ class Imagenex852{
 				tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL); // Disable any special handling of received bytes
 				tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
 				tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
-				tty.c_cc[VTIME] = 10;	// Wait for up to 25s (250 deciseconds), returning as soon as any data is received.
+				tty.c_cc[VTIME] = 250;	// Wait for up to 25s (250 deciseconds), returning as soon as any data is received.
 				tty.c_cc[VMIN] = 0;
 
 				cfsetispeed(&tty, B115200);
@@ -392,7 +392,7 @@ class Imagenex852{
 	private:
 		std::mutex mtx;
 		uint8_t sonarStartGain = 0x06;
-		uint8_t sonarRange = 32;
+		uint8_t sonarRange = 50;
 		uint8_t sonarAbsorbtion = 0x14; //20 = 0.2db	675kHz
 		uint8_t sonarPulseLength= 150;
 		uint8_t dataPoints = 0;
