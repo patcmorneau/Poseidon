@@ -214,6 +214,7 @@ class Imagenex852{
 							}
 							else{
 								ROS_ERROR("serial read 1 = 0");
+								send_command();
 							}
 						}
 						catch(std::exception & e){
@@ -288,7 +289,8 @@ class Imagenex852{
 		}
 		
 		void process_data(Imagenex852ReturnDataHeader hdr){
-			//ROS_INFO("process_data()");
+			ROS_INFO("process_data()");
+			ROS_INFO("%d range", hdr.range);
 			int dataSize = 0;
 			
 			//std::cout<<hdr.magic <<"\n";
@@ -318,7 +320,7 @@ class Imagenex852{
 			}
 
 			//Verify that we support automatic trigger mode
-			ROS_ERROR("%x", hdr.serialStatus);
+			ROS_ERROR("%x serialStatus", hdr.serialStatus);
 			if(! hdr.serialStatus & 0x04){
 				ROS_ERROR("Automatic trigger mode not supported. Pings will be unsynchronized");
 			}
