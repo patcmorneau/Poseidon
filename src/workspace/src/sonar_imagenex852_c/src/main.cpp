@@ -214,14 +214,14 @@ class Imagenex852{
 							}
 							else{
 								ROS_ERROR("serial read 1 = 0");
-								while(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 0){
-									send_command();
-								}
-								uint8_t terminationCharacter;
-								do{
-									serialRead(&terminationCharacter,sizeof(uint8_t));
-								}
-								while(terminationCharacter != 0xFC);
+//								while(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 0){
+//									send_command();
+//								}
+//								uint8_t terminationCharacter;
+//								do{
+//									serialRead(&terminationCharacter,sizeof(uint8_t));
+//								}
+//								while(terminationCharacter != 0xFC);
 							}
 						}
 						catch(std::exception & e){
@@ -229,10 +229,14 @@ class Imagenex852{
 							error_rate.sleep();
 						}
 						
-						//ROS_ERROR("ros spin once");
-						//ros::spinOnce();
-						//loop_rate.sleep();
-						//send_command();
+						ROS_ERROR("ros spin once");
+						ros::spinOnce();
+						loop_rate.sleep();
+						send_command();
+						this->sonarRange++;
+						if(this->sonarRange > 50){
+							this->sonarRange = 5;
+						}
 					}
 				}
 			}
