@@ -169,15 +169,12 @@ class Imagenex852{
 				else{
 					ROS_INFO("Sonar file opened on %s",devicePath.c_str());
 					
-					ros::Duration(0.003).sleep();
+					ros::Duration(0.0035).sleep();
 					send_command();
-					ros::Duration(0.0023).sleep();
+					ros::Duration(0.003).sleep();
 					ros::Rate error_rate( 1 );
 					ros::Rate loop_rate( 1 );
 					while(ros::ok()){
-						ROS_ERROR("ros spin once");
-						ros::spinOnce();
-						loop_rate.sleep();
 						try{
 							uint8_t read_buf [1];
 							uint8_t packetType=0;
@@ -207,18 +204,26 @@ class Imagenex852{
 										}
 										
 									}
-									ROS_ERROR("serial read 2 = 0");
+									else{
+										ROS_ERROR("serial read 2 = 0");
+									}
 								}
 								else{
 									ROS_ERROR("1st Serial read error: %d", read_buf[0]);
 								}
 							}
-							ROS_ERROR("serial read 1 = 0");
+							else{
+								ROS_ERROR("serial read 1 = 0");
+							}
 						}
 						catch(std::exception & e){
 							//ROS_ERROR already has been called. Lets sleep on this
 							error_rate.sleep();
 						}
+						
+						ROS_ERROR("ros spin once");
+						ros::spinOnce();
+						loop_rate.sleep();
 						//send_command();
 					}
 				}
@@ -313,6 +318,7 @@ class Imagenex852{
 			}
 
 			//Verify that we support automatic trigger mode
+			ROS_ERROR("%x", hdr.serialStatus);
 			if(! hdr.serialStatus & 0x04){
 				ROS_ERROR("Automatic trigger mode not supported. Pings will be unsynchronized");
 			}
@@ -381,7 +387,6 @@ class Imagenex852{
 		uint8_t sonarAbsorbtion = 0x14; //20 = 0.2db	675kHz
 		uint8_t sonarPulseLength= 150;
 		uint8_t dataPoints = 0;
-		bool configChanged = false;
 
 		ros::NodeHandle		node;
 		ros::Publisher		sonarTopic;
@@ -390,7 +395,7 @@ class Imagenex852{
 		ros::ServiceClient	configurationClient;
 		ros::Subscriber configSubscriber;
 
-		std::string   		devicePath;
+		std::string devicePath;
 		int deviceFile = -1;
 
 		uint32_t delayNanoseconds = 0; //FIXME: get from a ROS parameter
