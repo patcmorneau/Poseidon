@@ -241,9 +241,12 @@ class Imagenex852{
 								}
 								
 								
-								while(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 0){
+								while(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) != 1){
 									send_command();
 								}
+								
+								ROS_INFO("here 0");
+								
 								uint8_t terminationCharacter;
 								do{
 									serialRead(&terminationCharacter,sizeof(uint8_t));
