@@ -349,12 +349,12 @@ class Imagenex852{
 			while(terminationCharacter != 0xFC);
 			ROS_INFO("process_data()3");
 
-			if(configChanged){
-				send_command();
-				mtx.lock();
-					configChanged = false;
-				mtx.lock();
-			}
+//			if(configChanged){
+//				send_command();
+//				mtx.lock();
+//					configChanged = false;
+//				mtx.lock();
+//			}
 			ROS_INFO("process_data()4");
 			
 			uint16_t profileHigh = (hdr.profileRange[1] & 0x7E) >> 1;
