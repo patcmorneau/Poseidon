@@ -78,7 +78,7 @@ class Imagenex852{
 		}
 
 		void getConfiguration(){
-			ROS_INFO("getConfiguration()");
+			//ROS_INFO("getConfiguration()");
 			char *	configKeys[] = {"sonarStartGain","sonarRange","sonarAbsorbtion","sonarPulseLength"};
 			uint8_t * valuePtrs[]  = {&sonarStartGain,&sonarRange,&sonarAbsorbtion,&sonarPulseLength};
 
@@ -86,7 +86,7 @@ class Imagenex852{
 				std::string valueString = getConfigValue(configKeys[i]);
 				setConfigValue(valueString, valuePtrs[i]);
 			}
-			ROS_INFO("getConfiguration()2");
+			//ROS_INFO("getConfiguration()2");
 		}
 
 		std::string getConfigValue(std::string key){
@@ -105,7 +105,6 @@ class Imagenex852{
 		void setConfigValue(const std::string & valStr,uint8_t * val){
 			mtx.lock();
 				sscanf(valStr.c_str(),"%hhu",val);
-				configChanged = true;
 			mtx.unlock();
 		}
 
@@ -175,7 +174,7 @@ class Imagenex852{
 					ros::Rate error_rate( 1 );
 					ros::Rate loop_rate( 1 );
 					while(ros::ok()){
-						ROS_ERROR("ros spin once");
+						//ROS_ERROR("ros spin once");
 						ros::spinOnce();
 						loop_rate.sleep();
 						try{
@@ -191,7 +190,7 @@ class Imagenex852{
 											if(read_buf[0] == 0x58){
 												Imagenex852ReturnDataHeader hdr;
 												if(serialRead((uint8_t*)&hdr+3, sizeof(Imagenex852ReturnDataHeader)-3) == 9){
-													ROS_ERROR("ok");
+													//ROS_ERROR("ok");
 													hdr.magic[0] = 'I';
 													hdr.magic[1] = packetType;
 													hdr.magic[2] = 'X';
@@ -202,13 +201,13 @@ class Imagenex852{
 												}
 											}
 											else{
-												ROS_ERROR("3rd Serial read error: %d", read_buf[0]);
+												//ROS_ERROR("3rd Serial read error: %d", read_buf[0]);
 											}
 										}
 									}
 								}
 								else{
-									ROS_ERROR("1st Serial read error: %d", read_buf[0]);
+									//ROS_ERROR("1st Serial read error: %d", read_buf[0]);
 								}
 							}
 						}
@@ -216,7 +215,7 @@ class Imagenex852{
 							//ROS_ERROR already has been called. Lets sleep on this
 							error_rate.sleep();
 						}
-						send_command();
+						//send_command();
 					}
 				}
 			}
@@ -245,7 +244,7 @@ class Imagenex852{
 		
 		void send_command(){
 			//sonar needs a power cycle to change its configuration
-			ROS_ERROR("send_command()");
+			//ROS_ERROR("send_command()");
 			
 			Imagenex852SwitchDataCommand cmd;
 			memset(&cmd,0,sizeof(Imagenex852SwitchDataCommand));
@@ -256,10 +255,10 @@ class Imagenex852{
 				cmd.absorption  = sonarAbsorbtion; //20 = 0.2db	675kHz
 				cmd.pulseLength = sonarPulseLength; //1-255 -> 1us to 255us in 1us increments
 			mtx.unlock();
-			ROS_ERROR("mutex unlock()");
+			//ROS_ERROR("mutex unlock()");
 
-			cmd.magic[0]	= 0xFE	;
-			cmd.magic[1]	= 0x44	;
+			cmd.magic[0]	= 0xFE;
+			cmd.magic[1]	= 0x44;
 			cmd.headId      = 0x11;
 			cmd.masterSlave = 0x43;
 
@@ -280,7 +279,7 @@ class Imagenex852{
 		}
 		
 		void process_data(Imagenex852ReturnDataHeader hdr){
-			ROS_INFO("process_data()");
+			//ROS_INFO("process_data()");
 			int dataSize = 0;
 			
 			//std::cout<<hdr.magic <<"\n";
@@ -323,7 +322,7 @@ class Imagenex852{
 			
 			std::vector<uint8_t> binaryStreamMsg;
 			binary_stream_msg::Stream stream;
-			ROS_INFO("process_data() 2");
+			//ROS_INFO("process_data() 2");
 			if(dataSize > 0){
 				uint8_t echoData[dataSize];
 				
@@ -347,15 +346,7 @@ class Imagenex852{
 				serialRead(&terminationCharacter,sizeof(uint8_t));
 			}
 			while(terminationCharacter != 0xFC);
-			ROS_INFO("process_data()3");
-
-//			if(configChanged){
-//				send_command();
-//				mtx.lock();
-//					configChanged = false;
-//				mtx.lock();
-//			}
-			ROS_INFO("process_data()4");
+			//ROS_INFO("process_data()3");
 			
 			uint16_t profileHigh = (hdr.profileRange[1] & 0x7E) >> 1;
 			uint16_t profileLow  = ((hdr.profileRange[1] & 0x01) << 7) | (hdr.profileRange[0] & 0x7F);
@@ -376,7 +367,7 @@ class Imagenex852{
 				stream.stream = binaryStreamMsg;
 				sonarBinStreamTopic.publish(stream);
 			}
-			ROS_INFO("process_data()5");
+			//ROS_INFO("process_data()5");
 		}
 
 	private:
@@ -425,7 +416,7 @@ int main(int argc,char ** argv){
 		
 		std::thread t(std::bind(&Imagenex852::run,&sonar));
 	
-		ros::Rate loop_rate( 10 ); // 1 Hz
+		ros::Rate loop_rate( 10 ); // 10 Hz
 		while(ros::ok()){
 			ros::spinOnce();
 			loop_rate.sleep();
