@@ -179,19 +179,21 @@ class Imagenex852{
 //						ros::Duration(0.003).sleep();
 //						send_command();
 //					}
-					int delay1 = 1000;
-					int delay2 = 500;
+					int delay1 = 500;
+					int delay2 = 0;
 					
 					while(ros::ok()){
 						ROS_INFO("while ros ok");
 						if(this->flag){
+							ROS_INFO("flag = true");
 							usleep(delay1);
 							send_command();
 							usleep(delay2);
 							delay1 += 100;
 							delay2 += 100;
 							
-							if(delay1 > 5000){
+							if(delay1 > 1000000){
+								ROS_INFO("1s delay");
 								this->flag = false;
 							}
 						}
@@ -245,8 +247,8 @@ class Imagenex852{
 							error_rate.sleep();
 						}
 						
-//						ROS_ERROR("ros spin once");
-//						ros::spinOnce();
+						ROS_ERROR("ros spin once");
+						ros::spinOnce();
 //						loop_rate.sleep();
 //						send_command();
 //						this->sonarRange++;
