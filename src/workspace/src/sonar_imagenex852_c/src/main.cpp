@@ -173,11 +173,12 @@ class Imagenex852{
 					ros::Rate loop_rate( 1 );
 					
 					send_command();
-					uint8_t crap_buf [1];
-					if(serialRead((uint8_t*)&crap_buf, sizeof(crap_buf)) == 1){
-						ros::Duration(0.003).sleep();
-						send_command();
-					}
+//					uint8_t crap_buf [1];
+//					if(serialRead((uint8_t*)&crap_buf, sizeof(crap_buf)) == 1){
+//						ros::Duration(0.003).sleep();
+//						send_command();
+//					}
+					bool flag = true;
 					
 					while(ros::ok()){
 						try{
@@ -197,6 +198,13 @@ class Imagenex852{
 													hdr.magic[0] = 'I';
 													hdr.magic[1] = packetType;
 													hdr.magic[2] = 'X';
+													
+													if(flag){
+														usleep(3000);
+														send_command();
+														flag = false;
+													}
+													
 													process_data(hdr);
 												}
 												else{
@@ -270,10 +278,9 @@ class Imagenex852{
 			mtx.lock();
 				cmd.range	   = sonarRange;
 				cmd.startGain   = sonarStartGain;
-				cmd.absorption  = sonarAbsorbtion; //20 = 0.2db	675kHz
-				cmd.pulseLength = sonarPulseLength; //1-255 -> 1us to 255us in 1us increments
+				cmd.absorption  = sonarAbsorbtion; // 20 = 0.2db	675kHz
+				cmd.pulseLength = sonarPulseLength; // 1-255 -> 1us to 255us in 1us increments
 			mtx.unlock();
-			//ROS_ERROR("mutex unlock()");
 
 			cmd.magic[0]	= 0xFE;
 			cmd.magic[1]	= 0x44;
