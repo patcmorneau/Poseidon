@@ -173,39 +173,41 @@ class Imagenex852{
 					ros::Rate loop_rate( 1 );
 					
 					send_command();
-					//usleep(2300);
+					usleep(2300);
 //					uint8_t crap_buf [1];
 //					if(serialRead((uint8_t*)&crap_buf, sizeof(crap_buf)) == 1){
 //						ros::Duration(0.003).sleep();
 //						send_command();
 //					}
-					bool flag = true;
+					
 					
 					while(ros::ok()){
+						ROS_INFO("while ros ok")
 						try{
 							uint8_t read_buf [1];
 							uint8_t packetType=0;
 							//read sync characters
 							if(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 1){
+								ROS_ERROR("read 1 ok !!");
 								if(read_buf[0] == 73){
 									if(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 1){
+										ROS_ERROR("read 2 ok !!");
 										packetType = read_buf[0];
 										//std::cout<<(char)packetType<<"\n";
 										if(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 1){
 											if(read_buf[0] == 0x58){
 												Imagenex852ReturnDataHeader hdr;
 												if(serialRead((uint8_t*)&hdr+3, sizeof(Imagenex852ReturnDataHeader)-3) == 9){
-													ROS_ERROR("ok");
+													ROS_ERROR("read 3 ok !!");
 													hdr.magic[0] = 'I';
 													hdr.magic[1] = packetType;
 													hdr.magic[2] = 'X';
 													
-//													if(flag){
-//														usleep(3000);
-//														send_command();
-//														usleep(2300);
-//														flag = false;
-//													}
+													if(this->flag){
+														usleep(3000);
+														send_command();
+														usleep(2300);
+													}
 													
 													process_data(hdr);
 												}
@@ -308,6 +310,14 @@ class Imagenex852{
 		void process_data(Imagenex852ReturnDataHeader hdr){
 			ROS_INFO("process_data()");
 			ROS_INFO("%x range", hdr.range);
+			
+			if(hdr.range == sonarRange){
+				this->flag = false;
+			}
+			else{
+				this->flag = true;
+			}
+			
 			int dataSize = 0;
 			
 			//std::cout<<hdr.magic <<"\n";
@@ -420,6 +430,8 @@ class Imagenex852{
 		uint32_t delayNanoseconds = 0; //FIXME: get from a ROS parameter
 
 		uint32_t sequenceNumber;
+		
+		bool flag = true;
 };
 
 int main(int argc,char ** argv){
