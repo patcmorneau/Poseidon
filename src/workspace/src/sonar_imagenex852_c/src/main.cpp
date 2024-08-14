@@ -173,6 +173,7 @@ class Imagenex852{
 					ros::Rate loop_rate( 1 );
 					
 					send_command();
+					usleep(2300);
 //					uint8_t crap_buf [1];
 //					if(serialRead((uint8_t*)&crap_buf, sizeof(crap_buf)) == 1){
 //						ros::Duration(0.003).sleep();
@@ -202,6 +203,7 @@ class Imagenex852{
 													if(flag){
 														usleep(3000);
 														send_command();
+														usleep(2300);
 														flag = false;
 													}
 													
@@ -400,7 +402,7 @@ class Imagenex852{
 	private:
 		std::mutex mtx;
 		uint8_t sonarStartGain = 0x06;
-		uint8_t sonarRange = 50;
+		uint8_t sonarRange = 5;
 		uint8_t sonarAbsorbtion = 0x14; //20 = 0.2db	675kHz
 		uint8_t sonarPulseLength= 150;
 		uint8_t dataPoints = 0;
