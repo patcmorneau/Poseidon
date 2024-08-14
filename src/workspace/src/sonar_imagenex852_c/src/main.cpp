@@ -172,6 +172,7 @@ class Imagenex852{
 					ros::Rate error_rate( 1 );
 					ros::Rate loop_rate( 1 );
 					
+					usleep(3000);
 					send_command();
 					usleep(2300);
 //					uint8_t crap_buf [1];
@@ -180,7 +181,7 @@ class Imagenex852{
 //						send_command();
 //					}
 					int delay1 = 3000;
-					int delay2 = 0;
+					int delay2 = 2300;
 					
 					while(ros::ok()){
 						ROS_INFO("while ros ok");
@@ -188,7 +189,7 @@ class Imagenex852{
 //							ROS_INFO(delay1);
 							usleep(delay1);
 							send_command();
-//							usleep(delay2);
+							usleep(delay2);
 //							delay1 += 100;
 //							delay2 += 100;
 //							
