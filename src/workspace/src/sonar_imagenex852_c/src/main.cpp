@@ -202,6 +202,7 @@ class Imagenex852{
 							uint8_t read_buf [1];
 							uint8_t packetType=0;
 							//read sync characters
+							ROS_ERROR("wtf");
 							if(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 1){
 								ROS_ERROR("read 1 ok !!");
 								if(read_buf[0] == 73){
@@ -256,6 +257,7 @@ class Imagenex852{
 //							this->sonarRange = 5;
 //						}
 					}
+					ROS_ERROR("ROS not ok");
 				}
 			}
 		}
