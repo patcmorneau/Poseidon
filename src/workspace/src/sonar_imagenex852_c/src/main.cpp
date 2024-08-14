@@ -182,7 +182,7 @@ class Imagenex852{
 					
 					
 					while(ros::ok()){
-						ROS_INFO("while ros ok")
+						ROS_INFO("while ros ok");
 						try{
 							uint8_t read_buf [1];
 							uint8_t packetType=0;
