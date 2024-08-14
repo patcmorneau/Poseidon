@@ -156,7 +156,7 @@ class Imagenex852{
 				tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL); // Disable any special handling of received bytes
 				tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
 				tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
-				tty.c_cc[VTIME] = 100;	// Wait for up to 25s (250 deciseconds), returning as soon as any data is received.
+				tty.c_cc[VTIME] = 50;	// Wait for up to 25s (250 deciseconds), returning as soon as any data is received.
 				tty.c_cc[VMIN] = 0;
 
 				cfsetispeed(&tty, B115200);
@@ -248,8 +248,8 @@ class Imagenex852{
 							error_rate.sleep();
 						}
 						
-						ROS_ERROR("ros spin once");
-						ros::spinOnce();
+//						ROS_ERROR("ros spin once");
+//						ros::spinOnce();
 //						loop_rate.sleep();
 //						send_command();
 //						this->sonarRange++;
