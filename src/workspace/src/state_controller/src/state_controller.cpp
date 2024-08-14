@@ -32,7 +32,7 @@ void StateController::sonarCallback(const geometry_msgs::PointStamped& sonar){
 
 void StateController::vitalsCallback(const raspberrypi_vitals_msg::sysinfo& vital){
 	stateMtx.lock();
-        state.vitals = vital;
+		state.vitals = vital;
 	state.stamp = vital.header.stamp;
 	stateMtx.unlock();
 
@@ -50,7 +50,8 @@ bool StateController::getStateService(state_controller_msg::GetStateService::Req
 void StateController::stateUpdated(){
 	//TODO: kalmanize? throttle?
 	stateMtx.lock();
-        stateTopic.publish(state);
+		stateTopic.publish(state);
+		state = state_controller_msg::State();
 	stateMtx.unlock();
 }
 
