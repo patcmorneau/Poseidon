@@ -156,7 +156,7 @@ class Imagenex852{
 				tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL); // Disable any special handling of received bytes
 				tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
 				tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
-				tty.c_cc[VTIME] = 50;	// Wait for up to 25s (250 deciseconds), returning as soon as any data is received.
+				tty.c_cc[VTIME] = 10;	// Wait for up to 25s (250 deciseconds), returning as soon as any data is received.
 				tty.c_cc[VMIN] = 0;
 
 				cfsetispeed(&tty, B115200);
@@ -179,24 +179,24 @@ class Imagenex852{
 //						ros::Duration(0.003).sleep();
 //						send_command();
 //					}
-					int delay1 = 500;
-					int delay2 = 0;
+//					int delay1 = 500;
+//					int delay2 = 0;
 					
 					while(ros::ok()){
 						ROS_INFO("while ros ok");
-						if(this->flag){
-							ROS_INFO("flag = true");
-							usleep(delay1);
-							send_command();
-							usleep(delay2);
-							delay1 += 100;
-							delay2 += 100;
-							
-							if(delay1 > 1000000){
-								ROS_INFO("1s delay");
-								this->flag = false;
-							}
-						}
+//						if(this->flag){
+//							ROS_INFO(delay1);
+//							usleep(delay1);
+//							send_command();
+//							usleep(delay2);
+//							delay1 += 100;
+//							delay2 += 100;
+//							
+//							if(delay1 > 1000000){
+//								ROS_INFO("%d", delay1);
+//								this->flag = false;
+//							}
+//						}
 						
 						try{
 							uint8_t read_buf [1];
@@ -291,7 +291,8 @@ class Imagenex852{
 			memset(&cmd,0,sizeof(Imagenex852SwitchDataCommand));
 
 			mtx.lock();
-				cmd.range	   = sonarRange;
+				cmd.range	   = 5;
+				//cmd.range	   = sonarRange;
 				cmd.startGain   = sonarStartGain;
 				cmd.absorption  = sonarAbsorbtion; // 20 = 0.2db	675kHz
 				cmd.pulseLength = sonarPulseLength; // 1-255 -> 1us to 255us in 1us increments
