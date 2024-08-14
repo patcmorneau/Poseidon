@@ -173,7 +173,7 @@ class Imagenex852{
 					ros::Rate loop_rate( 1 );
 					
 					send_command();
-					usleep(2300);
+					//usleep(2300);
 //					uint8_t crap_buf [1];
 //					if(serialRead((uint8_t*)&crap_buf, sizeof(crap_buf)) == 1){
 //						ros::Duration(0.003).sleep();
@@ -200,12 +200,12 @@ class Imagenex852{
 													hdr.magic[1] = packetType;
 													hdr.magic[2] = 'X';
 													
-													if(flag){
-														usleep(3000);
-														send_command();
-														usleep(2300);
-														flag = false;
-													}
+//													if(flag){
+//														usleep(3000);
+//														send_command();
+//														usleep(2300);
+//														flag = false;
+//													}
 													
 													process_data(hdr);
 												}
