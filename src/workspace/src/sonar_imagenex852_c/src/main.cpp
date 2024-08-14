@@ -156,7 +156,7 @@ class Imagenex852{
 				tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL); // Disable any special handling of received bytes
 				tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
 				tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
-				tty.c_cc[VTIME] = 250;	// Wait for up to 25s (250 deciseconds), returning as soon as any data is received.
+				tty.c_cc[VTIME] = 20;	// Wait for up to 25s (250 deciseconds), returning as soon as any data is received.
 				tty.c_cc[VMIN] = 1;
 
 				cfsetispeed(&tty, B115200);
@@ -179,7 +179,8 @@ class Imagenex852{
 //						ros::Duration(0.003).sleep();
 //						send_command();
 //					}
-					
+					int delay1 = 1000;
+					int delay2 = 500;
 					
 					while(ros::ok()){
 						ROS_INFO("while ros ok");
@@ -204,9 +205,15 @@ class Imagenex852{
 													hdr.magic[2] = 'X';
 													
 													if(this->flag){
-														usleep(3000);
+														usleep(delay1);
 														send_command();
-														usleep(2300);
+														usleep(delay2);
+														delay1 += 100;
+														delay2 += 100;
+														
+														if(delay1 > 5000){
+															this->flag = false;
+														}
 													}
 													
 													process_data(hdr);

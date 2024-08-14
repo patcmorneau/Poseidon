@@ -255,12 +255,12 @@ public:
 		}
 
 		if(!state.depth.header.seq){
-			ROS_ERROR("hydroball_data_websocket no sonar data: %f", state.depth.point.z);
+			//ROS_ERROR("hydroball_data_websocket no sonar data: %f", state.depth.point.z);
 			rapidjson::Value depthArray(rapidjson::Type::kArrayType);
 			telemetry.AddMember("depth", depthArray, telemetry.GetAllocator()); // empty depth array
 		}
 	else {
-			ROS_ERROR("hydroball_data_websocket sonar data: %f", state.depth.point.z);
+			//ROS_ERROR("hydroball_data_websocket sonar data: %f", state.depth.point.z);
 			rapidjson::Value depthArray(rapidjson::Type::kArrayType);
 			rapidjson::Value z(state.depth.point.z);
 
