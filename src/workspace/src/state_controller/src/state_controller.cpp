@@ -21,7 +21,7 @@ void StateController::imuCallback(const sensor_msgs::Imu& imu){
 }
 
 void StateController::sonarCallback(const geometry_msgs::PointStamped& sonar){
-	ROS_ERROR("state controller sonarCallback");
+	//ROS_ERROR("state controller sonarCallback");
 	stateMtx.lock();
 	state.depth = sonar;
 	state.stamp = sonar.header.stamp;

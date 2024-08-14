@@ -184,6 +184,18 @@ class Imagenex852{
 					
 					while(ros::ok()){
 						ROS_INFO("while ros ok");
+						if(this->flag){
+							usleep(delay1);
+							send_command();
+							usleep(delay2);
+							delay1 += 100;
+							delay2 += 100;
+							
+							if(delay1 > 5000){
+								this->flag = false;
+							}
+						}
+						
 						try{
 							uint8_t read_buf [1];
 							uint8_t packetType=0;
@@ -203,18 +215,6 @@ class Imagenex852{
 													hdr.magic[0] = 'I';
 													hdr.magic[1] = packetType;
 													hdr.magic[2] = 'X';
-													
-													if(this->flag){
-														usleep(delay1);
-														send_command();
-														usleep(delay2);
-														delay1 += 100;
-														delay2 += 100;
-														
-														if(delay1 > 5000){
-															this->flag = false;
-														}
-													}
 													
 													process_data(hdr);
 												}
