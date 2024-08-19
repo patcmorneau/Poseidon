@@ -172,32 +172,15 @@ class Imagenex852{
 					ros::Rate error_rate( 1 );
 					ros::Rate loop_rate( 1 );
 					
-					usleep(3000);
+					//usleep(3000);
 					send_command();
 					usleep(2300);
-//					uint8_t crap_buf [1];
-//					if(serialRead((uint8_t*)&crap_buf, sizeof(crap_buf)) == 1){
-//						ros::Duration(0.003).sleep();
-//						send_command();
-//					}
+
 					int delay1 = 3000;
 					int delay2 = 2300;
 					
 					while(ros::ok()){
 						ROS_INFO("while ros ok");
-						if(this->flag){
-//							ROS_INFO(delay1);
-							usleep(delay1);
-							send_command();
-							usleep(delay2);
-//							delay1 += 100;
-//							delay2 += 100;
-//							
-//							if(delay1 > 1000000){
-//								ROS_INFO("%d", delay1);
-							this->flag = false;
-//							}
-						}
 						
 						try{
 							uint8_t read_buf [1];
@@ -248,10 +231,10 @@ class Imagenex852{
 							error_rate.sleep();
 						}
 						
-//						ROS_ERROR("ros spin once");
-//						ros::spinOnce();
-//						loop_rate.sleep();
-//						send_command();
+						ROS_ERROR("ros spin once");
+						ros::spinOnce();
+						loop_rate.sleep();
+						send_command();
 //						this->sonarRange++;
 //						if(this->sonarRange > 50){
 //							this->sonarRange = 5;
