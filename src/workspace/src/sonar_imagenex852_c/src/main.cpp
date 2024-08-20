@@ -447,11 +447,13 @@ int main(int argc,char ** argv){
 		//sonar.run();
 		//ros::spin();
 		ROS_INFO("ok");
-		ros::Rate loop_rate( 10 ); // 10 Hz
-		while(ros::ok()){
-			ros::spinOnce();
-			loop_rate.sleep();
-		}
+		ros::spin();
+		ROS_INFO("ok");
+//		ros::Rate loop_rate( 10 );  //10 Hz
+//		while(ros::ok()){
+//			ros::spinOnce();
+//			loop_rate.sleep();
+//		}
 		
 //		ros::AsyncSpinner spinner(1);  // Use 1 thread for ROS callbacks
 //		spinner.start();
