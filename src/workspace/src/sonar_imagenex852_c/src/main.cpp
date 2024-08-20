@@ -187,17 +187,17 @@ class Imagenex852{
 							uint8_t packetType=0;
 							//read sync characters
 							if(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 1){
-								ROS_ERROR("read 1 ok !!");
+								ROS_INFO("read 1 ok !!");
 								if(read_buf[0] == 73){
 									if(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 1){
-										ROS_ERROR("read 2 ok !!");
+										ROS_INFO("read 2 ok !!");
 										packetType = read_buf[0];
 										//std::cout<<(char)packetType<<"\n";
 										if(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 1){
 											if(read_buf[0] == 0x58){
 												Imagenex852ReturnDataHeader hdr;
 												if(serialRead((uint8_t*)&hdr+3, sizeof(Imagenex852ReturnDataHeader)-3) == 9){
-													ROS_ERROR("read 3 ok !!");
+													ROS_INFO("read 3 ok !!");
 													hdr.magic[0] = 'I';
 													hdr.magic[1] = packetType;
 													hdr.magic[2] = 'X';
@@ -231,7 +231,7 @@ class Imagenex852{
 							error_rate.sleep();
 						}
 						
-						ROS_ERROR("ros spin once");
+						ROS_INFO("ros spin once");
 						ros::spinOnce();
 						loop_rate.sleep();
 						send_command();
@@ -303,7 +303,7 @@ class Imagenex852{
 		}
 		
 		void process_data(Imagenex852ReturnDataHeader hdr){
-			ROS_INFO("process_data()");
+			ROS_ERROR("process_data()");
 			ROS_INFO("%x range", hdr.range);
 			
 			if(hdr.range == sonarRange){
