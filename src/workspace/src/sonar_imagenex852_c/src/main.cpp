@@ -295,7 +295,7 @@ class Imagenex852{
 		}
 		
 		void process_data(Imagenex852ReturnDataHeader hdr){
-			ROS_INFO("%d range", hdr.range);
+			//ROS_INFO("%d range", hdr.range);
 			
 			if(hdr.range == sonarRange){
 				this->configChanged = false;
