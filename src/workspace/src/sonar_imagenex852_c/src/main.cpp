@@ -78,7 +78,6 @@ class Imagenex852{
 		}
 
 		void getConfiguration(){
-			//ROS_INFO("getConfiguration()");
 			char *	configKeys[] = {"sonarStartGain","sonarRange","sonarAbsorbtion","sonarPulseLength"};
 			uint8_t * valuePtrs[]  = {&sonarStartGain,&sonarRange,&sonarAbsorbtion,&sonarPulseLength};
 
@@ -86,7 +85,6 @@ class Imagenex852{
 				std::string valueString = getConfigValue(configKeys[i]);
 				setConfigValue(valueString, valuePtrs[i]);
 			}
-			//ROS_INFO("getConfiguration()2");
 		}
 
 		std::string getConfigValue(std::string key){
@@ -265,7 +263,7 @@ class Imagenex852{
 			memset(&cmd,0,sizeof(Imagenex852SwitchDataCommand));
 
 			mtx.lock();
-				cmd.range    = sonarRange;
+				cmd.range	= sonarRange;
 				cmd.startGain   = sonarStartGain;
 				cmd.absorption  = sonarAbsorbtion; // 20 = 0.2db	675kHz
 				cmd.pulseLength = sonarPulseLength; // 1-255 -> 1us to 255us in 1us increments
@@ -273,7 +271,7 @@ class Imagenex852{
 
 			cmd.magic[0]	= 0xFE;
 			cmd.magic[1]	= 0x44;
-			cmd.headId      = 0x11;
+			cmd.headId	  = 0x11;
 			cmd.masterSlave = 0x43;
 
 			cmd.profileMinimumRange =  0; //Min range in meters / 10
@@ -442,10 +440,20 @@ int main(int argc,char ** argv){
 		
 		std::thread t(std::bind(&Imagenex852::run,&sonar));
 	
-		ros::Rate loop_rate( 10 ); // 10 Hz
-		while(ros::ok()){
-			ros::spinOnce();
-			loop_rate.sleep();
+//		ros::Rate loop_rate( 10 ); // 10 Hz
+//		while(ros::ok()){
+//			ros::spinOnce();
+//			loop_rate.sleep();
+//		}
+		
+		ros::AsyncSpinner spinner(1);  // Use 1 thread for ROS callbacks
+		spinner.start();
+
+		ros::waitForShutdown();  // Wait for ROS to shut down
+
+		// Ensure the sonar thread is joined before exiting
+		if (t.joinable()) {
+			t.join();
 		}
 
 	}
