@@ -171,7 +171,6 @@ class Imagenex852{
 					ROS_INFO("Sonar file opened on %s",devicePath.c_str());
 					
 					ros::Rate error_rate( 1 );
-					ros::Rate loop_rate( 2 );
 					
 					send_command();
 					
@@ -230,10 +229,6 @@ class Imagenex852{
 							//ROS_ERROR already has been called. Lets sleep on this
 							error_rate.sleep();
 						}
-						
-						//ros::spinOnce();
-						//loop_rate.sleep();
-						
 					}
 				}
 			}
@@ -261,7 +256,6 @@ class Imagenex852{
 		}
 		
 		void send_command(){
-			//ROS_ERROR("send_command()");
 			usleep(3000);
 			Imagenex852SwitchDataCommand cmd;
 			memset(&cmd,0,sizeof(Imagenex852SwitchDataCommand));
@@ -297,20 +291,17 @@ class Imagenex852{
 		}
 		
 		void process_data(Imagenex852ReturnDataHeader hdr){
-			//ROS_INFO("process_data()");
-			//ROS_INFO("%d range", hdr.range);
 			
 			if(hdr.range == sonarRange){
 				this->configChanged = false;
 			}
 			else{
 				this->configChanged = true;
-				ROS_INFO("%d range is different", hdr.range);
+				//ROS_INFO("%d range is different", hdr.range);
 			}
 			
 			int dataSize = 0;
 			
-			//std::cout<<hdr.magic <<"\n";
 			
 			if(hdr.magic[1] == 'M'){
 				dataSize = 252;
@@ -350,7 +341,7 @@ class Imagenex852{
 			
 			std::vector<uint8_t> binaryStreamMsg;
 			binary_stream_msg::Stream stream;
-			//ROS_INFO("process_data() 2");
+			
 			if(dataSize > 0){
 				uint8_t echoData[dataSize];
 				
@@ -374,7 +365,6 @@ class Imagenex852{
 				serialRead(&terminationCharacter,sizeof(uint8_t));
 			}
 			while(terminationCharacter != 0xFC);
-			//ROS_INFO("process_data()3");
 			
 			uint16_t profileHigh = (hdr.profileRange[1] & 0x7E) >> 1;
 			uint16_t profileLow  = ((hdr.profileRange[1] & 0x01) << 7) | (hdr.profileRange[0] & 0x7F);
@@ -395,7 +385,6 @@ class Imagenex852{
 				stream.stream = binaryStreamMsg;
 				sonarBinStreamTopic.publish(stream);
 			}
-			//ROS_INFO("process_data()5");
 		}
 
 	private:
@@ -444,26 +433,13 @@ int main(int argc,char ** argv){
 		}
 		
 		std::thread t(std::bind(&Imagenex852::run,&sonar));
-		//sonar.run();
-		//ros::spin();
-		ROS_INFO("ok");
+
 		ros::spin();
-		ROS_INFO("ok");
-//		ros::Rate loop_rate( 10 );  //10 Hz
-//		while(ros::ok()){
-//			ros::spinOnce();
-//			loop_rate.sleep();
-//		}
-		
-//		ros::AsyncSpinner spinner(1);  // Use 1 thread for ROS callbacks
-//		spinner.start();
 
-//		ros::waitForShutdown();  // Wait for ROS to shut down
-
-//		// Ensure the sonar thread is joined before exiting
-//		if (t.joinable()) {
-//			t.join();
-//		}
+		// Ensure the sonar thread is joined before exiting
+		if (t.joinable()) {
+			t.join();
+		}
 
 	}
 	catch(std::exception &e){
