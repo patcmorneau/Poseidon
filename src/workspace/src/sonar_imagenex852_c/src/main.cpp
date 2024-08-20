@@ -174,12 +174,7 @@ class Imagenex852{
 					
 					send_command();
 					
-
-					int delay1 = 3000;
-					int delay2 = 2300;
-					
 					while(ros::ok()){
-						ROS_INFO("while ros ok");
 						
 						try{
 							uint8_t read_buf [1];
@@ -337,7 +332,6 @@ class Imagenex852{
 			}
 
 			//Verify that we support automatic trigger mode
-			ROS_ERROR("%x serialStatus", hdr.serialStatus);
 			if(! hdr.serialStatus & 0x04){
 				ROS_ERROR("Automatic trigger mode not supported. Pings will be unsynchronized");
 			}
@@ -421,7 +415,7 @@ class Imagenex852{
 
 		uint32_t sequenceNumber;
 		
-		bool configChanged = true;
+		bool configChanged = false;
 };
 
 int main(int argc,char ** argv){
