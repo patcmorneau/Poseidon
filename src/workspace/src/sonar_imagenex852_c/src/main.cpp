@@ -109,6 +109,7 @@ class Imagenex852{
 		}
 
 		void configurationChange(const setting_msg::Setting & setting){
+			
 			if(setting.key.compare("sonarStartGain")==0){
 				setConfigValue(setting.value,&sonarStartGain);
 			}
@@ -123,10 +124,10 @@ class Imagenex852{
 			}
 		}
 			
-			void start(){
-				serial_thread = std::thread(&Imagenex852::run, this);
-			}
-			
+		void start(){
+			serial_thread = std::thread(&Imagenex852::run, this);
+		}
+		
 		void run(){
 			//open serial port
 			deviceFile = open(devicePath.c_str(),O_RDWR);
@@ -179,6 +180,7 @@ class Imagenex852{
 					send_command();
 					
 					while(ros::ok()){
+						ros::spinOnce();
 						
 						try{
 							uint8_t read_buf [1];
@@ -445,7 +447,7 @@ int main(int argc,char ** argv){
 		}
 		
 		//std::thread t(std::bind(&Imagenex852::run,&sonar));
-		sonar.start();
+		sonar.run();
 		ros::spin();
 	
 //		ros::Rate loop_rate( 10 ); // 10 Hz
