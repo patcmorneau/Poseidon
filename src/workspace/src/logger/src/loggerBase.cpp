@@ -308,7 +308,7 @@ void LoggerBase::configurationCallBack(const setting_msg::Setting &setting){
 			this->port = "8080";
 		}
 		else{
-			std::cout<<"port : " << this->port <<"\n";
+			//std::cout<<"port : " << this->port <<"\n";
 		}
 	}
 	else if(setting.key == "apiKey"){

@@ -87,7 +87,7 @@ class WifiConfig{
 		
 		// Callback for when configs are changed by the user via the web ui
 		void configurationCallBack(const setting_msg::Setting &setting){
-			ROS_INFO_STREAM("wifi_config configCallback -> " << setting.key << " : "<<setting.value<<"\n");
+			//ROS_INFO_STREAM("wifi_config configCallback -> " << setting.key << " : "<<setting.value<<"\n");
 			if(setting.key == "wifiSSID"){
 				std::string temp = setting.value;
 				if(trimSpaces(temp) != this->ssid){
