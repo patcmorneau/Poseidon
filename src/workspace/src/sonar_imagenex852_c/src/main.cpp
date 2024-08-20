@@ -105,6 +105,7 @@ class Imagenex852{
 		void setConfigValue(const std::string & valStr,uint8_t * val){
 			mtx.lock();
 				sscanf(valStr.c_str(),"%hhu",val);
+				this->configChanged = true;
 			mtx.unlock();
 		}
 
@@ -184,7 +185,9 @@ class Imagenex852{
 								
 								if(this->configChanged){
 									send_command();
-									this->configChanged = false;
+									mtx.lock();
+										this->configChanged = false;
+									mtx.unlock();
 								}
 								
 								if(read_buf[0] == 73){
@@ -255,15 +258,12 @@ class Imagenex852{
 		}
 		
 		void send_command(){
-			//sonar needs a power cycle to change its configuration
-			//ROS_ERROR("send_command()");
 			usleep(3000);
 			Imagenex852SwitchDataCommand cmd;
 			memset(&cmd,0,sizeof(Imagenex852SwitchDataCommand));
 
 			mtx.lock();
-				//cmd.range	   = 5;
-				cmd.range	   = sonarRange;
+				cmd.range    = sonarRange;
 				cmd.startGain   = sonarStartGain;
 				cmd.absorption  = sonarAbsorbtion; // 20 = 0.2db	675kHz
 				cmd.pulseLength = sonarPulseLength; // 1-255 -> 1us to 255us in 1us increments
