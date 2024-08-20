@@ -65,8 +65,8 @@ class Imagenex852{
 			sonarTopicEnu = node.advertise<geometry_msgs::PointStamped>("depth_enu", 1000);
 			ros::Subscriber sub = node.subscribe("configuration", 1000, &Imagenex852::configurationChange,this);
 			configurationClient = node.serviceClient<setting_msg::ConfigurationService>("get_configuration");
-			//ROS_INFO("Fetching sonar configuration...");
-			//getConfiguration();
+			ROS_INFO("Fetching sonar configuration...");
+			getConfiguration();
 		}
 
 		~Imagenex852(){
@@ -176,9 +176,6 @@ class Imagenex852{
 					send_command();
 					
 					while(ros::ok()){
-						getConfiguration();
-						ros::spinOnce();
-						loop_rate.sleep();
 						
 						try{
 							uint8_t read_buf [1];
@@ -233,6 +230,9 @@ class Imagenex852{
 							//ROS_ERROR already has been called. Lets sleep on this
 							error_rate.sleep();
 						}
+						
+						ros::spinOnce();
+						loop_rate.sleep();
 						
 					}
 				}
