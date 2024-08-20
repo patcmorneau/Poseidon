@@ -258,6 +258,7 @@ class Imagenex852{
 		}
 		
 		void send_command(){
+			ROS_ERROR("send_command()");
 			usleep(3000);
 			Imagenex852SwitchDataCommand cmd;
 			memset(&cmd,0,sizeof(Imagenex852SwitchDataCommand));
