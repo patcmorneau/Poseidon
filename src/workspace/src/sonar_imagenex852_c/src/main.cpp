@@ -174,7 +174,8 @@ class Imagenex852{
 					
 					//usleep(3000);
 					send_command();
-					usleep(2300);
+					usleep(3000);
+					send_command();
 
 					int delay1 = 3000;
 					int delay2 = 2300;
