@@ -122,7 +122,11 @@ class Imagenex852{
 				setConfigValue(setting.value,&sonarPulseLength);
 			}
 		}
-
+			
+			void start(){
+				serial_thread = std::thread(&Imagenex852::run, this);
+			}
+			
 		void run(){
 			//open serial port
 			deviceFile = open(devicePath.c_str(),O_RDWR);
@@ -300,7 +304,7 @@ class Imagenex852{
 			}
 			else{
 				this->configChanged = true;
-				ROS_INFO("%x range", hdr.range);
+				ROS_INFO("%d range", hdr.range);
 			}
 			
 			int dataSize = 0;
@@ -416,6 +420,8 @@ class Imagenex852{
 		uint32_t sequenceNumber;
 		
 		bool configChanged = false;
+		
+		std::thread serial_thread;
 };
 
 int main(int argc,char ** argv){
@@ -438,7 +444,9 @@ int main(int argc,char ** argv){
 			sonar.set_dataPoints(dataPoints);
 		}
 		
-		std::thread t(std::bind(&Imagenex852::run,&sonar));
+		//std::thread t(std::bind(&Imagenex852::run,&sonar));
+		sonar.start();
+		ros::spin();
 	
 //		ros::Rate loop_rate( 10 ); // 10 Hz
 //		while(ros::ok()){
@@ -446,15 +454,15 @@ int main(int argc,char ** argv){
 //			loop_rate.sleep();
 //		}
 		
-		ros::AsyncSpinner spinner(2);  // Use 1 thread for ROS callbacks
-		spinner.start();
+//		ros::AsyncSpinner spinner(2);  // Use 1 thread for ROS callbacks
+//		spinner.start();
 
-		ros::waitForShutdown();  // Wait for ROS to shut down
+//		ros::waitForShutdown();  // Wait for ROS to shut down
 
-		// Ensure the sonar thread is joined before exiting
-		if (t.joinable()) {
-			t.join();
-		}
+//		// Ensure the sonar thread is joined before exiting
+//		if (t.joinable()) {
+//			t.join();
+//		}
 
 	}
 	catch(std::exception &e){
