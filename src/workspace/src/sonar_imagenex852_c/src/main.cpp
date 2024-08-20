@@ -185,9 +185,9 @@ class Imagenex852{
 								
 								if(this->configChanged){
 									send_command();
-									mtx.lock();
-										this->configChanged = false;
-									mtx.unlock();
+									//mtx.lock();
+									this->configChanged = false;
+									//mtx.unlock();
 								}
 								
 								if(read_buf[0] == 73){
@@ -297,14 +297,15 @@ class Imagenex852{
 		}
 		
 		void process_data(Imagenex852ReturnDataHeader hdr){
-			//ROS_INFO("%d range", hdr.range);
+			//ROS_INFO("process_data()");
+			ROS_INFO("%d range", hdr.range);
 			
 			if(hdr.range == sonarRange){
 				this->configChanged = false;
 			}
 			else{
 				this->configChanged = true;
-				ROS_INFO("%d range", hdr.range);
+				ROS_INFO("%d range is different", hdr.range);
 			}
 			
 			int dataSize = 0;
