@@ -172,9 +172,6 @@ class Imagenex852{
 					ros::Rate error_rate( 1 );
 					ros::Rate loop_rate( 1 );
 					
-					//usleep(3000);
-					send_command();
-					usleep(2300);
 					send_command();
 					
 
@@ -189,23 +186,20 @@ class Imagenex852{
 							uint8_t packetType=0;
 							//read sync characters
 							if(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 1){
-								ROS_INFO("read 1 ok !!");
 								
-								if(this->flag){
+								if(this->configChanged){
 									send_command();
-									this->flag = false;
+									this->configChanged = false;
 								}
 								
 								if(read_buf[0] == 73){
 									if(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 1){
-										ROS_INFO("read 2 ok !!");
 										packetType = read_buf[0];
 										//std::cout<<(char)packetType<<"\n";
 										if(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 1){
 											if(read_buf[0] == 0x58){
 												Imagenex852ReturnDataHeader hdr;
 												if(serialRead((uint8_t*)&hdr+3, sizeof(Imagenex852ReturnDataHeader)-3) == 9){
-													ROS_INFO("read 3 ok !!");
 													hdr.magic[0] = 'I';
 													hdr.magic[1] = packetType;
 													hdr.magic[2] = 'X';
@@ -213,25 +207,25 @@ class Imagenex852{
 													process_data(hdr);
 												}
 												else{
-													ROS_ERROR("Serial read error");
+													//ROS_ERROR("Serial read error");
 												}
 											}
 											else{
-												ROS_ERROR("3rd Serial read error: %d", read_buf[0]);
+												//ROS_ERROR("3rd Serial read error: %d", read_buf[0]);
 											}
 										}
 										
 									}
 									else{
-										ROS_ERROR("serial read 2 = 0");
+										//ROS_ERROR("serial read 2 = 0");
 									}
 								}
 								else{
-									ROS_ERROR("1st Serial read error: %d", read_buf[0]);
+									//ROS_ERROR("1st Serial read error: %d", read_buf[0]);
 								}
 							}
 							else{
-								ROS_ERROR("serial read 1 = 0");
+								//ROS_ERROR("serial read 1 = 0");
 							}
 						}
 						catch(std::exception & e){
@@ -239,16 +233,7 @@ class Imagenex852{
 							error_rate.sleep();
 						}
 						
-//						ROS_INFO("ros spin once");
-//						ros::spinOnce();
-//						loop_rate.sleep();
-//						send_command();
-//						this->sonarRange++;
-//						if(this->sonarRange > 50){
-//							this->sonarRange = 5;
-//						}
 					}
-					ROS_ERROR("ROS not ok");
 				}
 			}
 		}
@@ -276,14 +261,14 @@ class Imagenex852{
 		
 		void send_command(){
 			//sonar needs a power cycle to change its configuration
-			ROS_ERROR("send_command()");
-			
+			//ROS_ERROR("send_command()");
+			usleep(3000);
 			Imagenex852SwitchDataCommand cmd;
 			memset(&cmd,0,sizeof(Imagenex852SwitchDataCommand));
 
 			mtx.lock();
-				cmd.range	   = 5;
-				//cmd.range	   = sonarRange;
+				//cmd.range	   = 5;
+				cmd.range	   = sonarRange;
 				cmd.startGain   = sonarStartGain;
 				cmd.absorption  = sonarAbsorbtion; // 20 = 0.2db	675kHz
 				cmd.pulseLength = sonarPulseLength; // 1-255 -> 1us to 255us in 1us increments
@@ -308,17 +293,19 @@ class Imagenex852{
 				ROS_ERROR("Cannot write switch data command (%d bytes written)",nbBytes);
 				throw std::system_error();
 			}
+			
+			usleep(2300);
 		}
 		
 		void process_data(Imagenex852ReturnDataHeader hdr){
-			ROS_ERROR("process_data()");
-			ROS_INFO("%x range", hdr.range);
+			//ROS_INFO("%x range", hdr.range);
 			
 			if(hdr.range == sonarRange){
-				this->flag = false;
+				this->configChanged = false;
 			}
 			else{
-				this->flag = true;
+				this->configChanged = true;
+				ROS_INFO("%x range", hdr.range);
 			}
 			
 			int dataSize = 0;
@@ -434,7 +421,7 @@ class Imagenex852{
 
 		uint32_t sequenceNumber;
 		
-		bool flag = true;
+		bool configChanged = true;
 };
 
 int main(int argc,char ** argv){
