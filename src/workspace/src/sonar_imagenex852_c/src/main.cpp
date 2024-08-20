@@ -101,11 +101,11 @@ class Imagenex852{
 		}
 
 		void setConfigValue(const std::string & valStr,uint8_t * val){
-			mtx.lock();
+			//mtx.lock();
 				sscanf(valStr.c_str(),"%hhu",val);
 				this->configChanged = true;
 				ROS_ERROR("configChanged");
-			mtx.unlock();
+			//mtx.unlock();
 		}
 
 		void configurationChange(const setting_msg::Setting & setting){
@@ -261,17 +261,17 @@ class Imagenex852{
 		}
 		
 		void send_command(){
-			ROS_ERROR("send_command()");
+			//ROS_ERROR("send_command()");
 			usleep(3000);
 			Imagenex852SwitchDataCommand cmd;
 			memset(&cmd,0,sizeof(Imagenex852SwitchDataCommand));
 
-			mtx.lock();
+			//mtx.lock();
 				cmd.range	= sonarRange;
 				cmd.startGain   = sonarStartGain;
 				cmd.absorption  = sonarAbsorbtion; // 20 = 0.2db	675kHz
 				cmd.pulseLength = sonarPulseLength; // 1-255 -> 1us to 255us in 1us increments
-			mtx.unlock();
+			//mtx.unlock();
 
 			cmd.magic[0]	= 0xFE;
 			cmd.magic[1]	= 0x44;
@@ -298,7 +298,7 @@ class Imagenex852{
 		
 		void process_data(Imagenex852ReturnDataHeader hdr){
 			//ROS_INFO("process_data()");
-			ROS_INFO("%d range", hdr.range);
+			//ROS_INFO("%d range", hdr.range);
 			
 			if(hdr.range == sonarRange){
 				this->configChanged = false;
@@ -446,7 +446,7 @@ int main(int argc,char ** argv){
 		std::thread t(std::bind(&Imagenex852::run,&sonar));
 		//sonar.run();
 		//ros::spin();
-	
+		ROS_INFO("ok");
 		ros::Rate loop_rate( 10 ); // 10 Hz
 		while(ros::ok()){
 			ros::spinOnce();
