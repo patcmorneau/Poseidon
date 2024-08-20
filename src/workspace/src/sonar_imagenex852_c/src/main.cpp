@@ -63,7 +63,7 @@ class Imagenex852{
 			sonarTopic = node.advertise<geometry_msgs::PointStamped>("depth", 1000);
 			sonarBinStreamTopic = node.advertise<binary_stream_msg::Stream>("sonar_bin_stream", 1000);
 			sonarTopicEnu = node.advertise<geometry_msgs::PointStamped>("depth_enu", 1000);
-			ros::Subscriber sub = node.subscribe("configuration", 1000, &Imagenex852::configurationChange,this);
+			configSubscriber = node.subscribe("configuration", 1000, &Imagenex852::configurationChange,this);
 			configurationClient = node.serviceClient<setting_msg::ConfigurationService>("get_configuration");
 			ROS_INFO("Fetching sonar configuration...");
 			getConfiguration();
@@ -101,11 +101,11 @@ class Imagenex852{
 		}
 
 		void setConfigValue(const std::string & valStr,uint8_t * val){
-			//mtx.lock();
+			mtx.lock();
 				sscanf(valStr.c_str(),"%hhu",val);
 				this->configChanged = true;
 				ROS_ERROR("configChanged");
-			//mtx.unlock();
+			mtx.unlock();
 		}
 
 		void configurationChange(const setting_msg::Setting & setting){
@@ -185,9 +185,9 @@ class Imagenex852{
 								
 								if(this->configChanged){
 									send_command();
-									//mtx.lock();
-									this->configChanged = false;
-									//mtx.unlock();
+									mtx.lock();
+										this->configChanged = false;
+									mtx.unlock();
 								}
 								
 								if(read_buf[0] == 73){
@@ -231,7 +231,7 @@ class Imagenex852{
 							error_rate.sleep();
 						}
 						
-						ros::spinOnce();
+						//ros::spinOnce();
 						//loop_rate.sleep();
 						
 					}
@@ -266,12 +266,12 @@ class Imagenex852{
 			Imagenex852SwitchDataCommand cmd;
 			memset(&cmd,0,sizeof(Imagenex852SwitchDataCommand));
 
-			//mtx.lock();
+			mtx.lock();
 				cmd.range	= sonarRange;
 				cmd.startGain   = sonarStartGain;
 				cmd.absorption  = sonarAbsorbtion; // 20 = 0.2db	675kHz
 				cmd.pulseLength = sonarPulseLength; // 1-255 -> 1us to 255us in 1us increments
-			//mtx.unlock();
+			mtx.unlock();
 
 			cmd.magic[0]	= 0xFE;
 			cmd.magic[1]	= 0x44;
@@ -443,7 +443,7 @@ int main(int argc,char ** argv){
 			sonar.set_dataPoints(dataPoints);
 		}
 		
-		//std::thread t(std::bind(&Imagenex852::run,&sonar));
+		std::thread t(std::bind(&Imagenex852::run,&sonar));
 		//sonar.run();
 		//ros::spin();
 		ROS_INFO("ok");
