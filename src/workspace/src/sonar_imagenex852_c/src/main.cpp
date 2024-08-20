@@ -239,10 +239,10 @@ class Imagenex852{
 							error_rate.sleep();
 						}
 						
-						ROS_INFO("ros spin once");
-						ros::spinOnce();
-						loop_rate.sleep();
-						send_command();
+//						ROS_INFO("ros spin once");
+//						ros::spinOnce();
+//						loop_rate.sleep();
+//						send_command();
 //						this->sonarRange++;
 //						if(this->sonarRange > 50){
 //							this->sonarRange = 5;
