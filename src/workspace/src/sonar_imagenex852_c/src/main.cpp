@@ -174,8 +174,8 @@ class Imagenex852{
 					
 					//usleep(3000);
 					send_command();
-					usleep(3000);
-					send_command();
+					//usleep(3000);
+					
 
 					int delay1 = 3000;
 					int delay2 = 2300;
@@ -189,6 +189,12 @@ class Imagenex852{
 							//read sync characters
 							if(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 1){
 								ROS_INFO("read 1 ok !!");
+								
+								if(this->flag){
+									send_command();
+									this->flag = false;
+								}
+								
 								if(read_buf[0] == 73){
 									if(serialRead((uint8_t*)&read_buf, sizeof(read_buf)) == 1){
 										ROS_INFO("read 2 ok !!");
