@@ -420,7 +420,7 @@ class Imagenex852{
 
 int main(int argc,char ** argv){
 	ros::init(argc,argv,"sonar_imagenex852");
-
+	
 	try{
 		
 		Imagenex852 sonar("/dev/sonar");
@@ -446,7 +446,7 @@ int main(int argc,char ** argv){
 //			loop_rate.sleep();
 //		}
 		
-		ros::AsyncSpinner spinner(1);  // Use 1 thread for ROS callbacks
+		ros::AsyncSpinner spinner(2);  // Use 1 thread for ROS callbacks
 		spinner.start();
 
 		ros::waitForShutdown();  // Wait for ROS to shut down
