@@ -65,8 +65,8 @@ class Imagenex852{
 			sonarTopicEnu = node.advertise<geometry_msgs::PointStamped>("depth_enu", 1000);
 			ros::Subscriber sub = node.subscribe("configuration", 1000, &Imagenex852::configurationChange,this);
 			configurationClient = node.serviceClient<setting_msg::ConfigurationService>("get_configuration");
-			ROS_INFO("Fetching sonar configuration...");
-			getConfiguration();
+			//ROS_INFO("Fetching sonar configuration...");
+			//getConfiguration();
 		}
 
 		~Imagenex852(){
@@ -176,6 +176,7 @@ class Imagenex852{
 					send_command();
 					
 					while(ros::ok()){
+						getConfiguration();
 						ros::spinOnce();
 						loop_rate.sleep();
 						
@@ -443,7 +444,7 @@ int main(int argc,char ** argv){
 		
 		//std::thread t(std::bind(&Imagenex852::run,&sonar));
 		sonar.run();
-		ros::spin();
+		//ros::spin();
 	
 //		ros::Rate loop_rate( 10 ); // 10 Hz
 //		while(ros::ok()){
@@ -451,8 +452,8 @@ int main(int argc,char ** argv){
 //			loop_rate.sleep();
 //		}
 		
-//		ros::AsyncSpinner spinner(2);  // Use 1 thread for ROS callbacks
-//		spinner.start();
+		ros::AsyncSpinner spinner(1);  // Use 1 thread for ROS callbacks
+		spinner.start();
 
 //		ros::waitForShutdown();  // Wait for ROS to shut down
 

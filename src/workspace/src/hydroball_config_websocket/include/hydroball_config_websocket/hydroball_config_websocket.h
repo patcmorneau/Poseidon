@@ -366,7 +366,7 @@ public:
 			}
 		}
 		
-		std::cout<<"ssid: " << ssid <<"\n";
+		//std::cout<<"ssid: " << ssid <<"\n";
 		
 		if(ssid == configuration["hotspotSSID"]){
 			return true;
