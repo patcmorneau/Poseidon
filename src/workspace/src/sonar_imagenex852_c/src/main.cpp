@@ -123,10 +123,6 @@ class Imagenex852{
 				setConfigValue(setting.value,&sonarPulseLength);
 			}
 		}
-			
-		void start(){
-			serial_thread = std::thread(&Imagenex852::run, this);
-		}
 		
 		void run(){
 			//open serial port
@@ -175,12 +171,13 @@ class Imagenex852{
 					ROS_INFO("Sonar file opened on %s",devicePath.c_str());
 					
 					ros::Rate error_rate( 1 );
-					ros::Rate loop_rate( 1 );
+					ros::Rate loop_rate( 2 );
 					
 					send_command();
 					
 					while(ros::ok()){
 						ros::spinOnce();
+						loop_rate.sleep();
 						
 						try{
 							uint8_t read_buf [1];
@@ -422,8 +419,6 @@ class Imagenex852{
 		uint32_t sequenceNumber;
 		
 		bool configChanged = false;
-		
-		std::thread serial_thread;
 };
 
 int main(int argc,char ** argv){
