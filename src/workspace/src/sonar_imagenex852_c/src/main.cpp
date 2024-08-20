@@ -443,25 +443,25 @@ int main(int argc,char ** argv){
 			sonar.set_dataPoints(dataPoints);
 		}
 		
-		//std::thread t(std::bind(&Imagenex852::run,&sonar));
-		sonar.run();
+		std::thread t(std::bind(&Imagenex852::run,&sonar));
+		//sonar.run();
 		//ros::spin();
 	
-//		ros::Rate loop_rate( 10 ); // 10 Hz
-//		while(ros::ok()){
-//			ros::spinOnce();
-//			loop_rate.sleep();
-//		}
+		ros::Rate loop_rate( 10 ); // 10 Hz
+		while(ros::ok()){
+			ros::spinOnce();
+			loop_rate.sleep();
+		}
 		
-		ros::AsyncSpinner spinner(1);  // Use 1 thread for ROS callbacks
-		spinner.start();
+//		ros::AsyncSpinner spinner(1);  // Use 1 thread for ROS callbacks
+//		spinner.start();
 
 //		ros::waitForShutdown();  // Wait for ROS to shut down
 
 //		// Ensure the sonar thread is joined before exiting
-//		if (t.joinable()) {
-//			t.join();
-//		}
+		if (t.joinable()) {
+			t.join();
+		}
 
 	}
 	catch(std::exception &e){
