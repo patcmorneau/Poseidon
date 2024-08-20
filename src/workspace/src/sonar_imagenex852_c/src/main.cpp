@@ -232,7 +232,7 @@ class Imagenex852{
 						}
 						
 						ros::spinOnce();
-						loop_rate.sleep();
+						//loop_rate.sleep();
 						
 					}
 				}
@@ -242,20 +242,20 @@ class Imagenex852{
 		int serialRead(uint8_t * buf,unsigned int sz){
 			unsigned int totalRead = 0;
 
-			while(totalRead < sz){
-				unsigned int bytesRead = read(deviceFile,& (buf[totalRead]),sz - totalRead);
+//			while(totalRead < sz){
+//				unsigned int bytesRead = read(deviceFile,& (buf[totalRead]),sz - totalRead);
 
-				if(bytesRead > 0){
-	 				totalRead += bytesRead;
-				}
-				else if(bytesRead == 0){
-					//File end
-					return bytesRead;
-				}
-				else{
-					return -1;
-				}
-			}
+//				if(bytesRead > 0){
+//	 				totalRead += bytesRead;
+//				}
+//				else if(bytesRead == 0){
+//					//File end
+//					return bytesRead;
+//				}
+//				else{
+//					return -1;
+//				}
+//			}
 
 			return totalRead;
 		}
