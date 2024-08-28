@@ -9,7 +9,6 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstdio>
-#include "../../utils/smbus_functions.h"
 #include <fcntl.h>
 #include <unistd.h>
 #include "HIH8130_sensor.h"
