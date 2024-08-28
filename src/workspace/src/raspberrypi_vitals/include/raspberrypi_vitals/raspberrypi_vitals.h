@@ -132,7 +132,7 @@ class HBV {
 				msg.freeram = getFreeRam();
 				msg.freehdd = getFreeHdd();
 				msg.uptime = getUpTime();
-				std::cout<< sensor.getHumidity(file) << " humidity % \n";
+				std::cout<< sensor.get_humidity() << " humidity % \n";
 				
 				
 				msg.vbat = 12.2;
@@ -144,7 +144,6 @@ class HBV {
 				ros::spinOnce();
 				loop_rate.sleep();
 			}
-			close(file);
 		}
 };
 
