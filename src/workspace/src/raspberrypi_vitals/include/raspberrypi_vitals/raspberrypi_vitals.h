@@ -12,7 +12,7 @@
 #include "../../utils/smbus_functions.h"
 #include <fcntl.h>
 #include <unistd.h>
-#include <HIH8130_sensor.h>
+#include "HIH8130_sensor.h"
 
 using namespace std;
 
@@ -20,7 +20,6 @@ class HBV {
 	private:
 		ros::NodeHandle node;
 		ros::Publisher HBVTopic;
-		//#define _LL_BUFFSIZE_ 2048
 
 		uint32_t sequenceNumber;
 		float upt;
@@ -125,14 +124,14 @@ class HBV {
 				msg.header.seq = ++sequenceNumber;
 				msg.header.stamp = ros::Time::now();
 				
-				//try catch
 				
 				msg.cputemp = getCpuTemp();
 				msg.cpuload = getCpuLoad();
 				msg.freeram = getFreeRam();
 				msg.freehdd = getFreeHdd();
 				msg.uptime = getUpTime();
-				std::cout<< sensor.get_humidity() << " humidity % \n";
+				msg.humidity = sensor.get_humidity();
+				msg.temperature = sensor.get_temperature();
 				
 				
 				msg.vbat = 12.2;
