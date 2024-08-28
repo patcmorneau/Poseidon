@@ -12,6 +12,7 @@
 #include "../../utils/smbus_functions.h"
 #include <fcntl.h>
 #include <unistd.h>
+#include <HIH8130_sensor.h>
 
 using namespace std;
 
@@ -108,46 +109,14 @@ class HBV {
 			pclose(fp);
 			return free_hdd;
 		}
-		
-		double getHumidity(int &file){
-			_i2c_smbus_write_quick(file, 0x27);
-			usleep(1000);
-			
-			uint8_t reg_device1 = 0x00;  // Register to read from in device 1 aka offset
-			uint8_t data_device[4];		// Buffer to store the read data
-			
-			if (_i2c_smbus_read_i2c_block_data(file, reg_device1, sizeof(data_device) , data_device) != 4) {
-				//std::cerr << "Vitals Node Failed to read block data from sensor: HIH8130" << std::endl;
-			}
-
-			for (int i = 0; i < sizeof(data_device); i++) {
-				std::cout << "0x" << std::hex << static_cast<int>(data_device[i]) << " ";
-			}
-			std::cout << std::endl;
-			
-			return 0.0;
-		}
-		
-		double getTemp(int &file){
-			
-		}
 
 		void run(){
 			ros::Rate loop_rate(1);
 			
-			const char* i2c_device = "/dev/i2c-1";
-			//int HIH8130_addr = 0x27; //make it a param ??
+			const char* i2cDevice = "/dev/i2c-1";
+			uint8_t sensorAddress = 0x27;
 			
-			int file;
-			if ((file = open(i2c_device, O_RDWR)) < 0) {
-				std::cerr << "Failed to open the I2C bus" << std::endl;
-				return;
-			}
-/*			if (ioctl(file, I2C_SLAVE, 0x27) < 0) {*/
-/*				std::cerr << "Failed to acquire bus access and/or talk to device 1: " << strerror(errno) << std::endl;*/
-/*				close(file);*/
-/*				return;*/
-/*			}*/
+			HIH8130 sensor(i2cDevice, sensorAddress);
 			
 			
 			while (ros::ok()) {
@@ -163,8 +132,7 @@ class HBV {
 				msg.freeram = getFreeRam();
 				msg.freehdd = getFreeHdd();
 				msg.uptime = getUpTime();
-				std::cout<< " ok !!!!!!! \n";
-				double test = getHumidity(file);
+				std::cout<< sensor.getHumidity(file) << " humidity % \n";
 				
 				
 				msg.vbat = 12.2;
