@@ -118,8 +118,6 @@ class HBV {
 			
 			if (_i2c_smbus_read_i2c_block_data(file, reg_device1, sizeof(data_device) , data_device) != 4) {
 				//std::cerr << "Vitals Node Failed to read block data from sensor: HIH8130" << std::endl;
-				close(file);
-				return 1;
 			}
 
 			for (int i = 0; i < sizeof(data_device); i++) {
@@ -148,7 +146,7 @@ class HBV {
 			if (ioctl(file, I2C_SLAVE, 0x27) < 0) {
 				std::cerr << "Failed to acquire bus access and/or talk to device 1: " << strerror(errno) << std::endl;
 				close(file);
-				return 1;
+				return;
 			}
 			
 			
@@ -157,7 +155,9 @@ class HBV {
 
 				msg.header.seq = ++sequenceNumber;
 				msg.header.stamp = ros::Time::now();
-
+				
+				//try catch
+				
 				msg.cputemp = getCpuTemp();
 				msg.cpuload = getCpuLoad();
 				msg.freeram = getFreeRam();
