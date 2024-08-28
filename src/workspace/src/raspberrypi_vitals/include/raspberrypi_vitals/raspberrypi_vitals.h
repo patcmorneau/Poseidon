@@ -113,7 +113,7 @@ class HBV {
 			_i2c_smbus_write_quick(file, 0x27);
 			usleep(1000);
 			
-			uint8_t char reg_device1 = 0x00;  // Register to read from in device 1 aka offset
+			uint8_t reg_device1 = 0x00;  // Register to read from in device 1 aka offset
 			uint8_t data_device[4];		// Buffer to store the read data
 			
 			if (_i2c_smbus_read_i2c_block_data(file, reg_device1, sizeof(data_device) , data_device) != 4) {
@@ -141,13 +141,13 @@ class HBV {
 			int file;
 			if ((file = open(i2c_device, O_RDWR)) < 0) {
 				std::cerr << "Failed to open the I2C bus" << std::endl;
-				return 1;
-			}
-			if (ioctl(file, I2C_SLAVE, 0x27) < 0) {
-				std::cerr << "Failed to acquire bus access and/or talk to device 1: " << strerror(errno) << std::endl;
-				close(file);
 				return;
 			}
+/*			if (ioctl(file, I2C_SLAVE, 0x27) < 0) {*/
+/*				std::cerr << "Failed to acquire bus access and/or talk to device 1: " << strerror(errno) << std::endl;*/
+/*				close(file);*/
+/*				return;*/
+/*			}*/
 			
 			
 			while (ros::ok()) {
